@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomeController extends GetxController {
   bool _isLoading = false;
@@ -22,6 +23,7 @@ class HomeController extends GetxController {
   TextEditingController mobilePhone = TextEditingController();
   String status = "بطيئة"; // حركة المنتج
   TextEditingController notes = TextEditingController();
+  Position? position;
   // todo : store the date in model
   // todo: store 'if uploaded' in model
 
@@ -46,6 +48,36 @@ class HomeController extends GetxController {
   void setStatus(String status) {
     this.status = status;
     update();
+  }
+
+  Future<void> getLocation() async {
+    toggleLoading(true);
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    if (!await Geolocator.isLocationServiceEnabled()) {
+      toggleLoading(false);
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        toggleLoading(false);
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      toggleLoading(false);
+      return Future.error('Location permissions are permanently denied');
+    }
+    position = await Geolocator.getCurrentPosition();
+    print('${position!.latitude} ${position!.longitude}');
+    Get.defaultDialog(middleText: '${position!.latitude} ${position!.longitude}');
+    toggleLoading(false);
   }
 
   Future<void> submit() async {

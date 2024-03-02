@@ -183,6 +183,25 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    con.getLocation();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'locate',
+                        style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+                      ),
+                      SizedBox(width: 12),
+                      Icon(Icons.save, size: 28),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
