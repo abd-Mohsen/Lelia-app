@@ -155,7 +155,7 @@ class MyThemes {
         fontFamily: 'arabic',
       ),
       titleMedium: TextStyle(
-        fontSize: 16,
+        fontSize: 18,
         wordSpacing: 24,
         letterSpacing: 0.15,
         fontFamily: 'arabic',

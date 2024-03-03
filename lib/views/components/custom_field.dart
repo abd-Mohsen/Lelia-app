@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomField extends StatelessWidget {
   const CustomField({
@@ -49,4 +50,26 @@ class CustomField extends StatelessWidget {
       ),
     );
   }
+}
+
+String? validateInput(String val, int min, int max, String type, {String pass = "", String rePass = ""}) {
+  //todo: localize
+  if (val.trim().isEmpty) return "لا يمكن أن يكون فارغ";
+
+  if (type == "username") {
+    if (!GetUtils.isUsername(val)) return "not a valid user name";
+  }
+  if (type == "email") {
+    if (!GetUtils.isEmail(val)) return "not a valid email";
+  }
+  if (type == "phone") {
+    if (!GetUtils.isPhoneNumber(val)) return "not a valid phone";
+  }
+  if (val.length < min) return "value cant be smaller than $min";
+
+  if (val.length > max) return "value cant be greater than $max";
+
+  if (pass != rePass) return "passwords don't match".tr;
+
+  return null;
 }

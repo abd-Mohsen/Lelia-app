@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:lelia/models/report_model.dart';
+import 'package:lelia/services/local_services.dart';
 
 class HomeController extends GetxController {
   bool _isLoading = false;
@@ -66,7 +68,7 @@ class HomeController extends GetxController {
               size: 80,
             ),
             Text(
-              "من فضلك قم بتشغيل خدمة تحديد الموقع أولأ",
+              "من فضلك قم بتشغيل خدمة تحديد الموقع أولاً",
               style: TextStyle(fontSize: 24, color: cs.onSurface),
               textAlign: TextAlign.center,
             ),
@@ -106,6 +108,10 @@ class HomeController extends GetxController {
     toggleLoading(false);
   }
 
+  void clearReport() {
+    //todo
+  }
+
   Future<void> submit() async {
     buttonPressed = true;
     bool isValid = dataFormKey.currentState!.validate();
@@ -114,8 +120,29 @@ class HomeController extends GetxController {
         message: "خذ الاحداثيات اولأ",
         duration: Duration(milliseconds: 1500),
       ));
+      return;
     }
     if (!isValid) return;
-    //
+    ReportModel report = ReportModel(
+      title: name.text,
+      type: type,
+      size: size,
+      neighborhood: neighborhood.text,
+      street: street.text,
+      mobile: mobilePhone.text,
+      landline: phone.text,
+      availability: available,
+      status: available ? status : null,
+      notes: notes.text,
+      longitude: position!.longitude,
+      latitude: position!.latitude,
+      date: DateTime.now(),
+      uploaded: false,
+    );
+    LocalServices.storeReport(report);
+    Get.showSnackbar(const GetSnackBar(
+      message: "تم التخزين بنجاح",
+      duration: Duration(milliseconds: 1500),
+    ));
   }
 }

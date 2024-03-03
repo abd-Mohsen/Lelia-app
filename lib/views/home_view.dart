@@ -4,6 +4,7 @@ import 'package:lelia/controllers/home_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
 import 'package:lelia/views/components/custom_dropdown.dart';
 import 'package:lelia/views/components/custom_field.dart';
+import 'package:lelia/views/reports_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -11,6 +12,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeController tC = Get.find();
+    HomeController hC = Get.put(HomeController());
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
 
@@ -22,15 +24,24 @@ class HomeView extends StatelessWidget {
           style: tt.headlineMedium!.copyWith(letterSpacing: 5, color: cs.onPrimary),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              hC.clearReport();
+            },
+            icon: Icon(Icons.restart_alt),
+          )
+        ],
       ),
       backgroundColor: cs.background,
       body: GetBuilder<HomeController>(
-        init: HomeController(),
+        //init: HomeController(),
         builder: (con) => Form(
           key: con.dataFormKey,
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             children: [
+              // todo: add constraints for fields
               CustomField(
                 controller: con.name,
                 iconData: Icons.label,
@@ -124,20 +135,23 @@ class HomeView extends StatelessWidget {
                   if (con.buttonPressed) con.dataFormKey.currentState!.validate();
                 },
               ),
-              CheckboxListTile(
-                value: con.available,
-                onChanged: (val) {
-                  con.toggleAvailability(val!);
-                },
-                checkColor: cs.onPrimary,
-                activeColor: cs.primary,
-                title: Text(
-                  "التواجد",
-                  style: tt.titleLarge!.copyWith(color: cs.onBackground),
-                ),
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
-                  borderRadius: BorderRadius.circular(10),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: CheckboxListTile(
+                  value: con.available,
+                  onChanged: (val) {
+                    con.toggleAvailability(val!);
+                  },
+                  checkColor: cs.onPrimary,
+                  activeColor: cs.primary,
+                  title: Text(
+                    "التواجد",
+                    style: tt.titleLarge!.copyWith(color: cs.onBackground),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
               Visibility(
@@ -172,8 +186,8 @@ class HomeView extends StatelessWidget {
                   trailing: con.isLoading
                       ? CircularProgressIndicator()
                       : con.position == null
-                          ? const Icon(Icons.dangerous_outlined, color: Colors.red, size: 30)
-                          : const Icon(Icons.task_alt, color: Colors.green, size: 30),
+                          ? const Icon(Icons.dangerous_outlined, color: Colors.red, size: 35)
+                          : const Icon(Icons.task_alt, color: Colors.green, size: 35),
                   subtitle: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
@@ -196,7 +210,7 @@ class HomeView extends StatelessWidget {
                 controller: con.notes,
                 //iconData: Icons.note_alt_sharp,
                 hint: "ملاحظات الزبون",
-                lines: 3,
+                lines: 4,
                 validator: (s) {
                   return validateInput(s!, 0, 1100, "");
                 },
@@ -217,7 +231,7 @@ class HomeView extends StatelessWidget {
                       children: [
                         Text(
                           'حفظ في الذاكرة',
-                          style: tt.headlineMedium!.copyWith(color: cs.onPrimary, fontWeight: FontWeight.bold),
+                          style: tt.headlineSmall!.copyWith(color: cs.onPrimary, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 12),
                         Icon(Icons.save_alt, size: 40),
@@ -265,31 +279,16 @@ class HomeView extends StatelessWidget {
                 },
               ),
             ),
+            ListTile(
+              leading: Icon(Icons.mobile_friendly),
+              title: Text("التقارير المحفوظة", style: tt.titleLarge!.copyWith(color: cs.onBackground)),
+              onTap: () {
+                Get.to(() => ReportsView());
+              },
+            ),
           ],
         ),
       ),
     );
   }
-}
-
-String? validateInput(String val, int min, int max, String type, {String pass = "", String rePass = ""}) {
-  //todo: localize
-  if (val.trim().isEmpty) return "لا يمكن أن يكون فارغ";
-
-  if (type == "username") {
-    if (!GetUtils.isUsername(val)) return "not a valid user name";
-  }
-  if (type == "email") {
-    if (!GetUtils.isEmail(val)) return "not a valid email";
-  }
-  if (type == "phone") {
-    if (!GetUtils.isPhoneNumber(val)) return "not a valid phone";
-  }
-  if (val.length < min) return "value cant be smaller than $min";
-
-  if (val.length > max) return "value cant be greater than $max";
-
-  if (pass != rePass) return "passwords don't match".tr;
-
-  return null;
 }
