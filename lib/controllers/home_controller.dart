@@ -50,14 +50,29 @@ class HomeController extends GetxController {
     update();
   }
 
-  Future<void> getLocation() async {
+  Future<void> getLocation(context) async {
+    ColorScheme cs = Theme.of(context).colorScheme;
     toggleLoading(true);
     LocationPermission permission;
 
-    // Test if location services are enabled.
     if (!await Geolocator.isLocationServiceEnabled()) {
       toggleLoading(false);
-      return Future.error('Location services are disabled.');
+      Get.defaultDialog(
+        title: "",
+        content: Column(
+          children: [
+            const Icon(
+              Icons.location_on,
+              size: 80,
+            ),
+            Text(
+              "من فضلك قم بتشغيل خدمة تحديد الموقع أولأ",
+              style: TextStyle(fontSize: 24, color: cs.onSurface),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
     }
 
     permission = await Geolocator.checkPermission();
@@ -66,25 +81,41 @@ class HomeController extends GetxController {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         toggleLoading(false);
-        return Future.error('Location permissions are denied');
+        Get.showSnackbar(const GetSnackBar(
+          message: "تم رفض صلاحية الموقع, لا يمكن تحديد موقعك الحالي",
+          duration: Duration(milliseconds: 1500),
+        ));
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       toggleLoading(false);
-      return Future.error('Location permissions are permanently denied');
+      Get.showSnackbar(const GetSnackBar(
+        message: "تم رفض صلاحية الموقع, يجب اعطاء صلاحية من اعدادات التطبيق",
+        duration: Duration(milliseconds: 1500),
+      ));
     }
-    position = await Geolocator.getCurrentPosition();
-    print('${position!.latitude} ${position!.longitude}');
-    Get.defaultDialog(middleText: '${position!.latitude} ${position!.longitude}');
+    try {
+      position = await Geolocator.getCurrentPosition();
+    } catch (e) {
+      print(e.toString());
+      //Get.defaultDialog(middleText: e.toString());
+    }
+    print('${position!.longitude} ${position!.latitude}');
+    Get.defaultDialog(middleText: '${position!.longitude} ${position!.latitude}');
     toggleLoading(false);
   }
 
   Future<void> submit() async {
     buttonPressed = true;
     bool isValid = dataFormKey.currentState!.validate();
+    if (position == null) {
+      Get.showSnackbar(const GetSnackBar(
+        message: "خذ الاحداثيات اولأ",
+        duration: Duration(milliseconds: 1500),
+      ));
+    }
     if (!isValid) return;
-    // show a dialog
     //
   }
 }

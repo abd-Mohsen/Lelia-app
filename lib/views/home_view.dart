@@ -135,6 +135,10 @@ class HomeView extends StatelessWidget {
                   "التواجد",
                   style: tt.titleLarge!.copyWith(color: cs.onBackground),
                 ),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               Visibility(
                 visible: con.available,
@@ -152,6 +156,42 @@ class HomeView extends StatelessWidget {
                   selectedValue: con.status,
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: ListTile(
+                  leading: Icon(Icons.location_searching, size: 30, color: cs.primary),
+                  title: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      "احداثيات النقطة",
+                      style: tt.titleLarge!.copyWith(
+                        color: cs.onSurface.withOpacity(0.6),
+                      ),
+                    ),
+                  ),
+                  trailing: con.isLoading
+                      ? CircularProgressIndicator()
+                      : con.position == null
+                          ? const Icon(Icons.dangerous_outlined, color: Colors.red, size: 30)
+                          : const Icon(Icons.task_alt, color: Colors.green, size: 30),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        con.getLocation(context);
+                      },
+                      child: Text(
+                        'حفظ',
+                        style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+                      ),
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
               CustomField(
                 controller: con.notes,
                 //iconData: Icons.note_alt_sharp,
@@ -165,40 +205,24 @@ class HomeView extends StatelessWidget {
                 },
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 12.0),
+                padding: const EdgeInsets.only(top: 12.0, bottom: 4),
                 child: ElevatedButton(
                   onPressed: () {
                     con.submit();
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'حفظ في الذاكرة',
-                        style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
-                      ),
-                      SizedBox(width: 12),
-                      Icon(Icons.save, size: 28),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    con.getLocation();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'locate',
-                        style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
-                      ),
-                      SizedBox(width: 12),
-                      Icon(Icons.save, size: 28),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'حفظ في الذاكرة',
+                          style: tt.headlineMedium!.copyWith(color: cs.onPrimary, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 12),
+                        Icon(Icons.save_alt, size: 40),
+                      ],
+                    ),
                   ),
                 ),
               ),
