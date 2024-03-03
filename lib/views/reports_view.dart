@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/reports_controller.dart';
+import 'package:lelia/models/report_model.dart';
 import 'package:lelia/views/components/report_card.dart';
 
 class ReportsView extends StatelessWidget {
@@ -10,6 +11,7 @@ class ReportsView extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
+    ReportsController rC = Get.put(ReportsController());
 
     return DefaultTabController(
       length: 2,
@@ -19,6 +21,14 @@ class ReportsView extends StatelessWidget {
             "التقارير المحفوظة",
             style: tt.headlineMedium!.copyWith(color: cs.onPrimary),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                rC.clearReports();
+              },
+              icon: Icon(Icons.delete),
+            )
+          ],
           bottom: TabBar(
             indicatorColor: Colors.deepOrange,
             indicatorWeight: 4,
@@ -44,21 +54,23 @@ class ReportsView extends StatelessWidget {
           backgroundColor: cs.primary,
         ),
         body: GetBuilder<ReportsController>(
-            init: ReportsController(),
+            //init: ReportsController(),
             builder: (con) {
-              return TabBarView(
-                children: [
-                  ListView.builder(
-                    itemCount: con.reports.where((report) => report.uploaded!).length,
-                    itemBuilder: (context, i) => ReportCard(report: con.reports[i]),
-                  ),
-                  ListView.builder(
-                    itemCount: con.reports.where((report) => !report.uploaded!).length,
-                    itemBuilder: (context, i) => ReportCard(report: con.reports[i]),
-                  ),
-                ],
-              );
-            }),
+          List<ReportModel> uploaded = con.reports.where((report) => !report.uploaded!).toList();
+          List<ReportModel> notUploaded = con.reports.where((report) => report.uploaded!).toList();
+          return TabBarView(
+            children: [
+              ListView.builder(
+                itemCount: uploaded.length,
+                itemBuilder: (context, i) => ReportCard(report: uploaded[i]),
+              ),
+              ListView.builder(
+                itemCount: notUploaded.length,
+                itemBuilder: (context, i) => ReportCard(report: notUploaded[i]),
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

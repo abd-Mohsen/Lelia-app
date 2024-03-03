@@ -79,6 +79,6 @@ class ReportModel {
 
   @override
   String toString() {
-    return "$title $type $status $size $uploaded";
+    return "$title $uploaded";
   }
 }

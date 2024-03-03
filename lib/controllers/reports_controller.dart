@@ -20,6 +20,7 @@ class ReportsController extends GetxController {
   }
 
   void clearReports() {
+    // todo: show a message first
     reports.clear();
     LocalServices.storeReports(reports);
     update();
