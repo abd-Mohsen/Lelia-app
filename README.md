@@ -28,5 +28,5 @@ Reports can be stored locally on the device and uploaded later to the company se
 
 ## Support
 
-For technical support or questions about the app, feel free to contact me at [abdMohsen333@gmail.com] or 
+For technical support or questions about the app, feel free to contact me at [my email](mailto:abdMohsen333@gmail.com) or 
 [my Linkedin](https://www.linkedin.com/in/abd-moh333/) .
