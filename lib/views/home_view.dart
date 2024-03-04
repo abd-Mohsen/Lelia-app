@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/home_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
@@ -190,14 +191,81 @@ class HomeView extends StatelessWidget {
                           : const Icon(Icons.task_alt, color: Colors.green, size: 35),
                   subtitle: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        con.getLocation(context);
-                      },
-                      child: Text(
-                        'حفظ',
-                        style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
-                      ),
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            con.getLocation(context);
+                          },
+                          child: Text(
+                            'حفظ',
+                            style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+                          ),
+                        ),
+                        SizedBox(width: 12),
+                        Visibility(
+                          visible: con.position != null,
+                          //todo: fix map error in console
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => SizedBox(
+                                  child: OSMFlutter(
+                                      controller: MapController.withPosition(
+                                        initPosition: GeoPoint(
+                                          latitude: con.position!.latitude,
+                                          longitude: con.position!.longitude,
+                                        ),
+                                      ),
+                                      osmOption: OSMOption(
+                                        // userTrackingOption: UserTrackingOption(
+                                        //   enableTracking: true,
+                                        //   unFollowUser: false,
+                                        // ),
+                                        zoomOption: const ZoomOption(
+                                          initZoom: 20,
+                                          minZoomLevel: 3,
+                                          maxZoomLevel: 19,
+                                          stepZoom: 1.0,
+                                        ),
+                                        // userLocationMarker: UserLocationMaker(
+                                        //   personMarker: MarkerIcon(
+                                        //     icon: Icon(
+                                        //       Icons.location_history_rounded,
+                                        //       color: Colors.red,
+                                        //       size: 48,
+                                        //     ),
+                                        //   ),
+                                        //   directionArrowMarker: MarkerIcon(
+                                        //     icon: Icon(
+                                        //       Icons.double_arrow,
+                                        //       size: 48,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        roadConfiguration: const RoadOption(
+                                          roadColor: Colors.yellowAccent,
+                                        ),
+                                        markerOption: MarkerOption(
+                                            defaultMarker: const MarkerIcon(
+                                          icon: Icon(
+                                            Icons.person_pin_circle,
+                                            color: Colors.blue,
+                                            size: 56,
+                                          ),
+                                        )),
+                                      )),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'معاينة',
+                              style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   shape: RoundedRectangleBorder(
