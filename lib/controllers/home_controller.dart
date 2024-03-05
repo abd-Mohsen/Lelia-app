@@ -104,12 +104,22 @@ class HomeController extends GetxController {
       //Get.defaultDialog(middleText: e.toString());
     }
     print('${position!.longitude} ${position!.latitude}');
-    Get.defaultDialog(middleText: '${position!.longitude} ${position!.latitude}');
+    //Get.defaultDialog(middleText: '${position!.longitude} ${position!.latitude}');
     toggleLoading(false);
   }
 
   void clearReport() {
     //todo
+    name.text = "";
+    neighborhood.text = "";
+    street.text = "";
+    phone.text = "";
+    mobilePhone.text = "";
+    notes.text = "";
+    buttonPressed = false;
+    _available = false;
+    position = null;
+    update();
   }
 
   Future<void> submit() async {

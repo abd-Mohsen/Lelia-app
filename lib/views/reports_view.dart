@@ -16,6 +16,7 @@ class ReportsView extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: cs.background,
         appBar: AppBar(
           title: Text(
             "التقارير المحفوظة",

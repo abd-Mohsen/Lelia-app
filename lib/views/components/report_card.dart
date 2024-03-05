@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:lelia/models/report_model.dart';
 
 class ReportCard extends StatelessWidget {
@@ -12,13 +13,26 @@ class ReportCard extends StatelessWidget {
     TextTheme tt = Theme.of(context).textTheme;
     return ListTile(
       leading: Icon(Icons.edit_calendar_outlined),
-      title: Text(report.title),
-      subtitle: Text(report.date.toIso8601String()),
+      title: Text(
+        report.title,
+        style: tt.titleLarge!.copyWith(color: cs.onBackground),
+      ),
+      subtitle: Text(
+        "${Jiffy(report.date).format("d/M/y")}  ${Jiffy(report.date).jm}",
+        //" ${report.date.hour}:${report.date.minute}",
+        style: tt.labelLarge!.copyWith(color: cs.onBackground),
+      ),
       trailing: report.uploaded! ? Icon(Icons.upload, color: Colors.green) : Icon(Icons.sd_storage),
       onTap: () {
         Get.dialog(AlertDialog(
-          icon: Icon(Icons.pending_actions),
-          title: Text(report.title),
+          icon: Icon(
+            Icons.pending_actions,
+            color: cs.onBackground,
+          ),
+          title: Text(
+            report.title,
+            style: tt.titleMedium!.copyWith(color: cs.onSurface),
+          ),
           content: Column(
             children: [
               SizedBox(
@@ -27,7 +41,9 @@ class ReportCard extends StatelessWidget {
                 child: ListView(
                   // todo: why listview not rendering without sized box
                   children: [
-                    Text(report.type),
+                    Text(
+                      report.type,
+                    ),
                     //todo: read report from here, and add option to delete (and edit?)
                   ],
                 ),
