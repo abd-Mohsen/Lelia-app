@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/home_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
 import 'package:lelia/views/components/custom_dropdown.dart';
 import 'package:lelia/views/components/custom_field.dart';
+import 'package:lelia/views/login_view.dart';
+import 'package:lelia/views/map_page.dart';
 import 'package:lelia/views/reports_view.dart';
 
 class HomeView extends StatelessWidget {
@@ -208,54 +209,61 @@ class HomeView extends StatelessWidget {
                           //todo: fix map error in console
                           child: ElevatedButton(
                             onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) => SizedBox(
-                                  child: OSMFlutter(
-                                      controller: MapController.withPosition(
-                                        initPosition: GeoPoint(
-                                          latitude: con.position!.latitude,
-                                          longitude: con.position!.longitude,
-                                        ),
-                                      ),
-                                      osmOption: OSMOption(
-                                        // userTrackingOption: UserTrackingOption(
-                                        //   enableTracking: true,
-                                        //   unFollowUser: false,
-                                        // ),
-                                        zoomOption: const ZoomOption(
-                                          initZoom: 20,
-                                          minZoomLevel: 3,
-                                          maxZoomLevel: 19,
-                                          stepZoom: 1.0,
-                                        ),
-                                        // userLocationMarker: UserLocationMaker(
-                                        //   personMarker: MarkerIcon(
-                                        //     icon: Icon(
-                                        //       Icons.location_history_rounded,
-                                        //       color: Colors.red,
-                                        //       size: 48,
-                                        //     ),
-                                        //   ),
-                                        //   directionArrowMarker: MarkerIcon(
-                                        //     icon: Icon(
-                                        //       Icons.double_arrow,
-                                        //       size: 48,
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        roadConfiguration: const RoadOption(
-                                          roadColor: Colors.yellowAccent,
-                                        ),
-                                        markerOption: MarkerOption(
-                                            defaultMarker: const MarkerIcon(
-                                          icon: Icon(
-                                            Icons.person_pin_circle,
-                                            color: Colors.blue,
-                                            size: 56,
-                                          ),
-                                        )),
-                                      )),
+                              // showModalBottomSheet(
+                              //   context: context,
+                              //   builder: (context) => SizedBox(
+                              //     child: OSMFlutter(
+                              //         controller: MapController.withPosition(
+                              //           initPosition: GeoPoint(
+                              //             latitude: con.position!.latitude,
+                              //             longitude: con.position!.longitude,
+                              //           ),
+                              //         ),
+                              //         osmOption: OSMOption(
+                              //           // userTrackingOption: UserTrackingOption(
+                              //           //   enableTracking: true,
+                              //           //   unFollowUser: false,
+                              //           // ),
+                              //           zoomOption: const ZoomOption(
+                              //             initZoom: 20,
+                              //             minZoomLevel: 3,
+                              //             maxZoomLevel: 19,
+                              //             stepZoom: 1.0,
+                              //           ),
+                              //           // userLocationMarker: UserLocationMaker(
+                              //           //   personMarker: MarkerIcon(
+                              //           //     icon: Icon(
+                              //           //       Icons.location_history_rounded,
+                              //           //       color: Colors.red,
+                              //           //       size: 48,
+                              //           //     ),
+                              //           //   ),
+                              //           //   directionArrowMarker: MarkerIcon(
+                              //           //     icon: Icon(
+                              //           //       Icons.double_arrow,
+                              //           //       size: 48,
+                              //           //     ),
+                              //           //   ),
+                              //           // ),
+                              //           roadConfiguration: const RoadOption(
+                              //             roadColor: Colors.yellowAccent,
+                              //           ),
+                              //           markerOption: MarkerOption(
+                              //               defaultMarker: const MarkerIcon(
+                              //             icon: Icon(
+                              //               Icons.person_pin_circle,
+                              //               color: Colors.blue,
+                              //               size: 56,
+                              //             ),
+                              //           )),
+                              //         )),
+                              //   ),
+                              // );
+                              //
+                              Get.to(
+                                MapPage(
+                                  latitude: con.position!.latitude,
+                                  longitude: con.position!.longitude,
                                 ),
                               );
                             },
@@ -352,6 +360,13 @@ class HomeView extends StatelessWidget {
               title: Text("التقارير المحفوظة", style: tt.titleLarge!.copyWith(color: cs.onBackground)),
               onTap: () {
                 Get.to(() => ReportsView());
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout, color: cs.error),
+              title: Text("تسجيل خروج", style: tt.titleLarge!.copyWith(color: cs.error)),
+              onTap: () {
+                Get.offAll(() => const LoginView());
               },
             ),
           ],

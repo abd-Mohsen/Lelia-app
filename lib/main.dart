@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:lelia/controllers/locale_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
 import 'package:lelia/themes.dart';
-import 'package:lelia/views/home_view.dart';
+import 'package:lelia/views/redirect_page.dart';
 
 import 'locale.dart';
 
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       translations: MyLocale(),
       locale: l.initialLang,
       title: 'lelia',
-      home: const HomeView(),
+      home: const RedirectPage(),
       theme: MyThemes.myLightMode, //custom light theme
       darkTheme: MyThemes.myDarkMode, //custom dark theme
       themeMode: t.getThemeMode(),

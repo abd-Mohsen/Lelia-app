@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:lelia/controllers/login_controller.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/services/local_services.dart';
+import 'package:lelia/views/login_view.dart';
 
 class HomeController extends GetxController {
   bool _isLoading = false;
@@ -109,7 +111,6 @@ class HomeController extends GetxController {
   }
 
   void clearReport() {
-    //todo
     name.text = "";
     neighborhood.text = "";
     street.text = "";
@@ -154,5 +155,10 @@ class HomeController extends GetxController {
       message: "تم التخزين بنجاح",
       duration: Duration(milliseconds: 1500),
     ));
+  }
+
+  void logout() {
+    Get.put(LoginController());
+    Get.offAll(() => const LoginView());
   }
 }
