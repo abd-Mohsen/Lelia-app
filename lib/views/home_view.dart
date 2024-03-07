@@ -4,7 +4,6 @@ import 'package:lelia/controllers/home_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
 import 'package:lelia/views/components/custom_dropdown.dart';
 import 'package:lelia/views/components/custom_field.dart';
-import 'package:lelia/views/login_view.dart';
 import 'package:lelia/views/map_page.dart';
 import 'package:lelia/views/reports_view.dart';
 
@@ -366,7 +365,7 @@ class HomeView extends StatelessWidget {
               leading: Icon(Icons.logout, color: cs.error),
               title: Text("تسجيل خروج", style: tt.titleLarge!.copyWith(color: cs.error)),
               onTap: () {
-                Get.offAll(() => const LoginView());
+                hC.logout();
               },
             ),
           ],

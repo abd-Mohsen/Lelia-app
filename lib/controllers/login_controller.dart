@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:lelia/views/home_view.dart';
-import 'package:lelia/views/redirect_page.dart';
 
 import '../constants.dart';
 
@@ -45,8 +44,8 @@ class LoginController extends GetxController {
         //String? accessToken = await RemoteServices.signUserIn(name.text, password.text).timeout(kTimeOutDuration);
         //if (accessToken == null) throw Exception();
         //_getStorage.write("token", accessToken); // todo: repeat this for all pages we have issues with
-        Get.offAll(() => const RedirectPage());
-        dispose();
+        Get.offAll(() => const HomeView());
+        //dispose();
       } on TimeoutException {
         kTimeOutDialog();
       } catch (e) {
