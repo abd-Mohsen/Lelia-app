@@ -37,7 +37,7 @@ class ReportCard extends StatelessWidget {
               onPressed: () {
                 Get.defaultDialog(
                   title: "",
-                  middleText: "هل تريد حذف هذا التقرير؟" + ((!report.uploaded!) ? "\n لم يتم رفع التقرير بعد" : ""),
+                  middleText: "هل تريد حذف هذا التقرير؟${(!report.uploaded!) ? "\n لم يتم رفع التقرير بعد" : ""}",
                   middleTextStyle: tt.headlineSmall!.copyWith(color: cs.onSurface),
                   confirm: TextButton(
                     onPressed: () {
@@ -82,6 +82,7 @@ class ReportCard extends StatelessWidget {
                 child: Scrollbar(
                   thumbVisibility: true,
                   child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
                     child: Column(
                       // todo: why listview not rendering without sized box
                       children: [
