@@ -32,7 +32,7 @@ class LoginView extends StatelessWidget {
                     const SizedBox(height: 30),
                     Hero(
                       tag: "logo",
-                      child: Icon(Icons.logo_dev_sharp, size: 80),
+                      child: Icon(Icons.security, size: 80),
                     ),
                     const SizedBox(height: 30),
                     Text(

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lelia/controllers/login_controller.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/services/local_services.dart';
@@ -122,6 +123,30 @@ class HomeController extends GetxController {
     position = null;
     update();
   }
+
+  List<XFile> images = [];
+
+  Future pickImage() async {
+    List<XFile> selectedImages = await ImagePicker().pickMultiImage();
+    if (selectedImages.isNotEmpty) images.addAll(selectedImages);
+    update();
+  }
+
+  int _picIndex = 0;
+  int get picIndex => _picIndex;
+  void setPicIndex(int i) {
+    _picIndex = i;
+    update();
+  }
+
+  // Future<void> pickImage() async {
+  //   XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //   if (image != null) {
+  //     newImg = await image.readAsBytes();
+  //     isNewImgSelected = true;
+  //     update();
+  //   }
+  // }
 
   Future<void> submit() async {
     buttonPressed = true;
