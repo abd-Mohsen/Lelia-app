@@ -121,6 +121,7 @@ class HomeController extends GetxController {
     buttonPressed = false;
     _available = false;
     position = null;
+    images.clear();
     update();
   }
 

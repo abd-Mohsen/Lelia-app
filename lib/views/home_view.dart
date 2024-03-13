@@ -212,57 +212,6 @@ class HomeView extends StatelessWidget {
                           //todo: fix map error in console
                           child: ElevatedButton(
                             onPressed: () {
-                              // showModalBottomSheet(
-                              //   context: context,
-                              //   builder: (context) => SizedBox(
-                              //     child: OSMFlutter(
-                              //         controller: MapController.withPosition(
-                              //           initPosition: GeoPoint(
-                              //             latitude: con.position!.latitude,
-                              //             longitude: con.position!.longitude,
-                              //           ),
-                              //         ),
-                              //         osmOption: OSMOption(
-                              //           // userTrackingOption: UserTrackingOption(
-                              //           //   enableTracking: true,
-                              //           //   unFollowUser: false,
-                              //           // ),
-                              //           zoomOption: const ZoomOption(
-                              //             initZoom: 20,
-                              //             minZoomLevel: 3,
-                              //             maxZoomLevel: 19,
-                              //             stepZoom: 1.0,
-                              //           ),
-                              //           // userLocationMarker: UserLocationMaker(
-                              //           //   personMarker: MarkerIcon(
-                              //           //     icon: Icon(
-                              //           //       Icons.location_history_rounded,
-                              //           //       color: Colors.red,
-                              //           //       size: 48,
-                              //           //     ),
-                              //           //   ),
-                              //           //   directionArrowMarker: MarkerIcon(
-                              //           //     icon: Icon(
-                              //           //       Icons.double_arrow,
-                              //           //       size: 48,
-                              //           //     ),
-                              //           //   ),
-                              //           // ),
-                              //           roadConfiguration: const RoadOption(
-                              //             roadColor: Colors.yellowAccent,
-                              //           ),
-                              //           markerOption: MarkerOption(
-                              //               defaultMarker: const MarkerIcon(
-                              //             icon: Icon(
-                              //               Icons.person_pin_circle,
-                              //               color: Colors.blue,
-                              //               size: 56,
-                              //             ),
-                              //           )),
-                              //         )),
-                              //   ),
-                              // );
-                              //
                               Get.to(
                                 MapPage(
                                   latitude: con.position!.latitude,
@@ -298,84 +247,86 @@ class HomeView extends StatelessWidget {
                 },
               ),
 
-              con.images.isEmpty
-                  ? GestureDetector(
-                      onTap: () {
-                        con.pickImage();
-                      },
-                      child: Container(
-                        width: 150,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 1.0,
-                          ),
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.camera_alt,
-                              size: 40,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: con.images.isEmpty
+                    ? GestureDetector(
+                        onTap: () {
+                          con.pickImage();
+                        },
+                        child: Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            border: Border.all(
                               color: Colors.grey,
+                              width: 1.0,
                             ),
-                            SizedBox(height: 8),
-                            Text(
-                              'Click here to add photo',
-                              style: TextStyle(
-                                color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.camera_alt,
+                                size: 40,
+                                color: cs.onBackground,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : Column(
-                      children: [
-                        CarouselSlider(
-                          items: [
-                            ...con.images.map((e) => Image.file(File(e.path))).toList(),
-                            GestureDetector(
-                              onTap: () {
-                                con.pickImage();
-                              },
-                              child: Container(
-                                width: 170,
-                                height: 170,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8.0),
+                              const SizedBox(height: 8),
+                              Text(
+                                'اضف صورة',
+                                style: tt.titleLarge!.copyWith(
+                                  color: cs.onSurface.withOpacity(0.6),
                                 ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.add_photo_alternate_outlined,
-                                    size: 40,
-                                    color: Colors.grey,
-                                  ),
-                                ),
+                                textAlign: TextAlign.center,
                               ),
-                            ),
-                          ],
-                          options: CarouselOptions(
-                            enableInfiniteScroll: false,
-                            aspectRatio: 4 / 3,
-                            onPageChanged: (i, reason) => con.setPicIndex(i),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        AnimatedSmoothIndicator(
-                          activeIndex: con.picIndex,
-                          count: con.images.length + 1,
-                          effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
-                        )
-                      ],
-                    ),
+                      )
+                    : Column(
+                        children: [
+                          CarouselSlider(
+                            items: [
+                              ...con.images.map((e) => Image.file(File(e.path))).toList(),
+                              GestureDetector(
+                                onTap: () {
+                                  con.pickImage();
+                                },
+                                child: Container(
+                                  //width: 100,
+                                  height: 170,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.add_photo_alternate_outlined,
+                                      size: 40,
+                                      color: cs.onBackground,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                            options: CarouselOptions(
+                              enableInfiniteScroll: false,
+                              aspectRatio: 4 / 3,
+                              onPageChanged: (i, reason) => con.setPicIndex(i),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          AnimatedSmoothIndicator(
+                            activeIndex: con.picIndex,
+                            count: con.images.length + 1,
+                            effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
+                          )
+                        ],
+                      ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 12.0, bottom: 4),
                 child: ElevatedButton(
