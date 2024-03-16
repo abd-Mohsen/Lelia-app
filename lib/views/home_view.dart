@@ -21,6 +21,31 @@ class HomeView extends StatelessWidget {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
 
+    showPickPicSheet() => Get.bottomSheet(
+          SizedBox(
+            height: 120, //todo: find a way to never overflow
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.camera),
+                  title: Text("التقط صورة"),
+                  onTap: () {
+                    hC.pickImage("camera");
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.photo),
+                  title: Text("من الاستوديو"),
+                  onTap: () {
+                    hC.pickImage("gallery");
+                  },
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: cs.surface,
+        );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: cs.primary,
@@ -252,7 +277,7 @@ class HomeView extends StatelessWidget {
                 child: con.images.isEmpty
                     ? GestureDetector(
                         onTap: () {
-                          con.pickImage();
+                          showPickPicSheet();
                         },
                         child: Container(
                           height: 150,
@@ -290,7 +315,7 @@ class HomeView extends StatelessWidget {
                               ...con.images.map((e) => Image.file(File(e.path))).toList(),
                               GestureDetector(
                                 onTap: () {
-                                  con.pickImage();
+                                  showPickPicSheet();
                                 },
                                 child: Container(
                                   //width: 100,

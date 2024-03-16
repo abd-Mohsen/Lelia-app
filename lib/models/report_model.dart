@@ -24,6 +24,7 @@ class ReportModel {
   double longitude;
   double latitude;
   DateTime date;
+  List<String> images;
   bool? uploaded;
 
   ReportModel({
@@ -40,6 +41,7 @@ class ReportModel {
     required this.longitude,
     required this.latitude,
     required this.date,
+    required this.images,
     this.uploaded,
   });
 
@@ -58,6 +60,7 @@ class ReportModel {
         latitude: json["latitude"].toDouble(),
         date: DateTime.parse(json["date"]),
         uploaded: json['uploaded'] ?? true,
+        images: List<String>.from(json["images"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -74,7 +77,8 @@ class ReportModel {
         "longitude": longitude,
         "latitude": latitude,
         "date": date.toIso8601String(),
-        "uploaded": uploaded
+        "uploaded": uploaded,
+        "images": List<String>.from(images.map((x) => x)),
       };
 
   @override

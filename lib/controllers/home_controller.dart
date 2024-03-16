@@ -19,18 +19,15 @@ class HomeController extends GetxController {
   bool buttonPressed = false;
 
   TextEditingController name = TextEditingController();
-  // can it be a dropdown
   String type = "بقالية";
   String size = "صغير";
   TextEditingController neighborhood = TextEditingController();
   TextEditingController street = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController mobilePhone = TextEditingController();
-  String status = "بطيئة"; // حركة المنتج
+  String status = "بطيئة";
   TextEditingController notes = TextEditingController();
   Position? position;
-  // todo : store the date in model
-  // todo: store 'if uploaded' in model
 
   bool _available = false; // hide status if no
   bool get available => _available;
@@ -127,9 +124,14 @@ class HomeController extends GetxController {
 
   List<XFile> images = [];
 
-  Future pickImage() async {
-    List<XFile> selectedImages = await ImagePicker().pickMultiImage();
-    if (selectedImages.isNotEmpty) images.addAll(selectedImages);
+  Future pickImage(String source) async {
+    if (source == "camera") {
+      XFile? selectedImage = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (selectedImage != null) images.add(selectedImage);
+    } else {
+      List<XFile> selectedImages = await ImagePicker().pickMultiImage();
+      if (selectedImages.isNotEmpty) images.addAll(selectedImages);
+    }
     update();
   }
 
@@ -175,6 +177,7 @@ class HomeController extends GetxController {
       latitude: position!.latitude,
       date: DateTime.now(),
       uploaded: false,
+      images: images.map((e) => e.path).toList(),
     );
     LocalServices.storeReport(report);
     Get.showSnackbar(const GetSnackBar(
