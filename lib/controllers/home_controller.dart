@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,6 +8,8 @@ import 'package:lelia/controllers/login_controller.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/services/local_services.dart';
 import 'package:lelia/views/login_view.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class HomeController extends GetxController {
   bool _isLoading = false;
@@ -162,6 +166,14 @@ class HomeController extends GetxController {
       return;
     }
     if (!isValid) return;
+    // save images in app dir
+    Directory appDir = await getApplicationDocumentsDirectory();
+    List<File> imagesAfter = [];
+    for (XFile image in images) {
+      File file = File(path.join(appDir.path, path.basename(image.path)));
+      file.writeAsBytes(image.readAsBytes() as List<int>);
+      imagesAfter.add(file);
+    }
     ReportModel report = ReportModel(
       title: name.text,
       type: type,
@@ -177,7 +189,7 @@ class HomeController extends GetxController {
       latitude: position!.latitude,
       date: DateTime.now(),
       uploaded: false,
-      images: images.map((e) => e.path).toList(),
+      images: imagesAfter.map((e) => e.path).toList(), //
     );
     LocalServices.storeReport(report);
     Get.showSnackbar(const GetSnackBar(

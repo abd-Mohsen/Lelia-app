@@ -96,7 +96,8 @@ class ReportCard extends StatelessWidget {
                         ReportField(title: "حركة المنتج", value: report.availability ? report.status! : "غير متواجد"),
                         ReportField(title: "ملاحظات الزبون", value: report.notes),
                         // todo: add map to see location
-                        //todo: read report from here, and add option to delete (and edit?)
+                        // todo: edit?
+                        // todo: slider to view images (with image view package)
                       ],
                     ),
                   ),
