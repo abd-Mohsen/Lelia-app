@@ -39,7 +39,11 @@ flutter:
 
 
   assets:
-     - assets/images/
+    - assets/images/
+  fonts:
+    - family: Alexandria
+      fonts:
+        - asset: assets/fonts/Alexandria-VariableFont_wght.ttf
 
 
 

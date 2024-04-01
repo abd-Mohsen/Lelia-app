@@ -37,7 +37,7 @@ class LoginView extends StatelessWidget {
                     const SizedBox(height: 30),
                     Text(
                       'من فضلك ادخل بياناتك للدخول',
-                      style: tt.headlineMedium!.copyWith(color: cs.onBackground),
+                      style: tt.headlineSmall!.copyWith(color: cs.onBackground),
                     ),
                     const SizedBox(height: 25),
                     //
@@ -84,7 +84,7 @@ class LoginView extends StatelessWidget {
                               ? CircularProgressIndicator(color: cs.onPrimary)
                               : Text(
                                   "تسجيل دخول",
-                                  style: tt.titleLarge!.copyWith(color: cs.onPrimary),
+                                  style: tt.titleMedium!.copyWith(color: cs.onPrimary),
                                 ),
                         ),
                         onTap: () {

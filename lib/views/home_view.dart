@@ -51,7 +51,7 @@ class HomeView extends StatelessWidget {
         backgroundColor: cs.primary,
         title: Text(
           'Letia',
-          style: tt.headlineMedium!.copyWith(letterSpacing: 5, color: cs.onPrimary),
+          style: tt.headlineMedium!.copyWith(letterSpacing: 2, color: cs.onPrimary),
         ),
         centerTitle: true,
         actions: [
@@ -176,7 +176,7 @@ class HomeView extends StatelessWidget {
                   activeColor: cs.primary,
                   title: Text(
                     "التواجد",
-                    style: tt.titleLarge!.copyWith(color: cs.onBackground),
+                    style: tt.titleMedium!.copyWith(color: cs.onBackground),
                   ),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
@@ -208,7 +208,7 @@ class HomeView extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       "احداثيات النقطة",
-                      style: tt.titleLarge!.copyWith(
+                      style: tt.titleMedium!.copyWith(
                         color: cs.onSurface.withOpacity(0.6),
                       ),
                     ),
@@ -228,7 +228,7 @@ class HomeView extends StatelessWidget {
                           },
                           child: Text(
                             'حفظ',
-                            style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+                            style: tt.titleLarge!.copyWith(color: cs.onPrimary),
                           ),
                         ),
                         SizedBox(width: 12),
@@ -246,7 +246,7 @@ class HomeView extends StatelessWidget {
                             },
                             child: Text(
                               'معاينة',
-                              style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+                              style: tt.titleLarge!.copyWith(color: cs.onPrimary),
                             ),
                           ),
                         ),
@@ -365,7 +365,7 @@ class HomeView extends StatelessWidget {
                       children: [
                         Text(
                           'حفظ في الذاكرة',
-                          style: tt.headlineSmall!.copyWith(color: cs.onPrimary, fontWeight: FontWeight.bold),
+                          style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
                         ),
                         SizedBox(width: 12),
                         Icon(Icons.save_alt, size: 40),
@@ -405,7 +405,7 @@ class HomeView extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(Icons.dark_mode_outlined),
-              title: Text("الوضع الداكن", style: tt.titleLarge!.copyWith(color: cs.onBackground)),
+              title: Text("الوضع الداكن", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
               trailing: Switch(
                 value: tC.switchValue,
                 onChanged: (bool value) {
@@ -415,14 +415,14 @@ class HomeView extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(Icons.mobile_friendly),
-              title: Text("التقارير المحفوظة", style: tt.titleLarge!.copyWith(color: cs.onBackground)),
+              title: Text("التقارير المحفوظة", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
               onTap: () {
                 Get.to(() => ReportsView());
               },
             ),
             ListTile(
               leading: Icon(Icons.logout, color: cs.error),
-              title: Text("تسجيل خروج", style: tt.titleLarge!.copyWith(color: cs.error)),
+              title: Text("تسجيل خروج", style: tt.titleMedium!.copyWith(color: cs.error)),
               onTap: () {
                 hC.logout();
               },

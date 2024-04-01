@@ -30,7 +30,7 @@ class CustomDropdown extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: tt.titleLarge!.copyWith(color: cs.onSurface.withOpacity(0.6), overflow: TextOverflow.ellipsis),
+          style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6), overflow: TextOverflow.ellipsis),
         ),
         trailing: DropdownButton<String>(
           value: selectedValue,
@@ -40,7 +40,7 @@ class CustomDropdown extends StatelessWidget {
                   value: item,
                   child: Text(
                     item,
-                    style: tt.titleLarge!.copyWith(overflow: TextOverflow.ellipsis, color: cs.onSurface),
+                    style: tt.titleSmall!.copyWith(overflow: TextOverflow.ellipsis, color: cs.onSurface),
                   ),
                 ),
               )

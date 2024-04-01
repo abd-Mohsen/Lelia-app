@@ -172,7 +172,9 @@ class HomeController extends GetxController {
     for (XFile image in images) {
       File file = File(path.join(appDir.path, path.basename(image.path)));
       file.writeAsBytes(image.readAsBytes() as List<int>);
+      // todo: solve this ^
       imagesAfter.add(file);
+      //final File newImage = await image.copy('$path/image1.png');
     }
     ReportModel report = ReportModel(
       title: name.text,
