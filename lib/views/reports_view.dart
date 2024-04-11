@@ -20,15 +20,15 @@ class ReportsView extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             "التقارير المحفوظة",
-            style: tt.headlineMedium!.copyWith(color: cs.onPrimary),
+            style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
           ),
           actions: [
             IconButton(
               onPressed: () {
                 rC.clearReports();
               },
-              icon: Icon(Icons.delete),
-            )
+              icon: Icon(Icons.delete, color: cs.onPrimary),
+            ),
           ],
           bottom: TabBar(
             indicatorColor: Colors.deepOrange,
@@ -38,21 +38,27 @@ class ReportsView extends StatelessWidget {
                 icon: Icon(
                   Icons.save,
                   color: cs.onPrimary,
-                  size: 27,
+                  size: 25,
                 ),
-                child: Text("غير مرفوع".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
+                child: Text("غير مرفوع".tr, style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
               ),
               Tab(
                 icon: Icon(
                   Icons.cloud_upload_outlined,
                   color: cs.onPrimary,
-                  size: 27,
+                  size: 25,
                 ),
-                child: Text("مرفوع".tr, style: tt.titleMedium!.copyWith(color: cs.onPrimary)),
+                child: Text("مرفوع".tr, style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
               ),
             ],
           ),
           backgroundColor: cs.primary,
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(Icons.arrow_back, color: cs.onPrimary),
+          ),
         ),
         body: GetBuilder<ReportsController>(
             //init: ReportsController(),

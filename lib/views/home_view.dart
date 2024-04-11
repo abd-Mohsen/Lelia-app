@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/home_controller.dart';
@@ -9,6 +10,7 @@ import 'package:lelia/views/components/custom_dropdown.dart';
 import 'package:lelia/views/components/custom_field.dart';
 import 'package:lelia/views/map_page.dart';
 import 'package:lelia/views/reports_view.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeView extends StatelessWidget {
@@ -228,7 +230,7 @@ class HomeView extends StatelessWidget {
                           },
                           child: Text(
                             'حفظ',
-                            style: tt.titleLarge!.copyWith(color: cs.onPrimary),
+                            style: tt.titleMedium!.copyWith(color: cs.onPrimary),
                           ),
                         ),
                         SizedBox(width: 12),
@@ -246,7 +248,7 @@ class HomeView extends StatelessWidget {
                             },
                             child: Text(
                               'معاينة',
-                              style: tt.titleLarge!.copyWith(color: cs.onPrimary),
+                              style: tt.titleMedium!.copyWith(color: cs.onPrimary),
                             ),
                           ),
                         ),
@@ -279,32 +281,32 @@ class HomeView extends StatelessWidget {
                         onTap: () {
                           showPickPicSheet();
                         },
-                        child: Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: 1.0,
+                        child: DottedBorder(
+                          strokeWidth: 2.5,
+                          color: cs.onBackground,
+                          dashPattern: [10, 10],
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 30),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.camera_alt,
+                                    size: 40,
+                                    color: cs.onBackground,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'اضف صورة',
+                                    style: tt.titleLarge!.copyWith(
+                                      color: cs.onSurface.withOpacity(0.6),
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.camera_alt,
-                                size: 40,
-                                color: cs.onBackground,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'اضف صورة',
-                                style: tt.titleLarge!.copyWith(
-                                  color: cs.onSurface.withOpacity(0.6),
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
                           ),
                         ),
                       )
@@ -312,26 +314,38 @@ class HomeView extends StatelessWidget {
                         children: [
                           CarouselSlider(
                             items: [
-                              ...con.images.map((e) => Image.file(File(e.path))).toList(),
-                              GestureDetector(
-                                onTap: () {
-                                  showPickPicSheet();
-                                },
-                                child: Container(
-                                  //width: 100,
-                                  height: 170,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey,
-                                      width: 1.0,
+                              ...con.images
+                                  .map(
+                                    (image) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: PhotoView(
+                                        imageProvider: FileImage(File(image.path)),
+                                      ),
                                     ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.add_photo_alternate_outlined,
-                                      size: 40,
-                                      color: cs.onBackground,
+                                  )
+                                  .toList(),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showPickPicSheet();
+                                  },
+                                  child: Container(
+                                    //width: 100,
+                                    //height: 150,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.grey,
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.add_photo_alternate_outlined,
+                                        size: 40,
+                                        color: cs.onBackground,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -343,7 +357,7 @@ class HomeView extends StatelessWidget {
                               onPageChanged: (i, reason) => con.setPicIndex(i),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 12),
                           AnimatedSmoothIndicator(
                             activeIndex: con.picIndex,
                             count: con.images.length + 1,
@@ -380,52 +394,65 @@ class HomeView extends StatelessWidget {
       ),
       drawer: Drawer(
         backgroundColor: cs.background,
-        child: ListView(
+        child: Column(
           children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: cs.primary,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+            Expanded(
+              child: ListView(
                 children: [
-                  Icon(
-                    Icons.person_2,
-                    color: cs.onPrimary,
-                    size: 60,
+                  DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: cs.primary,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.person_2,
+                          color: cs.onPrimary,
+                          size: 60,
+                        ),
+                        SizedBox(width: 24),
+                        Text(
+                          "name",
+                          overflow: TextOverflow.ellipsis,
+                          style: tt.headlineLarge!.copyWith(color: cs.onPrimary),
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(width: 24),
-                  Text(
-                    "name",
-                    overflow: TextOverflow.ellipsis,
-                    style: tt.headlineLarge!.copyWith(color: cs.onPrimary),
+                  ListTile(
+                    leading: Icon(Icons.dark_mode_outlined),
+                    title: Text("الوضع الداكن", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
+                    trailing: Switch(
+                      value: tC.switchValue,
+                      onChanged: (bool value) {
+                        tC.updateTheme(value);
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.mobile_friendly),
+                    title: Text("التقارير المحفوظة", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
+                    onTap: () {
+                      Get.to(() => ReportsView());
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout, color: cs.error),
+                    title: Text("تسجيل خروج", style: tt.titleMedium!.copyWith(color: cs.error)),
+                    onTap: () {
+                      hC.logout();
+                    },
                   ),
                 ],
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.dark_mode_outlined),
-              title: Text("الوضع الداكن", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
-              trailing: Switch(
-                value: tC.switchValue,
-                onChanged: (bool value) {
-                  tC.updateTheme(value);
-                },
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Text(
+                'جميع الحقوق محفوظة',
+                style: tt.labelMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
               ),
-            ),
-            ListTile(
-              leading: Icon(Icons.mobile_friendly),
-              title: Text("التقارير المحفوظة", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
-              onTap: () {
-                Get.to(() => ReportsView());
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout, color: cs.error),
-              title: Text("تسجيل خروج", style: tt.titleMedium!.copyWith(color: cs.error)),
-              onTap: () {
-                hC.logout();
-              },
             ),
           ],
         ),
