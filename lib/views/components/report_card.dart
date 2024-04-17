@@ -47,7 +47,7 @@ class ReportCard extends StatelessWidget {
                     },
                     child: Text(
                       "نعم",
-                      style: tt.titleLarge!.copyWith(color: Colors.red),
+                      style: tt.titleMedium!.copyWith(color: Colors.red),
                     ),
                   ),
                   cancel: TextButton(
@@ -56,7 +56,7 @@ class ReportCard extends StatelessWidget {
                     },
                     child: Text(
                       "لا",
-                      style: tt.titleLarge!.copyWith(color: cs.primary),
+                      style: tt.titleMedium!.copyWith(color: cs.primary),
                     ),
                   ),
                 );
@@ -126,13 +126,16 @@ class ReportField extends StatelessWidget {
       child: ListTile(
         title: Text(
           title,
-          style: tt.titleLarge!.copyWith(color: cs.onSurface, fontWeight: FontWeight.bold),
+          style: tt.titleMedium!.copyWith(color: cs.onSurface, fontWeight: FontWeight.bold),
           overflow: TextOverflow.ellipsis,
           maxLines: 5,
         ),
-        subtitle: Text(
-          value,
-          style: tt.titleMedium!.copyWith(color: cs.onSurface),
+        subtitle: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            value,
+            style: tt.bodyLarge!.copyWith(color: cs.onSurface),
+          ),
         ),
       ),
     );

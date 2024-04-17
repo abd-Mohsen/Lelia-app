@@ -318,8 +318,8 @@ class HomeView extends StatelessWidget {
                                   .map(
                                     (image) => Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: PhotoView(
-                                        imageProvider: FileImage(File(image.path)),
+                                      child: InteractiveViewer(
+                                        child: Image.file(File(image.path)),
                                       ),
                                     ),
                                   )
@@ -355,6 +355,7 @@ class HomeView extends StatelessWidget {
                               enableInfiniteScroll: false,
                               aspectRatio: 4 / 3,
                               onPageChanged: (i, reason) => con.setPicIndex(i),
+                              viewportFraction: 1,
                             ),
                           ),
                           const SizedBox(height: 12),

@@ -122,6 +122,7 @@ class HomeController extends GetxController {
     _available = false;
     position = null;
     images.clear();
+    dataFormKey.currentState!.reset();
     update();
   }
 
@@ -170,7 +171,7 @@ class HomeController extends GetxController {
     List<File> imagesAfter = [];
     for (XFile image in images) {
       File file = File(path.join(appDir.path, path.basename(image.path)));
-      file.writeAsBytes(image.readAsBytes() as List<int>);
+      //file.writeAsBytes(image.readAsBytes() as List<int>);
       // todo: solve this ^
       imagesAfter.add(file);
       //final File newImage = await image.copy('$path/image1.png');
