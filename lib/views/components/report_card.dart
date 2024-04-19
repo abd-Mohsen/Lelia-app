@@ -1,8 +1,15 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:lelia/controllers/reports_controller.dart';
 import 'package:lelia/models/report_model.dart';
+import 'package:photo_view/photo_view.dart';
+import 'dart:io';
+
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../controllers/report_controller.dart';
 
 class ReportCard extends StatelessWidget {
   final ReportModel report;
@@ -95,9 +102,71 @@ class ReportCard extends StatelessWidget {
                         ReportField(title: "رقم موبايل", value: report.mobile),
                         ReportField(title: "حركة المنتج", value: report.availability ? report.status! : "غير متواجد"),
                         ReportField(title: "ملاحظات الزبون", value: report.notes),
+                        GetBuilder<ReportController>(
+                            init: ReportController(),
+                            builder: (con) {
+                              return SizedBox(
+                                width: 300,
+                                height: 300,
+                                child: Column(
+                                  children: [
+                                    CarouselSlider(
+                                      items: [
+                                        ...report.images
+                                            .map(
+                                              (image) => Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Get.dialog(
+                                                      AlertDialog(
+                                                        title: Text("عرض الصورة"),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Get.back();
+                                                            },
+                                                            child: Text(
+                                                              "ok",
+                                                              style: tt.titleMedium?.copyWith(color: cs.primary),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                        content: SizedBox(
+                                                          height: 300,
+                                                          width: 300,
+                                                          child: PhotoView(
+                                                            imageProvider: FileImage(File(image)),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Image.file(File(image)),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ],
+                                      options: CarouselOptions(
+                                        enableInfiniteScroll: false,
+                                        aspectRatio: 4 / 4,
+                                        onPageChanged: (i, reason) => con.setPicIndex(i),
+                                        viewportFraction: 1,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    AnimatedSmoothIndicator(
+                                      activeIndex: con.picIndex,
+                                      count: report.images.length,
+                                      effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
                         // todo: add map to see location
                         // todo: edit?
-                        // todo: slider to view images (with image view package)
                       ],
                     ),
                   ),

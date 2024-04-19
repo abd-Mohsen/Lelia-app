@@ -1,3 +1,4 @@
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class HomeController extends GetxController {
   TextEditingController street = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController mobilePhone = TextEditingController();
-  String status = "بطيئة";
+  String state = "بطيئة";
   TextEditingController notes = TextEditingController();
   Position? position;
 
@@ -51,7 +52,7 @@ class HomeController extends GetxController {
   }
 
   void setStatus(String status) {
-    this.status = status;
+    this.state = status;
     update();
   }
 
@@ -148,8 +149,20 @@ class HomeController extends GetxController {
   }
 
   Future<void> submit() async {
+    PermissionStatus status = await Permission.storage.status;
+    if (!status.isGranted) {
+      PermissionStatus newStatus = await Permission.storage.request();
+      if (!newStatus.isGranted) {
+        Get.showSnackbar(const GetSnackBar(
+          message: "تم رفض اذن التخزين, لا يمكن التخزين",
+          duration: Duration(milliseconds: 1500),
+        ));
+      }
+      return;
+    }
     buttonPressed = true;
     bool isValid = dataFormKey.currentState!.validate();
+    if (!isValid) return;
     if (position == null) {
       Get.showSnackbar(const GetSnackBar(
         message: "خذ الاحداثيات اولأ",
@@ -157,16 +170,15 @@ class HomeController extends GetxController {
       ));
       return;
     }
-    if (!isValid) return;
     // save images in app dir
     Directory appDir = await getApplicationDocumentsDirectory();
-    List<File> imagesAfter = [];
+    List<String> storedImagesPaths = [];
+
     for (XFile image in images) {
-      File file = File(path.join(appDir.path, path.basename(image.path)));
-      //file.writeAsBytes(image.readAsBytes() as List<int>);
-      // todo: solve this ^
-      imagesAfter.add(file);
-      //final File newImage = await image.copy('$path/image1.png');
+      String imagePath = path.join(appDir.path, path.basename(image.path));
+      File file = File(image.path);
+      await file.copy(imagePath);
+      storedImagesPaths.add(imagePath);
     }
     ReportModel report = ReportModel(
       title: name.text,
@@ -177,18 +189,18 @@ class HomeController extends GetxController {
       mobile: mobilePhone.text,
       landline: phone.text,
       availability: available,
-      status: available ? status : null,
+      status: available ? state : null,
       notes: notes.text,
       longitude: position!.longitude,
       latitude: position!.latitude,
       date: DateTime.now(),
       uploaded: false,
-      images: imagesAfter.map((e) => e.path).toList(), //
+      images: storedImagesPaths,
     );
     LocalServices.storeReport(report);
     Get.showSnackbar(const GetSnackBar(
       message: "تم التخزين بنجاح",
-      duration: Duration(milliseconds: 1500),
+      duration: Duration(milliseconds: 2500),
     ));
   }
 

@@ -10,7 +10,6 @@ import 'package:lelia/views/components/custom_dropdown.dart';
 import 'package:lelia/views/components/custom_field.dart';
 import 'package:lelia/views/map_page.dart';
 import 'package:lelia/views/reports_view.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeView extends StatelessWidget {
@@ -211,7 +210,7 @@ class HomeView extends StatelessWidget {
                   onSelect: (String? newVal) {
                     con.setStatus(newVal!);
                   },
-                  selectedValue: con.status,
+                  selectedValue: con.state,
                 ),
               ),
               Padding(
@@ -330,8 +329,28 @@ class HomeView extends StatelessWidget {
                                   .map(
                                     (image) => Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: InteractiveViewer(
-                                        //todo: make a new page(or dialog) to view image
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.dialog(
+                                            AlertDialog(
+                                              title: Text("عرض الصورة"),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  child: Text(
+                                                    "ok",
+                                                    style: tt.titleMedium?.copyWith(color: cs.primary),
+                                                  ),
+                                                ),
+                                              ],
+                                              content: InteractiveViewer(
+                                                child: Image.file(File(image.path)),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                         child: Image.file(File(image.path)),
                                       ),
                                     ),
@@ -387,7 +406,7 @@ class HomeView extends StatelessWidget {
                     con.submit();
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -447,44 +466,46 @@ class HomeView extends StatelessWidget {
                     leading: const Icon(Icons.info_outline),
                     title: Text("حول التطبيق", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
                     onTap: () {
-                      Get.dialog(AlertDialog(
-                        icon: Icon(
-                          Icons.info_outline,
-                          color: cs.primary,
-                          size: 35,
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: Text(
-                              "ok",
-                              style: tt.titleMedium?.copyWith(color: cs.primary),
-                            ),
+                      Get.dialog(
+                        AlertDialog(
+                          icon: Icon(
+                            Icons.info_outline,
+                            color: cs.primary,
+                            size: 35,
                           ),
-                        ],
-                        content: Column(
-                          children: [
-                            Scrollbar(
-                              thumbVisibility: true,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "تم تطوير هذا البرنامج لصالح شركة ليتيا المغفلة الخاصة, جميع الحقوق محفوظة",
-                                        style: tt.headlineSmall!.copyWith(color: cs.onSurface),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: Text(
+                                "ok",
+                                style: tt.titleMedium?.copyWith(color: cs.primary),
                               ),
                             ),
                           ],
+                          content: Column(
+                            children: [
+                              Scrollbar(
+                                thumbVisibility: true,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "تم تطوير هذا البرنامج لصالح شركة ليتيا المغفلة الخاصة, جميع الحقوق محفوظة",
+                                          style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ));
+                      );
                     },
                   ),
                   ListTile(
