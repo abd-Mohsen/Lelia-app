@@ -14,7 +14,7 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
-  final name = TextEditingController();
+  final email = TextEditingController();
   final password = TextEditingController();
 
   bool _isLoading = false;

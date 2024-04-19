@@ -17,14 +17,14 @@ class ReportCard extends StatelessWidget {
       leading: Icon(Icons.edit_calendar_outlined),
       title: Text(
         report.title,
-        style: tt.titleLarge!.copyWith(color: cs.onBackground),
+        style: tt.titleMedium!.copyWith(color: cs.onBackground),
       ),
       subtitle: Text(
         "${Jiffy(report.date).format("d/M/y")}  ${Jiffy(report.date).jms}",
         //" ${report.date.hour}:${report.date.minute}",
         style: tt.labelLarge!.copyWith(color: cs.onBackground),
       ),
-      trailing: report.uploaded! ? Icon(Icons.upload, color: Colors.green) : Icon(Icons.sd_storage),
+      trailing: report.uploaded! ? const Icon(Icons.upload, color: Colors.green) : const Icon(Icons.sd_storage),
       onTap: () {
         Get.dialog(AlertDialog(
           icon: Icon(

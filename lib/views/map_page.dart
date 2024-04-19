@@ -9,7 +9,7 @@ class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text("موقع النقطة")),
       body: OSMFlutter(
           controller: MapController.withPosition(
             initPosition: GeoPoint(
@@ -28,21 +28,21 @@ class MapPage extends StatelessWidget {
               maxZoomLevel: 19,
               stepZoom: 1.0,
             ),
-            // userLocationMarker: UserLocationMaker(
-            //   personMarker: MarkerIcon(
-            //     icon: Icon(
-            //       Icons.location_history_rounded,
-            //       color: Colors.red,
-            //       size: 48,
-            //     ),
-            //   ),
-            //   directionArrowMarker: MarkerIcon(
-            //     icon: Icon(
-            //       Icons.double_arrow,
-            //       size: 48,
-            //     ),
-            //   ),
-            // ),
+            userLocationMarker: UserLocationMaker(
+              personMarker: MarkerIcon(
+                icon: Icon(
+                  Icons.location_history_rounded,
+                  color: Colors.red,
+                  size: 48,
+                ),
+              ),
+              directionArrowMarker: MarkerIcon(
+                icon: Icon(
+                  Icons.double_arrow,
+                  size: 48,
+                ),
+              ),
+            ),
             roadConfiguration: const RoadOption(
               roadColor: Colors.yellowAccent,
             ),

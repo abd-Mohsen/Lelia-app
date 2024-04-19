@@ -29,15 +29,27 @@ class HomeView extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  leading: Icon(Icons.camera),
-                  title: Text("التقط صورة"),
+                  leading: Icon(
+                    Icons.camera,
+                    color: cs.onSurface,
+                  ),
+                  title: Text(
+                    "التقط صورة",
+                    style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                  ),
                   onTap: () {
                     hC.pickImage("camera");
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.photo),
-                  title: Text("من الاستوديو"),
+                  leading: Icon(
+                    Icons.photo,
+                    color: cs.onSurface,
+                  ),
+                  title: Text(
+                    "من الاستوديو",
+                    style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                  ),
                   onTap: () {
                     hC.pickImage("gallery");
                   },
@@ -52,7 +64,7 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: cs.primary,
         title: Text(
-          'Letia',
+          'Lelia',
           style: tt.headlineMedium!.copyWith(letterSpacing: 2, color: cs.onPrimary),
         ),
         centerTitle: true,
@@ -178,7 +190,7 @@ class HomeView extends StatelessWidget {
                   activeColor: cs.primary,
                   title: Text(
                     "التواجد",
-                    style: tt.titleMedium!.copyWith(color: cs.onBackground),
+                    style: tt.titleMedium!.copyWith(color: cs.onBackground.withOpacity(0.6)),
                   ),
                   shape: RoundedRectangleBorder(
                     side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
@@ -211,14 +223,14 @@ class HomeView extends StatelessWidget {
                     child: Text(
                       "احداثيات النقطة",
                       style: tt.titleMedium!.copyWith(
-                        color: cs.onSurface.withOpacity(0.6),
+                        color: cs.onBackground.withOpacity(0.6),
                       ),
                     ),
                   ),
                   trailing: con.isLoading
                       ? CircularProgressIndicator()
                       : con.position == null
-                          ? const Icon(Icons.dangerous_outlined, color: Colors.red, size: 35)
+                          ? const Icon(Icons.close, color: Colors.red, size: 35)
                           : const Icon(Icons.task_alt, color: Colors.green, size: 35),
                   subtitle: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -283,7 +295,7 @@ class HomeView extends StatelessWidget {
                         },
                         child: DottedBorder(
                           strokeWidth: 2.5,
-                          color: cs.onBackground,
+                          color: cs.onBackground.withOpacity(0.6),
                           dashPattern: [10, 10],
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 30),
@@ -294,7 +306,7 @@ class HomeView extends StatelessWidget {
                                   Icon(
                                     Icons.camera_alt,
                                     size: 40,
-                                    color: cs.onBackground,
+                                    color: cs.onBackground.withOpacity(0.6),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -319,6 +331,7 @@ class HomeView extends StatelessWidget {
                                     (image) => Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: InteractiveViewer(
+                                        //todo: make a new page(or dialog) to view image
                                         child: Image.file(File(image.path)),
                                       ),
                                     ),
@@ -400,29 +413,21 @@ class HomeView extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: cs.primary,
+                  UserAccountsDrawerHeader(
+                    // decoration: BoxDecoration(
+                    //   color: cs.primary,
+                    // ),
+                    accountName: Text(
+                      "abd",
+                      style: tt.headlineMedium,
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(
-                          Icons.person_2,
-                          color: cs.onPrimary,
-                          size: 60,
-                        ),
-                        SizedBox(width: 24),
-                        Text(
-                          "name",
-                          overflow: TextOverflow.ellipsis,
-                          style: tt.headlineLarge!.copyWith(color: cs.onPrimary),
-                        ),
-                      ],
+                    accountEmail: Text(
+                      "abd@m.co",
+                      style: tt.titleMedium,
                     ),
                   ),
                   ListTile(
-                    leading: Icon(Icons.dark_mode_outlined),
+                    leading: const Icon(Icons.dark_mode_outlined),
                     title: Text("الوضع الداكن", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
                     trailing: Switch(
                       value: tC.switchValue,
@@ -432,10 +437,54 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                   ListTile(
-                    leading: Icon(Icons.mobile_friendly),
+                    leading: const Icon(Icons.mobile_friendly),
                     title: Text("التقارير المحفوظة", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
                     onTap: () {
                       Get.to(() => ReportsView());
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.info_outline),
+                    title: Text("حول التطبيق", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
+                    onTap: () {
+                      Get.dialog(AlertDialog(
+                        icon: Icon(
+                          Icons.info_outline,
+                          color: cs.primary,
+                          size: 35,
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: Text(
+                              "ok",
+                              style: tt.titleMedium?.copyWith(color: cs.primary),
+                            ),
+                          ),
+                        ],
+                        content: Column(
+                          children: [
+                            Scrollbar(
+                              thumbVisibility: true,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "تم تطوير هذا البرنامج لصالح شركة ليتيا المغفلة الخاصة, جميع الحقوق محفوظة",
+                                        style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ));
                     },
                   ),
                   ListTile(

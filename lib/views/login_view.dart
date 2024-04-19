@@ -21,7 +21,7 @@ class LoginView extends StatelessWidget {
       },
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Get.isDarkMode ? cs.background : Colors.grey[300],
+          backgroundColor: cs.background,
           body: Center(
             child: SingleChildScrollView(
               child: Form(
@@ -32,7 +32,7 @@ class LoginView extends StatelessWidget {
                     const SizedBox(height: 30),
                     Hero(
                       tag: "logo",
-                      child: Icon(Icons.security, size: 80),
+                      child: Image.asset("assets/images/lelia_logo.jpg"),
                     ),
                     const SizedBox(height: 30),
                     Text(
@@ -40,7 +40,26 @@ class LoginView extends StatelessWidget {
                       style: tt.headlineSmall!.copyWith(color: cs.onBackground),
                     ),
                     const SizedBox(height: 25),
-                    //
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: lC.email,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          //hintText: "password".tr,
+                          label: Text("البريد الإلكتروني"),
+                          prefixIcon: Icon(Icons.email_outlined),
+                        ),
+                        style: tt.titleMedium!.copyWith(color: cs.onBackground),
+                        validator: (val) {
+                          return validateInput(lC.email.text, 4, 50, "email");
+                        },
+                        onChanged: (val) {
+                          if (lC.buttonPressed) lC.loginFormKey.currentState!.validate();
+                        },
+                      ),
+                    ),
                     const SizedBox(height: 10),
                     GetBuilder<LoginController>(
                       builder: (con) => Padding(
@@ -74,8 +93,8 @@ class LoginView extends StatelessWidget {
                     GetBuilder<LoginController>(
                       builder: (con) => GestureDetector(
                         child: Container(
-                          padding: const EdgeInsets.all(8),
-                          margin: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(12),
+                          margin: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: cs.primary,
                             borderRadius: BorderRadius.circular(10),

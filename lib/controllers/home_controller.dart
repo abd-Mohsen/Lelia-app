@@ -137,6 +137,7 @@ class HomeController extends GetxController {
       if (selectedImages.isNotEmpty) images.addAll(selectedImages);
     }
     update();
+    Get.back();
   }
 
   int _picIndex = 0;
@@ -145,15 +146,6 @@ class HomeController extends GetxController {
     _picIndex = i;
     update();
   }
-
-  // Future<void> pickImage() async {
-  //   XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //   if (image != null) {
-  //     newImg = await image.readAsBytes();
-  //     isNewImgSelected = true;
-  //     update();
-  //   }
-  // }
 
   Future<void> submit() async {
     buttonPressed = true;
