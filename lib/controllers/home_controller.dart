@@ -112,6 +112,7 @@ class HomeController extends GetxController {
     toggleLoading(false);
   }
 
+  //todo: reset isnt working after filling the entire form
   void clearReport() {
     name.text = "";
     neighborhood.text = "";
@@ -148,6 +149,11 @@ class HomeController extends GetxController {
     update();
   }
 
+  void removeImage(XFile image) {
+    images.remove(image);
+    update();
+  }
+
   Future<void> submit() async {
     PermissionStatus status = await Permission.storage.status;
     if (!status.isGranted) {
@@ -157,8 +163,8 @@ class HomeController extends GetxController {
           message: "تم رفض اذن التخزين, لا يمكن التخزين",
           duration: Duration(milliseconds: 1500),
         ));
+        return;
       }
-      return;
     }
     buttonPressed = true;
     bool isValid = dataFormKey.currentState!.validate();

@@ -68,6 +68,7 @@ class LoginView extends StatelessWidget {
                           controller: lC.password,
                           keyboardType: TextInputType.text,
                           obscureText: !con.passwordVisible,
+                          style: tt.titleMedium!.copyWith(color: cs.onBackground),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             //hintText: "password".tr,

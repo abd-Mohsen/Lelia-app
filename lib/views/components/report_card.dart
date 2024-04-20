@@ -120,7 +120,10 @@ class ReportCard extends StatelessWidget {
                                                   onTap: () {
                                                     Get.dialog(
                                                       AlertDialog(
-                                                        title: Text("عرض الصورة"),
+                                                        title: Text(
+                                                          "عرض الصورة",
+                                                          style: tt.titleLarge!.copyWith(color: cs.onSurface),
+                                                        ),
                                                         actions: [
                                                           TextButton(
                                                             onPressed: () {
@@ -132,12 +135,8 @@ class ReportCard extends StatelessWidget {
                                                             ),
                                                           ),
                                                         ],
-                                                        content: SizedBox(
-                                                          height: 300,
-                                                          width: 300,
-                                                          child: PhotoView(
-                                                            imageProvider: FileImage(File(image)),
-                                                          ),
+                                                        content: InteractiveViewer(
+                                                          child: Image.file(File(image)),
                                                         ),
                                                       ),
                                                     );

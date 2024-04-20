@@ -333,8 +333,21 @@ class HomeView extends StatelessWidget {
                                         onTap: () {
                                           Get.dialog(
                                             AlertDialog(
-                                              title: Text("عرض الصورة"),
+                                              title: Text(
+                                                "عرض الصورة",
+                                                style: tt.titleLarge!.copyWith(color: cs.onSurface),
+                                              ),
                                               actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    con.removeImage(image);
+                                                    Get.back();
+                                                  },
+                                                  child: Text(
+                                                    "حذف",
+                                                    style: tt.titleMedium?.copyWith(color: cs.error),
+                                                  ),
+                                                ),
                                                 TextButton(
                                                   onPressed: () {
                                                     Get.back();
