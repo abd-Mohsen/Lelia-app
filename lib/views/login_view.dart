@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lelia/views/components/auth_field.dart';
+import 'package:lelia/views/register_view.dart';
 
 import '../constants.dart';
 import '../controllers/login_controller.dart';
@@ -22,89 +24,97 @@ class LoginView extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: cs.background,
-          body: Center(
-            child: SingleChildScrollView(
-              child: Form(
-                key: lC.loginFormKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 30),
-                    Hero(
+          body: SingleChildScrollView(
+            child: Form(
+              key: lC.loginFormKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 36),
+                    child: Hero(
                       tag: "logo",
-                      child: Image.asset("assets/images/lelia_logo.jpg"),
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      'من فضلك ادخل بياناتك للدخول',
-                      style: tt.headlineSmall!.copyWith(color: cs.onBackground),
-                    ),
-                    const SizedBox(height: 25),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: lC.email,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          //hintText: "password".tr,
-                          label: Text("البريد الإلكتروني"),
-                          prefixIcon: Icon(Icons.email_outlined),
-                        ),
-                        style: tt.titleMedium!.copyWith(color: cs.onBackground),
-                        validator: (val) {
-                          return validateInput(lC.email.text, 4, 50, "email");
-                        },
-                        onChanged: (val) {
-                          if (lC.buttonPressed) lC.loginFormKey.currentState!.validate();
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    GetBuilder<LoginController>(
-                      builder: (con) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: lC.password,
-                          keyboardType: TextInputType.text,
-                          obscureText: !con.passwordVisible,
-                          style: tt.titleMedium!.copyWith(color: cs.onBackground),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            //hintText: "password".tr,
-                            label: Text("كلمة المرور"),
-                            prefixIcon: Icon(Icons.lock_outline),
-                            suffixIcon: GestureDetector(
-                              onTap: () {
-                                con.togglePasswordVisibility(!con.passwordVisible);
-                              },
-                              child: Icon(con.passwordVisible ? CupertinoIcons.eye_slash : CupertinoIcons.eye),
-                            ),
+                      child: Center(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            "assets/images/lelia_logo.jpg",
+                            height: MediaQuery.sizeOf(context).width / 2,
                           ),
-                          validator: (val) {
-                            return validateInput(lC.password.text, 4, 50, "password");
-                          },
-                          onChanged: (val) {
-                            if (con.buttonPressed) con.loginFormKey.currentState!.validate();
-                          },
                         ),
                       ),
                     ),
-                    const SizedBox(height: 25),
-                    GetBuilder<LoginController>(
-                      builder: (con) => GestureDetector(
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
+                    child: Text(
+                      'ادخل بياناتك للدخول:',
+                      style: tt.titleLarge!.copyWith(color: cs.onBackground),
+                    ),
+                  ),
+                  AuthField(
+                    label: "البريد الإلكتروني",
+                    controller: lC.email,
+                    keyboardType: TextInputType.emailAddress,
+                    prefixIcon: Icon(Icons.email_outlined),
+                    validator: (val) {
+                      return validateInput(lC.email.text, 4, 50, "email");
+                    },
+                    onChanged: (val) {
+                      if (lC.buttonPressed) lC.loginFormKey.currentState!.validate();
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  GetBuilder<LoginController>(
+                    builder: (con) => AuthField(
+                      controller: lC.password,
+                      keyboardType: TextInputType.text,
+                      obscure: !con.passwordVisible,
+                      label: "كلمة المرور",
+                      prefixIcon: Icon(CupertinoIcons.lock),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          con.togglePasswordVisibility(!con.passwordVisible);
+                        },
+                        child: Icon(con.passwordVisible ? CupertinoIcons.eye_slash : CupertinoIcons.eye),
+                      ),
+                      validator: (val) {
+                        return validateInput(lC.password.text, 4, 50, "password");
+                      },
+                      onChanged: (val) {
+                        if (con.buttonPressed) con.loginFormKey.currentState!.validate();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "نسيت كلمة المرور؟",
+                        style: tt.labelLarge!.copyWith(color: cs.onBackground.withOpacity(0.6)),
+                      ),
+                    ),
+                  ),
+                  GetBuilder<LoginController>(
+                    builder: (con) => Center(
+                      child: GestureDetector(
                         child: Container(
                           padding: const EdgeInsets.all(12),
-                          margin: const EdgeInsets.all(12),
+                          margin: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: cs.primary,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: con.isLoading
                               ? CircularProgressIndicator(color: cs.onPrimary)
-                              : Text(
-                                  "تسجيل دخول",
-                                  style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                              : Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: Text(
+                                    "تسجيل دخول",
+                                    style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                  ),
                                 ),
                         ),
                         onTap: () {
@@ -112,8 +122,22 @@ class LoginView extends StatelessWidget {
                         },
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+                      child: TextButton(
+                        onPressed: () {
+                          Get.to(() => const RegisterView());
+                        },
+                        child: Text(
+                          "لا تملك حساباً؟ انقر للتسجيل",
+                          style: tt.titleMedium!.copyWith(color: Colors.blueAccent),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

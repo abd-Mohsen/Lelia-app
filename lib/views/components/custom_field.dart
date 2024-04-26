@@ -27,7 +27,7 @@ class CustomField extends StatelessWidget {
     TextTheme tt = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: TextFormField(
         keyboardType: keyboard ?? TextInputType.name,
         controller: controller,
@@ -65,11 +65,11 @@ String? validateInput(String val, int min, int max, String type, {String pass = 
   if (type == "phone") {
     if (!GetUtils.isPhoneNumber(val)) return "not a valid phone";
   }
-  if (val.length < min) return "value cant be smaller than $min";
+  if (val.length < min) return "الطول لا يمكن ان يكون أقصر من $min";
 
-  if (val.length > max) return "value cant be greater than $max";
+  if (val.length > max) return "الطول لا يمكن ان يكون أكبر من $max";
 
-  if (pass != rePass) return "passwords don't match".tr;
+  if (pass != rePass) return "كلمتا المرور غير متطابقتان";
 
   return null;
 }

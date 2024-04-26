@@ -179,7 +179,7 @@ class HomeView extends StatelessWidget {
                 },
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: CheckboxListTile(
                   value: con.available,
                   onChanged: (val) {
@@ -214,7 +214,7 @@ class HomeView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: ListTile(
                   leading: Icon(Icons.location_searching, size: 30, color: cs.primary),
                   title: Padding(
@@ -232,7 +232,7 @@ class HomeView extends StatelessWidget {
                           ? const Icon(Icons.close, color: Colors.red, size: 35)
                           : const Icon(Icons.task_alt, color: Colors.green, size: 35),
                   subtitle: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
                     child: Row(
                       children: [
                         ElevatedButton(

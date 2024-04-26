@@ -6,6 +6,10 @@ String kHostIP = "http://10.0.2.2:8000";
 
 String kFontFamily = 'Alexandria';
 
+Duration kTimeOutDuration = const Duration(seconds: 25);
+Duration kTimeOutDuration2 = const Duration(seconds: 15);
+Duration kTimeOutDuration3 = const Duration(seconds: 7);
+
 AlertDialog kCloseAppDialog() => AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
