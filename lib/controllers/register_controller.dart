@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:lelia/models/user_model.dart';
 import '../constants.dart';
 import '../services/remote_services.dart';
 
@@ -18,7 +19,7 @@ class RegisterController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
+    getSupervisorsNames();
     super.onInit();
   }
 
@@ -27,8 +28,9 @@ class RegisterController extends GetxController {
   final password = TextEditingController();
   final rePassword = TextEditingController();
   final phone = TextEditingController();
-  int role = 3;
-  int? supervisorId; //(show if role is 3)
+  String roleINEnglish = "supervisor";
+  String selectedRole = "مشرف";
+  UserModel? selectedSupervisor; //(show if role is 3)
 
   GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   bool buttonPressed = false;
@@ -54,22 +56,43 @@ class RegisterController extends GetxController {
     update();
   }
 
+  void setRole(String role) {
+    role == "مشرف" ? roleINEnglish = "supervisor" : roleINEnglish = "salesman";
+    selectedRole = role;
+    update();
+  }
+
+  void setSupervisor(UserModel supervisor) {
+    selectedSupervisor = supervisor;
+    update();
+  }
+
+  List<UserModel> availableSupervisors = [];
+  Future<void> getSupervisorsNames() async {
+    List<UserModel> supervisors = await RemoteServices.getSupervisors() ?? [];
+    for (UserModel supervisor in supervisors) {
+      availableSupervisors.add(supervisor);
+    }
+    update();
+  }
+
   Future register() async {
     buttonPressed = true;
     bool isValid = registerFormKey.currentState!.validate();
     if (!isValid) return;
-
     toggleLoadingRegister(true);
     try {
       bool success = (await RemoteServices.register(
         userName.text,
         email.text,
         password.text,
+        rePassword.text,
         phone.text,
-        role,
-        supervisorId,
+        roleINEnglish,
+        selectedSupervisor?.id,
       ).timeout(kTimeOutDuration));
       if (success) {
+        Get.back();
         Get.defaultDialog(
           title: "تم التسجيل",
           middleText: "الرجاء انتظار موافقة المسؤول في الشركة",

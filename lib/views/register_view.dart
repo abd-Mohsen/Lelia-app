@@ -1,8 +1,12 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/register_controller.dart';
+import 'package:lelia/models/user_model.dart';
+import 'package:lelia/views/components/auth_dropdown.dart';
 import 'package:lelia/views/components/auth_field.dart';
+import 'package:lelia/views/components/custom_dropdown.dart';
 
 import 'components/custom_field.dart';
 
@@ -143,6 +147,63 @@ class RegisterView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
+                GetBuilder<RegisterController>(builder: (con) {
+                  return AuthDropdown(
+                    icon: Icons.work_outline,
+                    title: "الدور",
+                    items: ["مندوب مبيعات", "مشرف"],
+                    onSelect: (String? newVal) {
+                      con.setRole(newVal!);
+                    },
+                    selectedValue: con.selectedRole,
+                  );
+                }),
+                GetBuilder<RegisterController>(builder: (con) {
+                  return Visibility(
+                    visible: con.roleINEnglish == "salesman",
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+                      child: DropdownSearch<UserModel>(
+                        validator: (user) {
+                          if (user == null && con.roleINEnglish == "salesman") return "الرجاء اختيار مشرف";
+                          return null;
+                        },
+                        popupProps: PopupProps.menu(
+                          showSearchBox: true,
+                          searchFieldProps: TextFieldProps(
+                            decoration: InputDecoration(
+                              fillColor: Colors.white70,
+                              hintText: "اسم المشرف",
+                              prefix: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: Icon(Icons.search, color: cs.onSurface),
+                              ),
+                            ),
+                          ),
+                        ),
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownSearchDecoration: InputDecoration(
+                            labelText: "المشرف".tr,
+                            labelStyle: tt.titleMedium!.copyWith(color: cs.onBackground),
+                            hintText: "اختر اسم المشرف".tr,
+                            icon: Icon(
+                              Icons.supervisor_account_outlined,
+                              color: cs.onBackground,
+                            ),
+                          ),
+                        ),
+                        items: con.availableSupervisors,
+                        itemAsString: (UserModel user) => user.userName,
+                        onChanged: (UserModel? user) async {
+                          con.setSupervisor(user!);
+                          await Future.delayed(Duration(milliseconds: 1000));
+                          if (con.buttonPressed) con.registerFormKey.currentState!.validate();
+                        },
+                        //enabled: !con.enabled,
+                      ),
+                    ),
+                  );
+                }),
                 GetBuilder<RegisterController>(
                   builder: (con) => Center(
                     child: GestureDetector(

@@ -90,7 +90,9 @@ class LoginView extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        //todo: otp page and controller
+                      },
                       child: Text(
                         "نسيت كلمة المرور؟",
                         style: tt.labelLarge!.copyWith(color: cs.onBackground.withOpacity(0.6)),
@@ -123,18 +125,25 @@ class LoginView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
-                      child: TextButton(
-                        onPressed: () {
-                          Get.to(() => const RegisterView());
-                        },
-                        child: Text(
-                          "لا تملك حساباً؟ انقر للتسجيل",
-                          style: tt.titleMedium!.copyWith(color: Colors.blueAccent),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "لا تملك حساباً؟",
+                          style: tt.titleMedium!.copyWith(color: cs.onBackground),
                         ),
-                      ),
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => const RegisterView());
+                          },
+                          child: Text(
+                            "انقر للتسجيل",
+                            style: tt.titleMedium!.copyWith(color: Colors.blueAccent),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
