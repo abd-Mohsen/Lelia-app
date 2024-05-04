@@ -64,4 +64,96 @@ class RemoteServices {
     print(response.body);
     return null;
   }
+
+  static Future<String?> sendRegisterOtp() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/email/send-otp-code"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)["url"];
+    } else {
+      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
+      return null;
+    }
+  }
+
+  static Future<bool> verifyRegisterOtp(String apiUrl, String otp) async {
+    var response = await client.post(
+      Uri.parse(apiUrl),
+      body: jsonEncode({"otp_code": otp}),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
+      return false;
+    }
+  }
+
+  static Future<bool> sendForgotPasswordOtp(String email) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/forgot-password/$email"),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        //"Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
+      return false;
+    }
+  }
+
+  static Future<String?> verifyForgotPasswordOtp(String email, String otp) async {
+    var response = await client.post(
+      Uri.parse("$_hostIP/forgot-password/check-OTP"),
+      body: jsonEncode({"email": email, "code": otp}),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+        //"Authorization": "Bearer $token",
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)["reset_token"];
+    } else {
+      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
+      return null;
+    }
+  }
+
+  static Future<bool> resetPassword(String email, String password, String resetToken) async {
+    var response = await client.post(
+      Uri.parse("$_hostIP/forgot-password/reset"),
+      body: jsonEncode({
+        "email": email,
+        "password": password,
+        "password_confirmation": password,
+        "token": resetToken,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        "Accept": 'application/json',
+      },
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    } else {
+      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
+      return false;
+    }
+  }
 }

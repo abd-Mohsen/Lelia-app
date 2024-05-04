@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lelia/views/components/auth_field.dart';
 import 'package:lelia/views/register_view.dart';
+import 'package:lelia/views/reset_password_view1.dart';
 
 import '../constants.dart';
 import '../controllers/login_controller.dart';
@@ -91,7 +92,7 @@ class LoginView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: TextButton(
                       onPressed: () {
-                        //todo: otp page and controller
+                        Get.to(ResetPasswordView1());
                       },
                       child: Text(
                         "نسيت كلمة المرور؟",
