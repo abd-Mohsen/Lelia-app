@@ -36,15 +36,15 @@ class ResetPasswordView1 extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 50),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "ادخل بريدك الالكتروني لاعادة تعييين كلمة المرور:",
+                    "ادخل بريدك الإلكتروني لاعادة تعييين كلمة المرور الخاصة بحسابك:",
                     style: tt.titleMedium!.copyWith(color: cs.onBackground),
                   ),
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 30),
                 Form(
                   key: fC.firstFormKey,
                   child: AuthField(
@@ -61,21 +61,28 @@ class ResetPasswordView1 extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 25),
-                GetBuilder<ResetPassController>(
-                  builder: (con) => ElevatedButton(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: con.isLoading1
-                          ? SpinKitThreeBounce(color: cs.onPrimary, size: 24)
-                          : Text(
-                              "التالي",
-                              style: tt.titleMedium!.copyWith(color: cs.onPrimary),
-                            ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: GetBuilder<ResetPassController>(
+                    builder: (con) => GestureDetector(
+                      onTap: () {
+                        con.toOTP();
+                        //hideKeyboard(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: cs.primary,
+                        ),
+                        margin: EdgeInsets.all(8),
+                        padding: EdgeInsets.all(12),
+                        child: con.isLoading1
+                            ? SpinKitThreeBounce(color: cs.onPrimary, size: 24)
+                            : Text(
+                                "التالي",
+                                style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                              ),
+                      ),
                     ),
-                    onPressed: () {
-                      fC.toOtp();
-                      //hideKeyboard(context);
-                    },
                   ),
                 ),
                 const SizedBox(height: 50),

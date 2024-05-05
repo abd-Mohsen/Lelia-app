@@ -103,14 +103,7 @@ class RegisterView extends StatelessWidget {
                       child: Icon(con.passwordVisible ? CupertinoIcons.eye_slash : CupertinoIcons.eye),
                     ),
                     validator: (val) {
-                      return validateInput(
-                        rC.password.text,
-                        4,
-                        50,
-                        "password",
-                        pass: rC.password.text,
-                        rePass: rC.rePassword.text,
-                      );
+                      return validateInput(rC.password.text, 8, 50, "password");
                     },
                     onChanged: (val) {
                       if (con.buttonPressed) con.registerFormKey.currentState!.validate();

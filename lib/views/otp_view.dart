@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lelia/controllers/otp_controller.dart';
+import 'package:lelia/controllers/reset_password_controller.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
@@ -8,13 +9,15 @@ import 'package:get/get.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 class OTPView extends StatelessWidget {
-  const OTPView({super.key});
+  final String source;
+  const OTPView({super.key, required this.source});
 
   @override
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
-    //OTPController oC = Get.find();
+    ResetPassController rPC = Get.find();
+    OTPController oC = Get.put(OTPController(source == "reset" ? rPC : null));
     return SafeArea(
       child: Scaffold(
         backgroundColor: cs.background,
@@ -26,7 +29,7 @@ class OTPView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: GetBuilder<OTPController>(
-                  init: OTPController(),
+                  //init: OTPController(),
                   builder: (con) => Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -122,7 +125,7 @@ class OTPView extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      con.resendOtp("reset");
+                      con.resendOtp();
                     },
                   ),
                 ),

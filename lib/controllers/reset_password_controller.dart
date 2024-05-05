@@ -12,7 +12,12 @@ class ResetPassController extends GetxController {
   final email = TextEditingController();
   final newPassword = TextEditingController();
   final rePassword = TextEditingController();
-  late String _resetToken;
+
+  String? _resetToken;
+  String? get resetToken => _resetToken;
+  void setResetToken(String val) {
+    _resetToken = val;
+  }
 
   bool _isLoading1 = false;
   bool get isLoading1 => _isLoading1;
@@ -24,15 +29,15 @@ class ResetPassController extends GetxController {
   GlobalKey<FormState> firstFormKey = GlobalKey<FormState>();
   bool button1Pressed = false;
 
-  Future toOtp() async {
+  Future toOTP() async {
     button1Pressed = true;
     bool isValid = firstFormKey.currentState!.validate();
     if (!isValid) return;
     toggleLoading1(true);
     try {
-      //if (await RemoteServices.sendForgotPasswordOtp(email.text).timeout(kTimeOutDuration)) {
-      Get.to(() => const OTPView());
-      //}
+      if (await RemoteServices.sendForgotPasswordOtp(email.text).timeout(kTimeOutDuration)) {
+        Get.to(() => const OTPView(source: "reset"));
+      }
     } on TimeoutException {
       kTimeOutDialog();
     } catch (e) {
@@ -69,20 +74,20 @@ class ResetPassController extends GetxController {
     update();
   }
 
-  void resetPass(String password) async {
+  void resetPass() async {
     button2Pressed = true;
     bool isValid = secondFormKey.currentState!.validate();
     if (!isValid) return;
     toggleLoading2(true);
     try {
-      if (await RemoteServices.resetPassword(email.text, password, _resetToken).timeout(kTimeOutDuration)) {
+      if (await RemoteServices.resetPassword(email.text, newPassword.text, _resetToken!).timeout(kTimeOutDuration)) {
         Get.offAll(() => const LoginView());
-        Get.defaultDialog(middleText: "reset pass dialog".tr);
+        Get.defaultDialog(middleText: "تم تغيير كلمة المرور بنجاح");
       }
     } on TimeoutException {
       kTimeOutDialog();
     } catch (e) {
-      //print(e.toString());
+      print(e.toString());
     } finally {
       toggleLoading2(false);
     }

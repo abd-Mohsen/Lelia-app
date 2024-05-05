@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lelia/views/login_view.dart';
 
 String kHostIP = "http://10.0.2.2:8000";
 
@@ -14,7 +15,7 @@ AlertDialog kCloseAppDialog() => AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      title: Text("are you sure you want to quit the app?".tr),
+      title: Text("هل تريد الخروج من التطبيق؟"),
       actions: [
         TextButton(
             onPressed: () => SystemNavigator.pop(),
@@ -34,15 +35,18 @@ AlertDialog kCloseAppDialog() => AlertDialog(
     );
 
 AlertDialog kSessionExpiredDialog() => AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      title: Text("your session has expired please login again".tr),
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.circular(10),
+      // ),
+      title: Text("انتهت صلاحية الجلسة"),
+      content: Text("من فضلك سجل دخول مرة أخرى"),
       actions: [
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.offAll(() => const LoginView());
+            },
             child: Text(
-              "yes".tr,
+              "ok",
               //style: kTextStyle20.copyWith(color: Colors.red),
             )),
       ],

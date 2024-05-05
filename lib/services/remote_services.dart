@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:lelia/models/user_model.dart';
 import '../constants.dart';
 
+//todo: implement 'session expired'
 class RemoteServices {
   static final String _hostIP = "$kHostIP/api";
   static String get token => GetStorage().read("token");
@@ -101,13 +102,14 @@ class RemoteServices {
   }
 
   static Future<bool> sendForgotPasswordOtp(String email) async {
-    var response = await client.get(
-      Uri.parse("$_hostIP/forgot-password/$email"),
+    var response = await client.post(
+      Uri.parse("$_hostIP/send-reset-otp"),
       headers: {
         'Content-Type': 'application/json',
         "Accept": 'application/json',
         //"Authorization": "Bearer $token",
       },
+      body: jsonEncode({"email": email}),
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
@@ -119,14 +121,15 @@ class RemoteServices {
 
   static Future<String?> verifyForgotPasswordOtp(String email, String otp) async {
     var response = await client.post(
-      Uri.parse("$_hostIP/forgot-password/check-OTP"),
-      body: jsonEncode({"email": email, "code": otp}),
+      Uri.parse("$_hostIP/verify-reset-otp"),
+      body: jsonEncode({"email": email, "otp": otp}),
       headers: {
         'Content-Type': 'application/json',
         "Accept": 'application/json',
         //"Authorization": "Bearer $token",
       },
     );
+    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body)["reset_token"];
     } else {
@@ -137,7 +140,7 @@ class RemoteServices {
 
   static Future<bool> resetPassword(String email, String password, String resetToken) async {
     var response = await client.post(
-      Uri.parse("$_hostIP/forgot-password/reset"),
+      Uri.parse("$_hostIP/reset-password"),
       body: jsonEncode({
         "email": email,
         "password": password,
@@ -149,6 +152,7 @@ class RemoteServices {
         "Accept": 'application/json',
       },
     );
+    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {

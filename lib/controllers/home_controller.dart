@@ -212,6 +212,7 @@ class HomeController extends GetxController {
 
   void logout() {
     Get.put(LoginController());
+    //todo: console is printing that login controller is deleted when i enter the login page
     Get.offAll(() => const LoginView());
   }
 }
