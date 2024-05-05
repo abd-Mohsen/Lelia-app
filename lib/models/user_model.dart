@@ -11,6 +11,7 @@ class UserModel {
   final String email;
   final String phone;
   final UserModel? supervisor;
+  final bool isVerified;
 
   UserModel({
     required this.id,
@@ -18,6 +19,7 @@ class UserModel {
     required this.email,
     required this.phone,
     required this.supervisor,
+    required this.isVerified,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -26,6 +28,7 @@ class UserModel {
         email: json["email"],
         phone: json["phone"],
         supervisor: json["supervisor"] != null ? UserModel.fromJson(json["supervisor"]) : null,
+        isVerified: json["is_verified"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,5 +37,6 @@ class UserModel {
         "email": email,
         "phone": phone,
         "supervisor": supervisor!.toJson(),
+        "is_verified": isVerified,
       };
 }

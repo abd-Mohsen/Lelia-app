@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:get_storage/get_storage.dart';
+import 'package:lelia/models/user_model.dart';
+import 'package:lelia/services/remote_services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:get/get.dart';
@@ -11,12 +16,37 @@ import 'package:lelia/views/login_view.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
+import '../constants.dart';
+
 class HomeController extends GetxController {
+  final GetStorage _getStorage = GetStorage();
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   void toggleLoading(bool value) {
     _isLoading = value;
     update();
+  }
+
+  UserModel? _currentUser;
+  UserModel? get currentUser => _currentUser;
+
+  void getCurrentUser() async {
+    print(_getStorage.read("token"));
+    try {
+      _currentUser = (await RemoteServices.fetchCurrentUser().timeout(kTimeOutDuration))!;
+      update();
+    } on TimeoutException {
+      kTimeOutDialog();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  onInit() {
+    getCurrentUser();
+    super.onInit();
   }
 
   GlobalKey<FormState> dataFormKey = GlobalKey<FormState>();
@@ -213,6 +243,8 @@ class HomeController extends GetxController {
   void logout() {
     Get.put(LoginController());
     //todo: console is printing that login controller is deleted when i enter the login page
+    //todo: logout request
+    _getStorage.remove("token");
     Get.offAll(() => const LoginView());
   }
 }

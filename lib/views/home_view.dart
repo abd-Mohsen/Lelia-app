@@ -79,363 +79,368 @@ class HomeView extends StatelessWidget {
       backgroundColor: cs.background,
       body: GetBuilder<HomeController>(
         //init: HomeController(),
-        builder: (con) => Form(
-          key: con.dataFormKey,
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            children: [
-              // todo: add constraints for fields
-              CustomField(
-                controller: con.name,
-                iconData: Icons.label,
-                hint: "اسم النقطة",
-                validator: (s) {
-                  return validateInput(s!, 0, 1100, "name");
-                },
-                onChanged: (s) {
-                  if (con.buttonPressed) con.dataFormKey.currentState!.validate();
-                },
-              ),
-              CustomDropdown(
-                icon: Icons.store,
-                title: "نوع النقطة",
-                items: const [
-                  "بائع جملة",
-                  "مركز تجاري (مول)",
-                  "صيدلية",
-                  "بقالية",
-                ],
-                onSelect: (String? newVal) {
-                  con.setType(newVal!);
-                },
-                selectedValue: con.type,
-              ),
-              CustomDropdown(
-                icon: Icons.photo_size_select_small_sharp,
-                title: "حجم النقطة",
-                items: const [
-                  "صغير",
-                  "وسط",
-                  "كبير",
-                ],
-                onSelect: (String? newVal) {
-                  con.setSize(newVal!);
-                },
-                selectedValue: con.size,
-              ),
-              Row(
+        builder: (con) => Stack(
+          children: [
+            //todo: put a warning here 'verify your email'
+            Form(
+              key: con.dataFormKey,
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 children: [
-                  Expanded(
-                    child: CustomField(
-                      controller: con.street,
-                      iconData: Icons.location_pin,
-                      hint: "اسم الحي",
-                      validator: (s) {
-                        return validateInput(s!, 0, 1100, "name");
-                      },
-                      onChanged: (s) {
-                        if (con.buttonPressed) con.dataFormKey.currentState!.validate();
-                      },
-                    ),
+                  // todo: add constraints for fields
+                  CustomField(
+                    controller: con.name,
+                    iconData: Icons.label,
+                    hint: "اسم النقطة",
+                    validator: (s) {
+                      return validateInput(s!, 0, 1100, "name");
+                    },
+                    onChanged: (s) {
+                      if (con.buttonPressed) con.dataFormKey.currentState!.validate();
+                    },
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: CustomField(
-                      controller: con.neighborhood,
-                      iconData: Icons.location_pin,
-                      hint: "اسم الشارع",
-                      validator: (s) {
-                        return validateInput(s!, 0, 1100, "name");
+                  CustomDropdown(
+                    icon: Icons.store,
+                    title: "نوع النقطة",
+                    items: const [
+                      "بائع جملة",
+                      "مركز تجاري (مول)",
+                      "صيدلية",
+                      "بقالية",
+                    ],
+                    onSelect: (String? newVal) {
+                      con.setType(newVal!);
+                    },
+                    selectedValue: con.type,
+                  ),
+                  CustomDropdown(
+                    icon: Icons.photo_size_select_small_sharp,
+                    title: "حجم النقطة",
+                    items: const [
+                      "صغير",
+                      "وسط",
+                      "كبير",
+                    ],
+                    onSelect: (String? newVal) {
+                      con.setSize(newVal!);
+                    },
+                    selectedValue: con.size,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomField(
+                          controller: con.street,
+                          iconData: Icons.location_pin,
+                          hint: "اسم الحي",
+                          validator: (s) {
+                            return validateInput(s!, 0, 1100, "name");
+                          },
+                          onChanged: (s) {
+                            if (con.buttonPressed) con.dataFormKey.currentState!.validate();
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: CustomField(
+                          controller: con.neighborhood,
+                          iconData: Icons.location_pin,
+                          hint: "اسم الشارع",
+                          validator: (s) {
+                            return validateInput(s!, 0, 1100, "name");
+                          },
+                          onChanged: (s) {
+                            if (con.buttonPressed) con.dataFormKey.currentState!.validate();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  CustomField(
+                    controller: con.phone,
+                    iconData: Icons.phone,
+                    keyboard: TextInputType.number,
+                    hint: "هاتف أرضي",
+                    validator: (s) {
+                      return validateInput(s!, 0, 1100, "name");
+                    },
+                    onChanged: (s) {
+                      if (con.buttonPressed) con.dataFormKey.currentState!.validate();
+                    },
+                  ),
+                  CustomField(
+                    controller: con.mobilePhone,
+                    iconData: Icons.phone_android,
+                    keyboard: TextInputType.number,
+                    hint: "موبايل",
+                    validator: (s) {
+                      return validateInput(s!, 0, 1100, "name");
+                    },
+                    onChanged: (s) {
+                      if (con.buttonPressed) con.dataFormKey.currentState!.validate();
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: CheckboxListTile(
+                      value: con.available,
+                      onChanged: (val) {
+                        con.toggleAvailability(val!);
                       },
-                      onChanged: (s) {
-                        if (con.buttonPressed) con.dataFormKey.currentState!.validate();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              CustomField(
-                controller: con.phone,
-                iconData: Icons.phone,
-                keyboard: TextInputType.number,
-                hint: "هاتف أرضي",
-                validator: (s) {
-                  return validateInput(s!, 0, 1100, "name");
-                },
-                onChanged: (s) {
-                  if (con.buttonPressed) con.dataFormKey.currentState!.validate();
-                },
-              ),
-              CustomField(
-                controller: con.mobilePhone,
-                iconData: Icons.phone_android,
-                keyboard: TextInputType.number,
-                hint: "موبايل",
-                validator: (s) {
-                  return validateInput(s!, 0, 1100, "name");
-                },
-                onChanged: (s) {
-                  if (con.buttonPressed) con.dataFormKey.currentState!.validate();
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: CheckboxListTile(
-                  value: con.available,
-                  onChanged: (val) {
-                    con.toggleAvailability(val!);
-                  },
-                  checkColor: cs.onPrimary,
-                  activeColor: cs.primary,
-                  title: Text(
-                    "التواجد",
-                    style: tt.titleMedium!.copyWith(color: cs.onBackground.withOpacity(0.6)),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: con.available,
-                child: CustomDropdown(
-                  icon: Icons.shopping_cart,
-                  title: "حركة المنتج",
-                  items: const [
-                    "سريعة",
-                    "جيدة",
-                    "بطيئة",
-                  ],
-                  onSelect: (String? newVal) {
-                    con.setStatus(newVal!);
-                  },
-                  selectedValue: con.state,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: ListTile(
-                  leading: Icon(Icons.location_searching, size: 30, color: cs.primary),
-                  title: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      "احداثيات النقطة",
-                      style: tt.titleMedium!.copyWith(
-                        color: cs.onBackground.withOpacity(0.6),
+                      checkColor: cs.onPrimary,
+                      activeColor: cs.primary,
+                      title: Text(
+                        "التواجد",
+                        style: tt.titleMedium!.copyWith(color: cs.onBackground.withOpacity(0.6)),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
-                  trailing: con.isLoading
-                      ? CircularProgressIndicator()
-                      : con.position == null
-                          ? const Icon(Icons.close, color: Colors.red, size: 35)
-                          : const Icon(Icons.task_alt, color: Colors.green, size: 35),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            con.getLocation(context);
-                          },
-                          child: Text(
-                            'حفظ',
-                            style: tt.titleMedium!.copyWith(color: cs.onPrimary),
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Visibility(
-                          visible: con.position != null,
-                          //todo: fix map error in console
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Get.to(
-                                MapPage(
-                                  latitude: con.position!.latitude,
-                                  longitude: con.position!.longitude,
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'معاينة',
-                              style: tt.titleMedium!.copyWith(color: cs.onPrimary),
-                            ),
-                          ),
-                        ),
+                  Visibility(
+                    visible: con.available,
+                    child: CustomDropdown(
+                      icon: Icons.shopping_cart,
+                      title: "حركة المنتج",
+                      items: const [
+                        "سريعة",
+                        "جيدة",
+                        "بطيئة",
                       ],
+                      onSelect: (String? newVal) {
+                        con.setStatus(newVal!);
+                      },
+                      selectedValue: con.state,
                     ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-              CustomField(
-                controller: con.notes,
-                //iconData: Icons.note_alt_sharp,
-                hint: "ملاحظات الزبون",
-                lines: 4,
-                validator: (s) {
-                  return validateInput(s!, 0, 1100, "");
-                },
-                onChanged: (s) {
-                  if (con.buttonPressed) con.dataFormKey.currentState!.validate();
-                },
-              ),
-
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: con.images.isEmpty
-                    ? GestureDetector(
-                        onTap: () {
-                          showPickPicSheet();
-                        },
-                        child: DottedBorder(
-                          strokeWidth: 2.5,
-                          color: cs.onBackground.withOpacity(0.6),
-                          dashPattern: [10, 10],
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 30),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.camera_alt,
-                                    size: 40,
-                                    color: cs.onBackground.withOpacity(0.6),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'اضف صورة',
-                                    style: tt.titleLarge!.copyWith(
-                                      color: cs.onSurface.withOpacity(0.6),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: ListTile(
+                      leading: Icon(Icons.location_searching, size: 30, color: cs.primary),
+                      title: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          "احداثيات النقطة",
+                          style: tt.titleMedium!.copyWith(
+                            color: cs.onBackground.withOpacity(0.6),
+                          ),
+                        ),
+                      ),
+                      trailing: con.isLoading
+                          ? CircularProgressIndicator()
+                          : con.position == null
+                              ? const Icon(Icons.close, color: Colors.red, size: 35)
+                              : const Icon(Icons.task_alt, color: Colors.green, size: 35),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+                        child: Row(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                con.getLocation(context);
+                              },
+                              child: Text(
+                                'حفظ',
+                                style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                              ),
+                            ),
+                            SizedBox(width: 12),
+                            Visibility(
+                              visible: con.position != null,
+                              //todo: fix map error in console
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.to(
+                                    MapPage(
+                                      latitude: con.position!.latitude,
+                                      longitude: con.position!.longitude,
                                     ),
-                                    textAlign: TextAlign.center,
+                                  );
+                                },
+                                child: Text(
+                                  'معاينة',
+                                  style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  CustomField(
+                    controller: con.notes,
+                    //iconData: Icons.note_alt_sharp,
+                    hint: "ملاحظات الزبون",
+                    lines: 4,
+                    validator: (s) {
+                      return validateInput(s!, 0, 1100, "");
+                    },
+                    onChanged: (s) {
+                      if (con.buttonPressed) con.dataFormKey.currentState!.validate();
+                    },
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: con.images.isEmpty
+                        ? GestureDetector(
+                            onTap: () {
+                              showPickPicSheet();
+                            },
+                            child: DottedBorder(
+                              strokeWidth: 2.5,
+                              color: cs.onBackground.withOpacity(0.6),
+                              dashPattern: [10, 10],
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 30),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.camera_alt,
+                                        size: 40,
+                                        color: cs.onBackground.withOpacity(0.6),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        'اضف صورة',
+                                        style: tt.titleLarge!.copyWith(
+                                          color: cs.onSurface.withOpacity(0.6),
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              CarouselSlider(
+                                items: [
+                                  ...con.images
+                                      .map(
+                                        (image) => Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Get.dialog(
+                                                AlertDialog(
+                                                  title: Text(
+                                                    "عرض الصورة",
+                                                    style: tt.titleLarge!.copyWith(color: cs.onSurface),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        con.removeImage(image);
+                                                        Get.back();
+                                                      },
+                                                      child: Text(
+                                                        "حذف",
+                                                        style: tt.titleMedium?.copyWith(color: cs.error),
+                                                      ),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Get.back();
+                                                      },
+                                                      child: Text(
+                                                        "ok",
+                                                        style: tt.titleMedium?.copyWith(color: cs.primary),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                  content: InteractiveViewer(
+                                                    child: Image.file(File(image.path)),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Image.file(File(image.path)),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showPickPicSheet();
+                                      },
+                                      child: Container(
+                                        //width: 100,
+                                        //height: 150,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                            width: 1.0,
+                                          ),
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.add_photo_alternate_outlined,
+                                            size: 40,
+                                            color: cs.onBackground,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          CarouselSlider(
-                            items: [
-                              ...con.images
-                                  .map(
-                                    (image) => Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Get.dialog(
-                                            AlertDialog(
-                                              title: Text(
-                                                "عرض الصورة",
-                                                style: tt.titleLarge!.copyWith(color: cs.onSurface),
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    con.removeImage(image);
-                                                    Get.back();
-                                                  },
-                                                  child: Text(
-                                                    "حذف",
-                                                    style: tt.titleMedium?.copyWith(color: cs.error),
-                                                  ),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Get.back();
-                                                  },
-                                                  child: Text(
-                                                    "ok",
-                                                    style: tt.titleMedium?.copyWith(color: cs.primary),
-                                                  ),
-                                                ),
-                                              ],
-                                              content: InteractiveViewer(
-                                                child: Image.file(File(image.path)),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: Image.file(File(image.path)),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    showPickPicSheet();
-                                  },
-                                  child: Container(
-                                    //width: 100,
-                                    //height: 150,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.grey,
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.add_photo_alternate_outlined,
-                                        size: 40,
-                                        color: cs.onBackground,
-                                      ),
-                                    ),
-                                  ),
+                                options: CarouselOptions(
+                                  enableInfiniteScroll: false,
+                                  aspectRatio: 4 / 3,
+                                  onPageChanged: (i, reason) => con.setPicIndex(i),
+                                  viewportFraction: 1,
                                 ),
                               ),
+                              const SizedBox(height: 12),
+                              AnimatedSmoothIndicator(
+                                activeIndex: con.picIndex,
+                                count: con.images.length + 1,
+                                effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
+                              )
                             ],
-                            options: CarouselOptions(
-                              enableInfiniteScroll: false,
-                              aspectRatio: 4 / 3,
-                              onPageChanged: (i, reason) => con.setPicIndex(i),
-                              viewportFraction: 1,
-                            ),
                           ),
-                          const SizedBox(height: 12),
-                          AnimatedSmoothIndicator(
-                            activeIndex: con.picIndex,
-                            count: con.images.length + 1,
-                            effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
-                          )
-                        ],
-                      ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0, bottom: 4),
-                child: ElevatedButton(
-                  onPressed: () {
-                    con.submit();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'حفظ في الذاكرة',
-                          style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0, bottom: 4),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        con.submit();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'حفظ في الذاكرة',
+                              style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+                            ),
+                            SizedBox(width: 12),
+                            Icon(Icons.save_alt, size: 40),
+                          ],
                         ),
-                        SizedBox(width: 12),
-                        Icon(Icons.save_alt, size: 40),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       drawer: Drawer(
@@ -445,19 +450,24 @@ class HomeView extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  UserAccountsDrawerHeader(
-                    // decoration: BoxDecoration(
-                    //   color: cs.primary,
-                    // ),
-                    accountName: Text(
-                      "abd",
-                      style: tt.headlineMedium,
-                    ),
-                    accountEmail: Text(
-                      "abd@m.co",
-                      style: tt.titleMedium,
-                    ),
-                  ),
+                  GetBuilder<HomeController>(builder: (con) {
+                    return Visibility(
+                      visible: con.currentUser != null,
+                      child: UserAccountsDrawerHeader(
+                        // decoration: BoxDecoration(
+                        //   color: cs.primary,
+                        // ),
+                        accountName: Text(
+                          con.currentUser?.userName ?? "",
+                          style: tt.headlineMedium,
+                        ),
+                        accountEmail: Text(
+                          con.currentUser?.email ?? "",
+                          style: tt.titleMedium,
+                        ),
+                      ),
+                    );
+                  }),
                   ListTile(
                     leading: const Icon(Icons.dark_mode_outlined),
                     title: Text("الوضع الداكن", style: tt.titleMedium!.copyWith(color: cs.onBackground)),

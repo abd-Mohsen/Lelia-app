@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:lelia/views/components/auth_field.dart';
 import 'package:lelia/views/register_view.dart';
@@ -111,7 +112,7 @@ class LoginView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: con.isLoading
-                              ? CircularProgressIndicator(color: cs.onPrimary)
+                              ? SpinKitThreeBounce(color: cs.onPrimary, size: 24)
                               : Padding(
                                   padding: const EdgeInsets.all(4),
                                   child: Text(

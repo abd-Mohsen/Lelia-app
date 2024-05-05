@@ -69,7 +69,7 @@ class RegisterController extends GetxController {
 
   List<UserModel> availableSupervisors = [];
   Future<void> getSupervisorsNames() async {
-    List<UserModel> supervisors = await RemoteServices.getSupervisors() ?? [];
+    List<UserModel> supervisors = await RemoteServices.fetchSupervisors() ?? [];
     for (UserModel supervisor in supervisors) {
       availableSupervisors.add(supervisor);
     }

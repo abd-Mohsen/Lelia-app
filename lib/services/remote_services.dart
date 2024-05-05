@@ -16,7 +16,7 @@ class RemoteServices {
   };
   static Map<String, String> headersAuth = {
     "Accept": "Application/json",
-    "Auth": "Bearer $token",
+    "Authorization": "Bearer $token",
     'Content-Type': 'application/json',
   };
 
@@ -54,7 +54,46 @@ class RemoteServices {
     return false;
   }
 
-  static Future<List<UserModel>?> getSupervisors() async {
+  static Future<String?> login(String email, String password) async {
+    var response = await client.post(
+      Uri.parse("$_hostIP/login"),
+      headers: headers,
+      body: jsonEncode({
+        "email": email,
+        "password": password,
+      }),
+    );
+    print(response.body);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return jsonDecode(response.body)["access_token"];
+    }
+    if (response.statusCode == 422) {
+      Get.defaultDialog(
+        title: "خطأ",
+        middleText: "البربد الاكتروني او كلمة المرور غير صحيحين",
+      );
+      return null;
+    }
+    Get.defaultDialog(
+      title: "خطأ",
+      middleText: jsonDecode(response.body)["message"],
+    );
+    return null;
+  }
+
+  static Future<UserModel?> fetchCurrentUser() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/users/profile"),
+      headers: headersAuth,
+    );
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(jsonDecode(response.body));
+    }
+    //print("=========" + response.body);
+    return null;
+  }
+
+  static Future<List<UserModel>?> fetchSupervisors() async {
     var response = await client.get(
       Uri.parse("$_hostIP/users/supervisors"),
       headers: headers,

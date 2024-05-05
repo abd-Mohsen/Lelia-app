@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lelia/views/home_view.dart';
 
 import '../constants.dart';
+import '../services/remote_services.dart';
 
 class LoginController extends GetxController {
   @override
@@ -41,9 +43,10 @@ class LoginController extends GetxController {
     if (isValid) {
       toggleLoading(true);
       try {
-        //String? accessToken = await RemoteServices.signUserIn(name.text, password.text).timeout(kTimeOutDuration);
-        //if (accessToken == null) throw Exception();
-        //_getStorage.write("token", accessToken); // todo: repeat this for all pages we have issues with
+        String? accessToken = await RemoteServices.login(email.text, password.text).timeout(kTimeOutDuration);
+        if (accessToken == null) return;
+        GetStorage().write("token", accessToken);
+        //todo: handle role (go to another home if supervisor, make a login model)
         Get.offAll(() => const HomeView());
         //dispose();
       } on TimeoutException {
@@ -55,5 +58,4 @@ class LoginController extends GetxController {
       }
     }
   }
-//"eve.holt@reqres.in"
 }
