@@ -39,4 +39,9 @@ class UserModel {
         "supervisor": supervisor!.toJson(),
         "is_verified": isVerified,
       };
+
+  @override
+  String toString() {
+    return userName;
+  }
 }

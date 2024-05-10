@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/home_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
@@ -451,22 +452,22 @@ class HomeView extends StatelessWidget {
               child: ListView(
                 children: [
                   GetBuilder<HomeController>(builder: (con) {
-                    return Visibility(
-                      visible: con.currentUser != null,
-                      child: UserAccountsDrawerHeader(
-                        // decoration: BoxDecoration(
-                        //   color: cs.primary,
-                        // ),
-                        accountName: Text(
-                          con.currentUser?.userName ?? "",
-                          style: tt.headlineMedium,
-                        ),
-                        accountEmail: Text(
-                          con.currentUser?.email ?? "",
-                          style: tt.titleMedium,
-                        ),
-                      ),
-                    );
+                    return con.isLoading
+                        ? SpinKitPianoWave(color: cs.primary)
+                        : UserAccountsDrawerHeader(
+                            //todo: showing old data or not showing at all, add loading
+                            // decoration: BoxDecoration(
+                            //   color: cs.primary,
+                            // ),
+                            accountName: Text(
+                              con.currentUser?.userName ?? "",
+                              style: tt.headlineMedium,
+                            ),
+                            accountEmail: Text(
+                              con.currentUser?.email ?? "",
+                              style: tt.titleMedium,
+                            ),
+                          );
                   }),
                   ListTile(
                     leading: const Icon(Icons.dark_mode_outlined),

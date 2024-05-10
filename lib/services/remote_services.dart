@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -10,13 +9,9 @@ import '../constants.dart';
 class RemoteServices {
   static final String _hostIP = "$kHostIP/api";
   static String get token => GetStorage().read("token");
+
   static Map<String, String> headers = {
     "Accept": "Application/json",
-    'Content-Type': 'application/json',
-  };
-  static Map<String, String> headersAuth = {
-    "Accept": "Application/json",
-    "Authorization": "Bearer $token",
     'Content-Type': 'application/json',
   };
 
@@ -63,7 +58,6 @@ class RemoteServices {
         "password": password,
       }),
     );
-    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body)["access_token"];
     }
@@ -81,15 +75,28 @@ class RemoteServices {
     return null;
   }
 
+  static Future<bool> logout() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/logout"),
+      headers: {...headers, "Authorization": "Bearer $token"},
+    );
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
+  }
+
   static Future<UserModel?> fetchCurrentUser() async {
     var response = await client.get(
       Uri.parse("$_hostIP/users/profile"),
-      headers: headersAuth,
+      headers: {...headers, "Authorization": "Bearer $token"},
     );
     if (response.statusCode == 200) {
       return UserModel.fromJson(jsonDecode(response.body));
     }
-    //print("=========" + response.body);
+    if (response.statusCode == 401) {
+      kSessionExpiredDialog();
+    }
     return null;
   }
 
@@ -101,18 +108,13 @@ class RemoteServices {
     if (response.statusCode == 200) {
       return userModelFromJson(response.body);
     }
-    print(response.body);
     return null;
   }
 
   static Future<String?> sendRegisterOtp() async {
     var response = await client.get(
       Uri.parse("$_hostIP/email/send-otp-code"),
-      headers: {
-        'Content-Type': 'application/json',
-        "Accept": 'application/json',
-        "Authorization": "Bearer $token",
-      },
+      headers: {...headers, "Authorization": "Bearer $token"},
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body)["url"];
@@ -126,11 +128,7 @@ class RemoteServices {
     var response = await client.post(
       Uri.parse(apiUrl),
       body: jsonEncode({"otp_code": otp}),
-      headers: {
-        'Content-Type': 'application/json',
-        "Accept": 'application/json',
-        "Authorization": "Bearer $token",
-      },
+      headers: {...headers, "Authorization": "Bearer $token"},
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
@@ -143,11 +141,7 @@ class RemoteServices {
   static Future<bool> sendForgotPasswordOtp(String email) async {
     var response = await client.post(
       Uri.parse("$_hostIP/send-reset-otp"),
-      headers: {
-        'Content-Type': 'application/json',
-        "Accept": 'application/json',
-        //"Authorization": "Bearer $token",
-      },
+      headers: headers,
       body: jsonEncode({"email": email}),
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -162,13 +156,8 @@ class RemoteServices {
     var response = await client.post(
       Uri.parse("$_hostIP/verify-reset-otp"),
       body: jsonEncode({"email": email, "otp": otp}),
-      headers: {
-        'Content-Type': 'application/json',
-        "Accept": 'application/json',
-        //"Authorization": "Bearer $token",
-      },
+      headers: headers,
     );
-    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return jsonDecode(response.body)["reset_token"];
     } else {
@@ -186,12 +175,8 @@ class RemoteServices {
         "password_confirmation": password,
         "token": resetToken,
       }),
-      headers: {
-        'Content-Type': 'application/json',
-        "Accept": 'application/json',
-      },
+      headers: headers,
     );
-    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return true;
     } else {

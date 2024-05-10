@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lelia/views/login_view.dart';
 
 String kHostIP = "http://10.0.2.2:8000";
+//"http://lelia-back.000webhostapp.com";
 
 String kFontFamily = 'Alexandria';
 

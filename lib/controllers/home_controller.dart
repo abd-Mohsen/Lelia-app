@@ -15,7 +15,6 @@ import 'package:lelia/services/local_services.dart';
 import 'package:lelia/views/login_view.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-
 import '../constants.dart';
 
 class HomeController extends GetxController {
@@ -32,14 +31,16 @@ class HomeController extends GetxController {
   UserModel? get currentUser => _currentUser;
 
   void getCurrentUser() async {
-    print(_getStorage.read("token"));
     try {
+      toggleLoading(true);
       _currentUser = (await RemoteServices.fetchCurrentUser().timeout(kTimeOutDuration))!;
-      update();
+      print(_currentUser);
     } on TimeoutException {
       kTimeOutDialog();
     } catch (e) {
       print(e.toString());
+    } finally {
+      toggleLoading(false);
     }
   }
 
@@ -240,11 +241,12 @@ class HomeController extends GetxController {
     ));
   }
 
-  void logout() {
-    Get.put(LoginController());
+  void logout() async {
     //todo: console is printing that login controller is deleted when i enter the login page
-    //todo: logout request
-    _getStorage.remove("token");
-    Get.offAll(() => const LoginView());
+    if (await RemoteServices.logout()) {
+      _getStorage.remove("token");
+      Get.put(LoginController());
+      Get.offAll(() => const LoginView());
+    }
   }
 }

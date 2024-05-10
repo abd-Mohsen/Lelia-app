@@ -16,6 +16,8 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
+  final GetStorage _getStorage = GetStorage();
+
   final email = TextEditingController();
   final password = TextEditingController();
 
@@ -45,14 +47,16 @@ class LoginController extends GetxController {
       try {
         String? accessToken = await RemoteServices.login(email.text, password.text).timeout(kTimeOutDuration);
         if (accessToken == null) return;
-        GetStorage().write("token", accessToken);
+        _getStorage.write("token", accessToken);
+        print(_getStorage.read("token"));
         //todo: handle role (go to another home if supervisor, make a login model)
+        // await Future.delayed(Duration(milliseconds: 800));
         Get.offAll(() => const HomeView());
         //dispose();
       } on TimeoutException {
         kTimeOutDialog();
       } catch (e) {
-        //print(e.toString());
+        print(e.toString());
       } finally {
         toggleLoading(false);
       }
