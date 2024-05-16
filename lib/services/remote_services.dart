@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:lelia/models/report_model.dart';
 import 'package:lelia/models/user_model.dart';
+import 'package:path/path.dart';
 import '../constants.dart';
 
 //todo: implement 'session expired'
@@ -183,5 +186,35 @@ class RemoteServices {
       Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
       return false;
     }
+  }
+
+  static Future<bool> uploadReport(ReportModel report) async {
+    var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/reports"));
+
+    request.fields.addAll(report.toJson());
+    request.headers.addAll({...headers, "Authorization": "Bearer $token"});
+
+    for (var imagePath in report.images) {
+      File imageFile = File(imagePath);
+      var stream = http.ByteStream(imageFile.openRead());
+      var length = await imageFile.length();
+      var multipartFile = http.MultipartFile(
+        'files',
+        stream,
+        length,
+        filename: basename(imageFile.path),
+      );
+      request.files.add(multipartFile);
+    }
+
+    var response = await request.send();
+    print(response.statusCode);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    }
+    response.stream.transform(utf8.decoder).listen((value) {
+      print(value);
+    });
+    return false;
   }
 }

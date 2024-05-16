@@ -6,7 +6,7 @@ List<ReportModel> reportModelFromJson(String str) {
 }
 
 String reportModelToJson(List<ReportModel> data) {
-  final dyn = List<dynamic>.from(data.map((x) => x.toJson()));
+  final dyn = List<dynamic>.from(data.map((x) => x.toJsonLocal()));
   return json.encode(dyn);
 }
 
@@ -26,6 +26,16 @@ class ReportModel {
   DateTime date;
   List<String> images;
   bool? uploaded;
+
+  static final Map<String, String> translation = {
+    "صغير": "small",
+    "وسط": "medium",
+    "كبير": "big",
+    "بائع جملة": "retail",
+    "مركز تجاري (مول)": "mall",
+    "صيدلية": "pharmacy",
+    "بقالية": "supermarket",
+  };
 
   ReportModel({
     required this.title,
@@ -63,26 +73,42 @@ class ReportModel {
         images: List<String>.from(json["images"].map((x) => x)),
       );
 
-  Map<String, dynamic> toJson() => {
+  //make another version of this that doesnt interfere with local storage
+  Map<String, String> toJson() => {
+        "title": title,
+        "type": translation[type]!,
+        "size": translation[size]!,
+        "neighborhood": neighborhood,
+        "street": street,
+        "landline_number": landline,
+        "mobile_number": mobile,
+        "longitude": longitude.toString(),
+        "latitude": latitude.toString(),
+        "issue_date": date.toIso8601String(), //insure its like: '2024-05-11 23:34:50'
+        "status": status ?? "unavailable",
+        "notes": notes,
+        //"images": List<String>.from(images.map((x) => x)),
+      };
+
+  Map<String, dynamic> toJsonLocal() => {
         "title": title,
         "type": type,
         "size": size,
         "neighborhood": neighborhood,
         "street": street,
-        "mobile": mobile,
-        "landline": landline,
-        "availability": availability,
-        "status": status,
-        "notes": notes,
+        "landline_number": landline,
+        "mobile_number": mobile,
         "longitude": longitude,
         "latitude": latitude,
-        "date": date.toIso8601String(),
-        "uploaded": uploaded,
+        "issue_date": date.toIso8601String(), //insure its like: '2024-05-11 23:34:50'
+        "status": status,
+        "notes": notes,
         "images": List<String>.from(images.map((x) => x)),
+        "uploaded": uploaded,
       };
 
   @override
   String toString() {
-    return "$title $uploaded";
+    return "$title\n$type\n$size\n$mobile";
   }
 }

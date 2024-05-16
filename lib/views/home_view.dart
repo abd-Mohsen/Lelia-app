@@ -94,7 +94,7 @@ class HomeView extends StatelessWidget {
                     iconData: Icons.label,
                     hint: "اسم النقطة",
                     validator: (s) {
-                      return validateInput(s!, 0, 1100, "name");
+                      return validateInput(s!, 2, 100, "name");
                     },
                     onChanged: (s) {
                       if (con.buttonPressed) con.dataFormKey.currentState!.validate();
@@ -135,7 +135,7 @@ class HomeView extends StatelessWidget {
                           iconData: Icons.location_pin,
                           hint: "اسم الحي",
                           validator: (s) {
-                            return validateInput(s!, 0, 1100, "name");
+                            return validateInput(s!, 2, 50, "name");
                           },
                           onChanged: (s) {
                             if (con.buttonPressed) con.dataFormKey.currentState!.validate();
@@ -149,7 +149,7 @@ class HomeView extends StatelessWidget {
                           iconData: Icons.location_pin,
                           hint: "اسم الشارع",
                           validator: (s) {
-                            return validateInput(s!, 0, 1100, "name");
+                            return validateInput(s!, 2, 50, "name");
                           },
                           onChanged: (s) {
                             if (con.buttonPressed) con.dataFormKey.currentState!.validate();
@@ -164,7 +164,7 @@ class HomeView extends StatelessWidget {
                     keyboard: TextInputType.number,
                     hint: "هاتف أرضي",
                     validator: (s) {
-                      return validateInput(s!, 0, 1100, "name");
+                      return validateInput(s!, 7, 7, "");
                     },
                     onChanged: (s) {
                       if (con.buttonPressed) con.dataFormKey.currentState!.validate();
@@ -176,7 +176,7 @@ class HomeView extends StatelessWidget {
                     keyboard: TextInputType.number,
                     hint: "موبايل",
                     validator: (s) {
-                      return validateInput(s!, 0, 1100, "name");
+                      return validateInput(s!, 10, 12, "");
                     },
                     onChanged: (s) {
                       if (con.buttonPressed) con.dataFormKey.currentState!.validate();
@@ -282,7 +282,7 @@ class HomeView extends StatelessWidget {
                     hint: "ملاحظات الزبون",
                     lines: 4,
                     validator: (s) {
-                      return validateInput(s!, 0, 1100, "");
+                      return validateInput(s!, 0, 255, "", canBeEmpty: true);
                     },
                     onChanged: (s) {
                       if (con.buttonPressed) con.dataFormKey.currentState!.validate();

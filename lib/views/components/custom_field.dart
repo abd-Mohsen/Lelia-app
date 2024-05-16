@@ -52,18 +52,18 @@ class CustomField extends StatelessWidget {
   }
 }
 
-String? validateInput(String val, int min, int max, String type, {String pass = "", String rePass = ""}) {
-  //todo: localize
-  if (val.trim().isEmpty) return "لا يمكن أن يكون فارغ";
+String? validateInput(String val, int min, int max, String type,
+    {String pass = "", String rePass = "", bool canBeEmpty = false}) {
+  if (val.trim().isEmpty && !canBeEmpty) return "لا يمكن أن يكون فارغ";
 
   if (type == "username") {
-    if (!GetUtils.isUsername(val)) return "not a valid user name";
+    if (!GetUtils.isUsername(val)) return "اسم المستخدم غير صالح";
   }
   if (type == "email") {
-    if (!GetUtils.isEmail(val)) return "not a valid email";
+    if (!GetUtils.isEmail(val)) return "ادخل بريد الكتروني صالح";
   }
   if (type == "phone") {
-    if (!GetUtils.isPhoneNumber(val)) return "not a valid phone";
+    if (!GetUtils.isPhoneNumber(val)) return "رقم الهاتف غير صالح";
   }
   if (val.length < min) return "الطول لا يمكن ان يكون أقصر من $min";
 

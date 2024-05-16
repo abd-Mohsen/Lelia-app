@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:lelia/controllers/reports_controller.dart';
 import 'package:lelia/models/report_model.dart';
-import 'package:photo_view/photo_view.dart';
 import 'dart:io';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -71,6 +70,15 @@ class ReportCard extends StatelessWidget {
               child: Text(
                 "حذف",
                 style: tt.titleMedium?.copyWith(color: Colors.red),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                rC.uploadReport(report);
+              },
+              child: Text(
+                "رفع",
+                style: tt.titleMedium?.copyWith(color: cs.primary),
               ),
             ),
             TextButton(

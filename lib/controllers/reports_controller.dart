@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/services/local_services.dart';
+import 'package:lelia/services/remote_services.dart';
 
 class ReportsController extends GetxController {
   @override
@@ -24,5 +25,15 @@ class ReportsController extends GetxController {
     reports.clear();
     LocalServices.storeReports(reports);
     update();
+  }
+
+  Future<void> uploadReport(ReportModel report) async {
+    if (await RemoteServices.uploadReport(report)) {
+      report.uploaded = true;
+      LocalServices.storeReports(reports);
+      update();
+    } else {
+      print("error when uploading");
+    }
   }
 }
