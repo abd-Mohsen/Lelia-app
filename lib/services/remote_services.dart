@@ -217,4 +217,20 @@ class RemoteServices {
     });
     return false;
   }
+
+  static Future<List<ReportModel>?> fetchUserReports() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/reports"),
+      headers: {...headers, "Authorization": "Bearer $token"},
+    );
+    print(response.body);
+    print(token);
+    if (response.statusCode == 200) {
+      var reports = reportModelFromJson(response.body);
+      print("returned fine");
+      return reports;
+    }
+    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
+    return null;
+  }
 }

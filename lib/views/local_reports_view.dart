@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lelia/controllers/reports_controller.dart';
+import 'package:lelia/controllers/local_reports_controller.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/views/components/report_card.dart';
 
-class ReportsView extends StatelessWidget {
-  const ReportsView({super.key});
+class LocalReportsView extends StatelessWidget {
+  const LocalReportsView({super.key});
 
   @override
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
-    ReportsController rC = Get.put(ReportsController());
+    LocalReportsController lRC = Get.put(LocalReportsController());
 
     return DefaultTabController(
       length: 2,
@@ -25,7 +25,7 @@ class ReportsView extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                rC.clearReports();
+                lRC.clearReports();
               },
               icon: Icon(Icons.delete, color: cs.onPrimary),
             ),
@@ -40,7 +40,7 @@ class ReportsView extends StatelessWidget {
                   color: cs.onPrimary,
                   size: 25,
                 ),
-                child: Text("غير مرفوع".tr, style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                child: Text("غير مرسل".tr, style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
               ),
               Tab(
                 icon: Icon(
@@ -48,7 +48,7 @@ class ReportsView extends StatelessWidget {
                   color: cs.onPrimary,
                   size: 25,
                 ),
-                child: Text("مرفوع".tr, style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                child: Text("مرسل".tr, style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
               ),
             ],
           ),
@@ -60,7 +60,7 @@ class ReportsView extends StatelessWidget {
             icon: Icon(Icons.arrow_back, color: cs.onPrimary),
           ),
         ),
-        body: GetBuilder<ReportsController>(
+        body: GetBuilder<LocalReportsController>(
             //init: ReportsController(),
             builder: (con) {
           List<ReportModel> uploaded = con.reports.where((report) => !report.uploaded!).toList();

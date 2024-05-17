@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:lelia/controllers/reports_controller.dart';
+import 'package:lelia/controllers/local_reports_controller.dart';
 import 'package:lelia/models/report_model.dart';
 import 'dart:io';
 
@@ -16,7 +16,7 @@ class ReportCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ReportsController rC = Get.find();
+    LocalReportsController rC = Get.find();
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
     return ListTile(
@@ -108,7 +108,7 @@ class ReportCard extends StatelessWidget {
                         ReportField(title: "اسم الشارع", value: report.street),
                         ReportField(title: "رقم ارضي", value: report.landline),
                         ReportField(title: "رقم موبايل", value: report.mobile),
-                        ReportField(title: "حركة المنتج", value: report.availability ? report.status! : "غير متواجد"),
+                        ReportField(title: "حركة المنتج", value: report.status ?? "غير متواحد"),
                         ReportField(title: "ملاحظات الزبون", value: report.notes),
                         GetBuilder<ReportController>(
                             init: ReportController(),

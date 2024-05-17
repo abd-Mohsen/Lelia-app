@@ -7,10 +7,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/home_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
+import 'package:lelia/views/all_reports_view.dart';
 import 'package:lelia/views/components/custom_dropdown.dart';
 import 'package:lelia/views/components/custom_field.dart';
 import 'package:lelia/views/map_page.dart';
-import 'package:lelia/views/reports_view.dart';
+import 'package:lelia/views/local_reports_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeView extends StatelessWidget {
@@ -212,7 +213,7 @@ class HomeView extends StatelessWidget {
                         "بطيئة",
                       ],
                       onSelect: (String? newVal) {
-                        con.setStatus(newVal!);
+                        con.setReportState(newVal!);
                       },
                       selectedValue: con.state,
                     ),
@@ -462,10 +463,12 @@ class HomeView extends StatelessWidget {
                             accountName: Text(
                               con.currentUser?.userName ?? "",
                               style: tt.headlineMedium,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             accountEmail: Text(
                               con.currentUser?.email ?? "",
                               style: tt.titleMedium,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           );
                   }),
@@ -483,7 +486,14 @@ class HomeView extends StatelessWidget {
                     leading: const Icon(Icons.mobile_friendly),
                     title: Text("التقارير المحفوظة", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
                     onTap: () {
-                      Get.to(() => ReportsView());
+                      Get.to(() => LocalReportsView());
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.checklist_outlined),
+                    title: Text("جميع تقاريري", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
+                    onTap: () {
+                      Get.to(() => const AllReportsView());
                     },
                   ),
                   ListTile(

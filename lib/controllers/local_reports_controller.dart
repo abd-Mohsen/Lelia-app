@@ -3,7 +3,7 @@ import 'package:lelia/models/report_model.dart';
 import 'package:lelia/services/local_services.dart';
 import 'package:lelia/services/remote_services.dart';
 
-class ReportsController extends GetxController {
+class LocalReportsController extends GetxController {
   @override
   void onInit() {
     reports = LocalServices.loadReports();

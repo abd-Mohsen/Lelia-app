@@ -1,14 +1,14 @@
 import 'dart:convert';
 
+import 'package:lelia/models/user_model.dart';
+
 List<ReportModel> reportModelFromJson(String str) {
-  final jsonData = json.decode(str);
-  return List<ReportModel>.from(jsonData.map((x) => ReportModel.fromJson(x)));
+  print(json.decode(str));
+  //todo: something is wrong with FromJson, fix it
+  return List<ReportModel>.from(json.decode(str).map((x) => ReportModel.fromJson(x)));
 }
 
-String reportModelToJson(List<ReportModel> data) {
-  final dyn = List<dynamic>.from(data.map((x) => x.toJsonLocal()));
-  return json.encode(dyn);
-}
+String reportModelToJson(List<ReportModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ReportModel {
   String title;
@@ -18,7 +18,7 @@ class ReportModel {
   String street;
   String mobile;
   String landline;
-  bool availability;
+  bool? availability;
   String? status;
   String notes;
   double longitude;
@@ -26,6 +26,7 @@ class ReportModel {
   DateTime date;
   List<String> images;
   bool? uploaded;
+  UserModel? owner;
 
   static final Map<String, String> translation = {
     "صغير": "small",
@@ -53,25 +54,27 @@ class ReportModel {
     required this.date,
     required this.images,
     this.uploaded,
+    this.owner,
   });
 
+  // todo: do another from json for backend
   factory ReportModel.fromJson(Map<String, dynamic> json) => ReportModel(
-        title: json["title"],
-        type: json["type"],
-        size: json["size"],
-        neighborhood: json["neighborhood"],
-        street: json["street"],
-        mobile: json["mobile_number"],
-        landline: json["landline_number"],
-        availability: json["availability"], // might be null
-        status: json["status"],
-        notes: json["notes"],
-        longitude: json["longitude"].toDouble(),
-        latitude: json["latitude"].toDouble(),
-        date: DateTime.parse(json["issue_date"]),
-        uploaded: json['uploaded'] ?? true,
-        images: List<String>.from(json["images"].map((x) => x)),
-      );
+      title: json["title"],
+      type: json["type"],
+      size: json["size"],
+      neighborhood: json["neighborhood"],
+      street: json["street"],
+      mobile: json["mobile_number"],
+      landline: json["landline_number"],
+      availability: json["availability"], // might be null
+      status: json["status"],
+      notes: json["notes"],
+      longitude: json["longitude"].toDouble(),
+      latitude: json["latitude"].toDouble(),
+      date: DateTime.parse(json["issue_date"]),
+      uploaded: json['uploaded'] ?? true,
+      images: List<String>.from(json["images"].map((x) => x)),
+      owner: json["owner"] == null ? null : UserModel.fromJson(json["owner"]));
 
   //make another version of this that doesnt interfere with local storage
   Map<String, String> toJson() => {

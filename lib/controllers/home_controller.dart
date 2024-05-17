@@ -82,8 +82,8 @@ class HomeController extends GetxController {
     update();
   }
 
-  void setStatus(String status) {
-    this.state = status;
+  void setReportState(String state) {
+    this.state = state;
     update();
   }
 
