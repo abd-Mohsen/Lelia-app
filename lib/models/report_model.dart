@@ -61,14 +61,14 @@ class ReportModel {
         size: json["size"],
         neighborhood: json["neighborhood"],
         street: json["street"],
-        mobile: json["mobile"],
-        landline: json["landline"],
-        availability: json["availability"],
+        mobile: json["mobile_number"],
+        landline: json["landline_number"],
+        availability: json["availability"], // might be null
         status: json["status"],
         notes: json["notes"],
         longitude: json["longitude"].toDouble(),
         latitude: json["latitude"].toDouble(),
-        date: DateTime.parse(json["date"]),
+        date: DateTime.parse(json["issue_date"]),
         uploaded: json['uploaded'] ?? true,
         images: List<String>.from(json["images"].map((x) => x)),
       );
@@ -101,6 +101,7 @@ class ReportModel {
         "longitude": longitude,
         "latitude": latitude,
         "issue_date": date.toIso8601String(), //insure its like: '2024-05-11 23:34:50'
+        "availability": availability,
         "status": status,
         "notes": notes,
         "images": List<String>.from(images.map((x) => x)),
