@@ -143,8 +143,8 @@ class HomeController extends GetxController {
     toggleLoading(false);
   }
 
-  //todo: reset isnt working after filling the entire form
   void clearReport() {
+    dataFormKey.currentState!.reset(); // remove errors
     name.text = "";
     neighborhood.text = "";
     street.text = "";
@@ -155,7 +155,6 @@ class HomeController extends GetxController {
     _available = false;
     position = null;
     images.clear();
-    dataFormKey.currentState!.reset();
     update();
   }
 

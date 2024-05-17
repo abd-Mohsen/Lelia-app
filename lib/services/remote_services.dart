@@ -199,7 +199,7 @@ class RemoteServices {
       var stream = http.ByteStream(imageFile.openRead());
       var length = await imageFile.length();
       var multipartFile = http.MultipartFile(
-        'files',
+        'images[]',
         stream,
         length,
         filename: basename(imageFile.path),

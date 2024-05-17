@@ -110,6 +110,6 @@ class ReportModel {
 
   @override
   String toString() {
-    return "$title\n$type\n$size\n$mobile";
+    return "$notes\n";
   }
 }
