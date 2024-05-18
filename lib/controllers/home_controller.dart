@@ -20,6 +20,7 @@ import '../constants.dart';
 class HomeController extends GetxController {
   final GetStorage _getStorage = GetStorage();
 
+  // todo: make separate loading for location
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   void toggleLoading(bool value) {

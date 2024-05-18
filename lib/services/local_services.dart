@@ -7,7 +7,7 @@ class LocalServices {
   static List<ReportModel> loadReports() {
     List<ReportModel> reports = [];
     if (_local.hasData("reports")) {
-      reports.addAll(reportModelFromJson(_local.read("reports")));
+      reports.addAll(reportModelFromJsonLocal(_local.read("reports")));
     }
     return reports;
   }

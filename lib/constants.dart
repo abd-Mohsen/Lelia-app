@@ -54,10 +54,8 @@ AlertDialog kSessionExpiredDialog() => AlertDialog(
     );
 
 Future kTimeOutDialog() => Get.defaultDialog(
-      title: "error".tr,
-      middleText: "operation is taking so long, please check your internet "
-              "connection or try again later."
-          .tr,
+      title: "فشل الاتصال",
+      middleText: "تأكد من اتصالك بالانترنت ثم حاول مجدداً",
     );
 
 TextTheme kMyTextTheme = TextTheme(

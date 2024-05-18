@@ -51,7 +51,10 @@ class AllReportsView extends StatelessWidget {
               //todo: show network error icon if not fetched
               return ListView.builder(
                 itemCount: con.reports.length,
-                itemBuilder: (context, i) => ReportCard(report: con.reports[i]),
+                itemBuilder: (context, i) => ReportCard(
+                  report: con.reports[i],
+                  local: false,
+                ),
               );
             }),
       ),

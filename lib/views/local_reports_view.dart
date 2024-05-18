@@ -69,11 +69,17 @@ class LocalReportsView extends StatelessWidget {
             children: [
               ListView.builder(
                 itemCount: uploaded.length,
-                itemBuilder: (context, i) => ReportCard(report: uploaded[i]),
+                itemBuilder: (context, i) => ReportCard(
+                  report: uploaded[i],
+                  local: true,
+                ),
               ),
               ListView.builder(
                 itemCount: notUploaded.length,
-                itemBuilder: (context, i) => ReportCard(report: notUploaded[i]),
+                itemBuilder: (context, i) => ReportCard(
+                  report: notUploaded[i],
+                  local: true,
+                ),
               ),
             ],
           );
