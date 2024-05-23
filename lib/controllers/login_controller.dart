@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lelia/models/login_model.dart';
 import 'package:lelia/views/home_view.dart';
-import 'package:lelia/views/supervisor_home.dart';
+import 'package:lelia/views/supervisor_view.dart';
 
 import '../constants.dart';
 import '../services/remote_services.dart';
@@ -50,11 +50,12 @@ class LoginController extends GetxController {
         LoginModel? loginData = await RemoteServices.login(email.text, password.text).timeout(kTimeOutDuration);
         if (loginData == null) return;
         _getStorage.write("token", loginData.accessToken);
+        _getStorage.write("role", loginData.role);
         print(_getStorage.read("token"));
-        if (loginData.role == "supervisor") {
+        if (loginData.role == "salesman") {
           Get.offAll(() => const HomeView());
-        } else if (loginData.role == "salesman") {
-          Get.offAll(() => const SupervisorHomeView());
+        } else if (loginData.role == "supervisor") {
+          Get.offAll(() => const SupervisorView());
         } else {
           return; // admin, show a message from backend (send a header that represents the platform)
         }

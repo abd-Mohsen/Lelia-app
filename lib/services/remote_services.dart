@@ -10,6 +10,7 @@ import 'package:path/path.dart';
 import '../constants.dart';
 
 //todo: implement 'session expired'
+// todo: all dialogs here are broken with light mode
 class RemoteServices {
   static final String _hostIP = "$kHostIP/api";
   static String get token => GetStorage().read("token");
@@ -62,6 +63,7 @@ class RemoteServices {
         "password": password,
       }),
     );
+    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       return LoginModel.fromJson(jsonDecode(response.body));
     }

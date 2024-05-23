@@ -245,6 +245,7 @@ class HomeController extends GetxController {
     //todo: console is printing that login controller is deleted when i enter the login page
     if (await RemoteServices.logout()) {
       _getStorage.remove("token");
+      _getStorage.remove("role");
       Get.put(LoginController());
       Get.offAll(() => const LoginView());
     }

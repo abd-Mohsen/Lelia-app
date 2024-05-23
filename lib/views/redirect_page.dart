@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lelia/views/home_view.dart';
 import 'package:lelia/views/login_view.dart';
+import 'package:lelia/views/supervisor_view.dart';
 
 class RedirectPage extends StatefulWidget {
   const RedirectPage({super.key});
@@ -15,7 +16,12 @@ class _RedirectPageState extends State<RedirectPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.offAll(() => (GetStorage().hasData("token")) ? HomeView() : LoginView());
+      GetStorage getStorage = GetStorage();
+      Get.offAll(() => (!getStorage.hasData("token"))
+          ? const LoginView()
+          : getStorage.read("role") == "supervisor"
+              ? const SupervisorView()
+              : const HomeView());
     });
     super.initState();
   }
