@@ -1,22 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
-class MapPage extends StatelessWidget {
+class MapPage extends StatefulWidget {
   final double latitude;
   final double longitude;
   const MapPage({super.key, required this.latitude, required this.longitude});
+
+  @override
+  State<MapPage> createState() => _MapPageState();
+}
+
+class _MapPageState extends State<MapPage> {
+  late MapController mapController;
+
+  //todo: fix this and add marker on the initial position
+  @override
+  void initState() {
+    super.initState();
+    mapController = MapController.withPosition(
+      initPosition: GeoPoint(
+        latitude: widget.latitude,
+        longitude: widget.longitude,
+      ),
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Add the initial marker after the widget is built
+      mapController.addMarker(
+        GeoPoint(
+          latitude: widget.latitude,
+          longitude: widget.longitude,
+        ),
+        markerIcon: MarkerIcon(
+          icon: Icon(
+            Icons.location_history_rounded,
+            color: Colors.red,
+            size: 48,
+          ),
+        ),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("موقع النقطة")),
       body: OSMFlutter(
-          controller: MapController.withPosition(
-            initPosition: GeoPoint(
-              latitude: latitude,
-              longitude: longitude,
-            ),
-          ),
+          controller: mapController,
           osmOption: OSMOption(
             // userTrackingOption: UserTrackingOption(
             //   enableTracking: true,
@@ -47,13 +77,14 @@ class MapPage extends StatelessWidget {
               roadColor: Colors.yellowAccent,
             ),
             markerOption: MarkerOption(
-                defaultMarker: const MarkerIcon(
-              icon: Icon(
-                Icons.person_pin_circle,
-                color: Colors.blue,
-                size: 56,
+              defaultMarker: const MarkerIcon(
+                icon: Icon(
+                  Icons.person_pin_circle,
+                  color: Colors.blue,
+                  size: 56,
+                ),
               ),
-            )),
+            ),
           )),
     );
   }

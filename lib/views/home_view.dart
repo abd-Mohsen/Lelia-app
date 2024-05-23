@@ -89,7 +89,7 @@ class HomeView extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 children: [
-                  // todo: add constraints for fields
+                  // todo: check constraints for fields
                   CustomField(
                     controller: con.name,
                     iconData: Icons.label,

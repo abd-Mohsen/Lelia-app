@@ -13,51 +13,49 @@ class AllReportsView extends StatelessWidget {
     TextTheme tt = Theme.of(context).textTheme;
     //AllReportsController aRC = Get.put(AllReportsController());
 
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        backgroundColor: cs.background,
-        appBar: AppBar(
-          title: Text(
-            "التقارير المرسلة",
-            style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                //todo: show a dialog "here you can see all the reports you submitted(local reports wont be shown here)"
-              },
-              icon: Icon(Icons.info_outline, color: cs.onPrimary),
-            ),
-          ],
-          backgroundColor: cs.primary,
-          leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: Icon(Icons.arrow_back, color: cs.onPrimary),
-          ),
+    //todo: pagination
+    return Scaffold(
+      backgroundColor: cs.background,
+      appBar: AppBar(
+        title: Text(
+          "التقارير المرسلة",
+          style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
         ),
-        body: GetBuilder<AllReportsController>(
-            init: AllReportsController(),
-            builder: (con) {
-              if (con.isLoading) {
-                return Center(
-                    child: SpinKitFoldingCube(
-                  color: cs.primary,
-                  size: 80,
-                ));
-              }
-              //todo: show network error icon if not fetched
-              return ListView.builder(
-                itemCount: con.reports.length,
-                itemBuilder: (context, i) => ReportCard(
-                  report: con.reports[i],
-                  local: false,
-                ),
-              );
-            }),
+        actions: [
+          IconButton(
+            onPressed: () {
+              //todo: show a dialog "here you can see all the reports you submitted(local reports wont be shown here)"
+            },
+            icon: Icon(Icons.info_outline, color: cs.onPrimary),
+          ),
+        ],
+        backgroundColor: cs.primary,
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back, color: cs.onPrimary),
+        ),
       ),
+      body: GetBuilder<AllReportsController>(
+          init: AllReportsController(),
+          builder: (con) {
+            if (con.isLoading) {
+              return Center(
+                  child: SpinKitFoldingCube(
+                color: cs.primary,
+                size: 80,
+              ));
+            }
+            //todo: show network error icon if not fetched
+            return ListView.builder(
+              itemCount: con.reports.length,
+              itemBuilder: (context, i) => ReportCard(
+                report: con.reports[i],
+                local: false,
+              ),
+            );
+          }),
     );
   }
 }

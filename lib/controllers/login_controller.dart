@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lelia/models/login_model.dart';
 import 'package:lelia/views/home_view.dart';
+import 'package:lelia/views/supervisor_home.dart';
 
 import '../constants.dart';
 import '../services/remote_services.dart';
@@ -45,13 +47,18 @@ class LoginController extends GetxController {
     if (isValid) {
       toggleLoading(true);
       try {
-        String? accessToken = await RemoteServices.login(email.text, password.text).timeout(kTimeOutDuration);
-        if (accessToken == null) return;
-        _getStorage.write("token", accessToken);
+        LoginModel? loginData = await RemoteServices.login(email.text, password.text).timeout(kTimeOutDuration);
+        if (loginData == null) return;
+        _getStorage.write("token", loginData.accessToken);
         print(_getStorage.read("token"));
-        //todo: handle role (go to another home if supervisor, make a login model)
+        if (loginData.role == "supervisor") {
+          Get.offAll(() => const HomeView());
+        } else if (loginData.role == "salesman") {
+          Get.offAll(() => const SupervisorHomeView());
+        } else {
+          return; // admin, show a message from backend (send a header that represents the platform)
+        }
         // await Future.delayed(Duration(milliseconds: 800));
-        Get.offAll(() => const HomeView());
         //dispose();
       } on TimeoutException {
         kTimeOutDialog();

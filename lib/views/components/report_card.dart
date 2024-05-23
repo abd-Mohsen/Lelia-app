@@ -193,7 +193,6 @@ class ReportCard extends StatelessWidget {
                               );
                             }),
                         // todo: add map to see location
-                        // todo: edit?
                       ],
                     ),
                   ),

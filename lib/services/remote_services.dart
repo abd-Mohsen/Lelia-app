@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:lelia/models/login_model.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/models/user_model.dart';
 import 'package:path/path.dart';
@@ -52,7 +53,7 @@ class RemoteServices {
     return false;
   }
 
-  static Future<String?> login(String email, String password) async {
+  static Future<LoginModel?> login(String email, String password) async {
     var response = await client.post(
       Uri.parse("$_hostIP/login"),
       headers: headers,
@@ -62,7 +63,7 @@ class RemoteServices {
       }),
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
-      return jsonDecode(response.body)["access_token"];
+      return LoginModel.fromJson(jsonDecode(response.body));
     }
     if (response.statusCode == 422) {
       Get.defaultDialog(
