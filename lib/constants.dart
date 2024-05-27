@@ -21,7 +21,7 @@ AlertDialog kCloseAppDialog() => AlertDialog(
         TextButton(
             onPressed: () => SystemNavigator.pop(),
             child: Text(
-              "yes",
+              "نعم",
               //style: kTextStyle20.copyWith(color: Colors.red),
             )),
         TextButton(
@@ -29,7 +29,7 @@ AlertDialog kCloseAppDialog() => AlertDialog(
               Get.back();
             },
             child: Text(
-              "no".tr,
+              "لا",
               //style: kTextStyle20,
             )),
       ],

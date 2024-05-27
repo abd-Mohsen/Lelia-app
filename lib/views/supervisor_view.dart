@@ -7,6 +7,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:lelia/constants.dart';
 import 'package:lelia/controllers/supervisor_controller.dart';
+import 'package:lelia/models/user_model.dart';
+import 'package:lelia/views/components/user_card.dart';
 
 import '../controllers/theme_controller.dart';
 import '../models/report_model.dart';
@@ -25,138 +27,147 @@ class SupervisorView extends StatelessWidget {
 
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        backgroundColor: cs.background,
-        appBar: AppBar(
-          title: Text(
-            "لوحة تحكم المشرف",
-            style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
-          ),
-          actions: [
-            //
-          ],
-          bottom: TabBar(
-            indicatorColor: Colors.deepOrange,
-            indicatorWeight: 4,
-            tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.checklist_outlined,
-                  color: cs.onPrimary,
-                  size: 25,
-                ),
-                child: Text("كل التقارير", style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.person_outline,
-                  color: cs.onPrimary,
-                  size: 25,
-                ),
-                child: Text("المندوبين", style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
-              ),
-              Tab(
-                icon: Icon(
-                  Icons.print_outlined,
-                  color: cs.onPrimary,
-                  size: 25,
-                ),
-                child: Text("تصدير التقارير", style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
-              ),
-            ],
-          ),
-          backgroundColor: cs.primary,
-        ),
-        body: GetBuilder<SupervisorController>(builder: (con) {
-          List<ReportModel> allReports = con.reports;
-          // List<ReportModel> notUploaded = con.reports.where((report) => report.uploaded!).toList();
-          return TabBarView(
-            children: [
-              ListView.builder(
-                itemCount: allReports.length,
-                itemBuilder: (context, i) => ReportCard(
-                  report: allReports[i],
-                  local: false,
-                  supervisor: true,
-                ),
-              ),
-              Container(
-                  // user card then see all user's report
-                  ),
-              Container(
-                  /*
-                drop down to select who's report to generate (all, or specific employee)
-                select date
-                select file name
-                generate excel file (keep the supervisor name and current date in mind)
-                */
-                  ),
-            ],
-          );
-        }),
-        drawer: Drawer(
+      child: WillPopScope(
+        onWillPop: () async {
+          Get.dialog(kCloseAppDialog());
+          return false;
+        },
+        child: Scaffold(
           backgroundColor: cs.background,
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView(
-                  children: [
-                    GetBuilder<SupervisorController>(builder: (con) {
-                      return con.isLoadingReports
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SpinKitPianoWave(color: cs.primary),
-                            )
-                          : UserAccountsDrawerHeader(
-                              accountName: Text(
-                                con.currentUser?.userName ?? "",
-                                style: tt.headlineMedium,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              accountEmail: Text(
-                                con.currentUser?.email ?? "",
-                                style: tt.titleMedium,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            );
-                    }),
-                    ListTile(
-                      leading: const Icon(Icons.dark_mode_outlined),
-                      title: Text("الوضع الداكن", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
-                      trailing: Switch(
-                        value: tC.switchValue,
-                        onChanged: (bool value) {
-                          tC.updateTheme(value);
+          appBar: AppBar(
+            title: Text(
+              "لوحة تحكم المشرف",
+              style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+            ),
+            actions: [
+              //
+            ],
+            bottom: TabBar(
+              indicatorColor: Colors.deepOrange,
+              indicatorWeight: 4,
+              tabs: [
+                Tab(
+                  icon: Icon(
+                    Icons.checklist_outlined,
+                    color: cs.onPrimary,
+                    size: 25,
+                  ),
+                  child: Text("كل التقارير", style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                ),
+                Tab(
+                  icon: Icon(
+                    Icons.person_outline,
+                    color: cs.onPrimary,
+                    size: 25,
+                  ),
+                  child: Text("المندوبين", style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                ),
+                Tab(
+                  icon: Icon(
+                    Icons.print_outlined,
+                    color: cs.onPrimary,
+                    size: 25,
+                  ),
+                  child: Text("تصدير التقارير", style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                ),
+              ],
+            ),
+            backgroundColor: cs.primary,
+          ),
+          body: GetBuilder<SupervisorController>(builder: (con) {
+            List<ReportModel> allReports = con.reports;
+            List<UserModel> subordinates = con.subordinates;
+            return TabBarView(
+              children: [
+                ListView.builder(
+                  itemCount: allReports.length,
+                  itemBuilder: (context, i) => ReportCard(
+                    report: allReports[i],
+                    local: false,
+                    supervisor: true,
+                  ),
+                ),
+                ListView.builder(
+                  itemCount: subordinates.length,
+                  itemBuilder: (context, i) => UserCard(
+                    user: subordinates[i],
+                  ),
+                ),
+                Container(
+                    /*
+                  drop down to select who's report to generate (all, or specific employee)
+                  select date
+                  select file name
+                  generate excel file (keep the supervisor name and current date in mind)
+                  */
+                    ),
+              ],
+            );
+          }),
+          drawer: Drawer(
+            backgroundColor: cs.background,
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    children: [
+                      GetBuilder<SupervisorController>(builder: (con) {
+                        return con.isLoadingReports
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SpinKitPianoWave(color: cs.primary),
+                              )
+                            : UserAccountsDrawerHeader(
+                                accountName: Text(
+                                  con.currentUser?.userName ?? "",
+                                  style: tt.headlineMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                accountEmail: Text(
+                                  con.currentUser?.email ?? "",
+                                  style: tt.titleMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              );
+                      }),
+                      ListTile(
+                        leading: const Icon(Icons.dark_mode_outlined),
+                        title: Text("الوضع الداكن", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
+                        trailing: Switch(
+                          value: tC.switchValue,
+                          onChanged: (bool value) {
+                            tC.updateTheme(value);
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.info_outline),
+                        title: Text("حول التطبيق", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
+                        onTap: () {
+                          Get.dialog(
+                            kAboutAppDialog(),
+                          );
                         },
                       ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.info_outline),
-                      title: Text("حول التطبيق", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
-                      onTap: () {
-                        Get.dialog(
-                          kAboutAppDialog(),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.logout, color: cs.error),
-                      title: Text("تسجيل خروج", style: tt.titleMedium!.copyWith(color: cs.error)),
-                      onTap: () {
-                        sC.logout();
-                      },
-                    ),
-                  ],
+                      ListTile(
+                        leading: Icon(Icons.logout, color: cs.error),
+                        title: Text("تسجيل خروج", style: tt.titleMedium!.copyWith(color: cs.error)),
+                        onTap: () {
+                          sC.logout();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: Text(
-                  'جميع الحقوق محفوظة',
-                  style: tt.labelMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: Text(
+                    'جميع الحقوق محفوظة',
+                    style: tt.labelMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

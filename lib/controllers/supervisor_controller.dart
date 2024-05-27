@@ -13,6 +13,7 @@ class SupervisorController extends GetxController {
   void onInit() {
     getCurrentUser();
     getReports();
+    getSubordinates();
     super.onInit();
   }
 
@@ -29,6 +30,13 @@ class SupervisorController extends GetxController {
   bool get isLoadingReports => _isLoadingReports;
   void toggleLoadingReports(bool value) {
     _isLoadingReports = value;
+    update();
+  }
+
+  bool _isLoadingSubs = false;
+  bool get isLoadingSubs => _isLoadingSubs;
+  void toggleLoadingSubs(bool value) {
+    _isLoadingSubs = value;
     update();
   }
 
@@ -62,6 +70,22 @@ class SupervisorController extends GetxController {
       print(e.toString());
     } finally {
       toggleLoadingReports(false);
+    }
+  }
+
+  final List<UserModel> _subordinates = [];
+  List<UserModel> get subordinates => _subordinates;
+
+  void getSubordinates() async {
+    try {
+      toggleLoadingSubs(true);
+      _subordinates.addAll((await RemoteServices.fetchSupervisorSubordinates().timeout(kTimeOutDuration))!);
+    } on TimeoutException {
+      kTimeOutDialog();
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      toggleLoadingSubs(false);
     }
   }
 

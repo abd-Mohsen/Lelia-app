@@ -254,4 +254,17 @@ class RemoteServices {
     Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
     return null;
   }
+
+  static Future<List<UserModel>?> fetchSupervisorSubordinates() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/users/my-subs"),
+      headers: {...headers, "Authorization": "Bearer $token"},
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return userModelFromJson(response.body);
+    }
+    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
+    return null;
+  }
 }

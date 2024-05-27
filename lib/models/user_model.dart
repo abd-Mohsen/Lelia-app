@@ -10,6 +10,7 @@ class UserModel {
   final String userName;
   final String email;
   final String phone;
+  final String role;
   final UserModel? supervisor;
   final bool isVerified;
 
@@ -18,6 +19,7 @@ class UserModel {
     required this.userName,
     required this.email,
     required this.phone,
+    required this.role,
     required this.supervisor,
     required this.isVerified,
   });
@@ -27,6 +29,7 @@ class UserModel {
         userName: json["user_name"],
         email: json["email"],
         phone: json["phone"],
+        role: json["role"],
         supervisor: json["supervisor"] != null ? UserModel.fromJson(json["supervisor"]) : null,
         isVerified: json["is_verified"],
       );
@@ -36,6 +39,7 @@ class UserModel {
         "user_name": userName,
         "email": email,
         "phone": phone,
+        "role": role,
         "supervisor": supervisor!.toJson(),
         "is_verified": isVerified,
       };
