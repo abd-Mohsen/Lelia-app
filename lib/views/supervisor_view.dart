@@ -5,9 +5,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:lelia/constants.dart';
 import 'package:lelia/controllers/supervisor_controller.dart';
 
 import '../controllers/theme_controller.dart';
+import '../models/report_model.dart';
+import 'components/report_card.dart';
 
 class SupervisorView extends StatelessWidget {
   const SupervisorView({super.key});
@@ -18,6 +21,7 @@ class SupervisorView extends StatelessWidget {
     TextTheme tt = Theme.of(context).textTheme;
     ThemeController tC = Get.find();
     SupervisorController sC = Get.put(SupervisorController());
+    //todo: implement search for users and reports (bottomsheet with dropdownsearch)
 
     return DefaultTabController(
       length: 3,
@@ -53,7 +57,7 @@ class SupervisorView extends StatelessWidget {
               ),
               Tab(
                 icon: Icon(
-                  Icons.print,
+                  Icons.print_outlined,
                   color: cs.onPrimary,
                   size: 25,
                 ),
@@ -63,28 +67,30 @@ class SupervisorView extends StatelessWidget {
           ),
           backgroundColor: cs.primary,
         ),
-        body: GetBuilder<SuperController>(builder: (con) {
-          // List<ReportModel> uploaded = con.reports.where((report) => !report.uploaded!).toList();
+        body: GetBuilder<SupervisorController>(builder: (con) {
+          List<ReportModel> allReports = con.reports;
           // List<ReportModel> notUploaded = con.reports.where((report) => report.uploaded!).toList();
           return TabBarView(
             children: [
-              // ListView.builder(
-              //   itemCount: uploaded.length,
-              //   itemBuilder: (context, i) => ReportCard(
-              //     report: uploaded[i],
-              //     local: true,
-              //   ),
-              // ),
-              // ListView.builder(
-              //   itemCount: notUploaded.length,
-              //   itemBuilder: (context, i) => ReportCard(
-              //     report: notUploaded[i],
-              //     local: true,
-              //   ),
-              // ),
-              Container(),
-              Container(),
-              Container(),
+              ListView.builder(
+                itemCount: allReports.length,
+                itemBuilder: (context, i) => ReportCard(
+                  report: allReports[i],
+                  local: false,
+                  supervisor: true,
+                ),
+              ),
+              Container(
+                  // user card then see all user's report
+                  ),
+              Container(
+                  /*
+                drop down to select who's report to generate (all, or specific employee)
+                select date
+                select file name
+                generate excel file (keep the supervisor name and current date in mind)
+                */
+                  ),
             ],
           );
         }),
@@ -96,13 +102,12 @@ class SupervisorView extends StatelessWidget {
                 child: ListView(
                   children: [
                     GetBuilder<SupervisorController>(builder: (con) {
-                      return con.isLoading
-                          ? SpinKitPianoWave(color: cs.primary)
+                      return con.isLoadingReports
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SpinKitPianoWave(color: cs.primary),
+                            )
                           : UserAccountsDrawerHeader(
-                              //todo: showing old data or not showing at all, add loading
-                              // decoration: BoxDecoration(
-                              //   color: cs.primary,
-                              // ),
                               accountName: Text(
                                 con.currentUser?.userName ?? "",
                                 style: tt.headlineMedium,
@@ -130,44 +135,7 @@ class SupervisorView extends StatelessWidget {
                       title: Text("حول التطبيق", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
                       onTap: () {
                         Get.dialog(
-                          AlertDialog(
-                            icon: Icon(
-                              Icons.info_outline,
-                              color: cs.primary,
-                              size: 35,
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: Text(
-                                  "ok",
-                                  style: tt.titleMedium?.copyWith(color: cs.primary),
-                                ),
-                              ),
-                            ],
-                            content: Column(
-                              children: [
-                                Scrollbar(
-                                  thumbVisibility: true,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            "تم تطوير هذا البرنامج لصالح شركة ليتيا المغفلة الخاصة, جميع الحقوق محفوظة",
-                                            style: tt.headlineSmall!.copyWith(color: cs.onSurface),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          kAboutAppDialog(),
                         );
                       },
                     ),

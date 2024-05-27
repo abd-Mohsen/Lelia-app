@@ -14,7 +14,8 @@ import '../../controllers/report_controller.dart';
 class ReportCard extends StatelessWidget {
   final ReportModel report;
   final bool local;
-  const ReportCard({super.key, required this.report, required this.local});
+  final bool? supervisor;
+  const ReportCard({super.key, required this.report, required this.local, this.supervisor});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,11 @@ class ReportCard extends StatelessWidget {
         //" ${report.date.hour}:${report.date.minute}",
         style: tt.labelLarge!.copyWith(color: cs.onBackground),
       ),
-      trailing: report.uploaded! ? const Icon(Icons.upload, color: Colors.green) : const Icon(Icons.sd_storage),
+      trailing: (supervisor ?? false)
+          ? null
+          : report.uploaded!
+              ? const Icon(Icons.upload, color: Colors.green)
+              : const Icon(Icons.sd_storage),
       onTap: () {
         /// todo: make a page instead of dialog, and hanle all cases, uploaded or not, or the user is a supervisor
         Get.dialog(AlertDialog(
@@ -111,6 +116,7 @@ class ReportCard extends StatelessWidget {
                     child: Column(
                       // todo: why listview not rendering without sized box
                       children: [
+                        if (supervisor ?? false) ReportField(title: "اسم المندوب", value: report.owner!.userName),
                         ReportField(title: "اسم النقطة", value: report.title),
                         ReportField(title: "نوع النقطة", value: report.type),
                         ReportField(title: "حجم النقطة", value: report.size),

@@ -53,6 +53,41 @@ AlertDialog kSessionExpiredDialog() => AlertDialog(
       ],
     );
 
+AlertDialog kAboutAppDialog() => AlertDialog(
+      //todo: fix the dialog length, and add contact info for both company and dev
+      actions: [
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: Text(
+            "ok",
+            //style: tt.titleMedium?.copyWith(color: cs.primary),
+          ),
+        ),
+      ],
+      content: Column(
+        children: [
+          Scrollbar(
+            thumbVisibility: true,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "تم تطوير هذا البرنامج لصالح شركة ليتيا المغفلة الخاصة, جميع الحقوق محفوظة",
+                      //style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
 Future kTimeOutDialog() => Get.defaultDialog(
       title: "فشل الاتصال",
       middleText: "تأكد من اتصالك بالانترنت ثم حاول مجدداً",

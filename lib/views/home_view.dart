@@ -5,6 +5,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:lelia/constants.dart';
 import 'package:lelia/controllers/home_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
 import 'package:lelia/views/all_reports_view.dart';
@@ -500,46 +501,7 @@ class HomeView extends StatelessWidget {
                     leading: const Icon(Icons.info_outline),
                     title: Text("حول التطبيق", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
                     onTap: () {
-                      Get.dialog(
-                        AlertDialog(
-                          icon: Icon(
-                            Icons.info_outline,
-                            color: cs.primary,
-                            size: 35,
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: Text(
-                                "ok",
-                                style: tt.titleMedium?.copyWith(color: cs.primary),
-                              ),
-                            ),
-                          ],
-                          content: Column(
-                            children: [
-                              Scrollbar(
-                                thumbVisibility: true,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "تم تطوير هذا البرنامج لصالح شركة ليتيا المغفلة الخاصة, جميع الحقوق محفوظة",
-                                          style: tt.headlineSmall!.copyWith(color: cs.onSurface),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
+                      Get.dialog(kAboutAppDialog());
                     },
                   ),
                   ListTile(

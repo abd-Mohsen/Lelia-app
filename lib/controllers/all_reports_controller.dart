@@ -26,7 +26,7 @@ class AllReportsController extends GetxController {
   void getReports() async {
     try {
       toggleLoading(true);
-      _reports.addAll((await RemoteServices.fetchUserReports().timeout(kTimeOutDuration))!);
+      _reports.addAll((await RemoteServices.fetchSalesmanReports().timeout(kTimeOutDuration))!);
     } on TimeoutException {
       kTimeOutDialog();
     } catch (e) {

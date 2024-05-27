@@ -89,6 +89,10 @@ class RemoteServices {
     if (response.statusCode == 200) {
       return true;
     }
+    if (response.statusCode == 401) {
+      Get.dialog(kSessionExpiredDialog());
+      return true;
+    }
     return false;
   }
 
@@ -97,11 +101,12 @@ class RemoteServices {
       Uri.parse("$_hostIP/users/profile"),
       headers: {...headers, "Authorization": "Bearer $token"},
     );
+    print("${response.body}+${response.statusCode}");
     if (response.statusCode == 200) {
       return UserModel.fromJson(jsonDecode(response.body));
     }
     if (response.statusCode == 401) {
-      kSessionExpiredDialog();
+      Get.dialog(kSessionExpiredDialog());
     }
     return null;
   }
@@ -221,7 +226,7 @@ class RemoteServices {
     return false;
   }
 
-  static Future<List<ReportModel>?> fetchUserReports() async {
+  static Future<List<ReportModel>?> fetchSalesmanReports() async {
     var response = await client.get(
       Uri.parse("$_hostIP/reports"),
       headers: {...headers, "Authorization": "Bearer $token"},
@@ -231,6 +236,19 @@ class RemoteServices {
     if (response.statusCode == 200) {
       var reports = reportModelFromJson(response.body);
       print("returned fine");
+      return reports;
+    }
+    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
+    return null;
+  }
+
+  static Future<List<ReportModel>?> fetchSupervisorReports() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/reports/supervisor"),
+      headers: {...headers, "Authorization": "Bearer $token"},
+    );
+    if (response.statusCode == 200) {
+      var reports = reportModelFromJson(response.body);
       return reports;
     }
     Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
