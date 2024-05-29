@@ -25,7 +25,7 @@ class UserCard extends StatelessWidget {
       ),
       onTap: () {
         //open a user's report view for this user, and in top show basic information about the user, like joining
-        // time, acceptance time, total number of reports, reports last month, last week and such
+        // time, acceptance time, total number of reports, reports last month, last week,mobile and such
       },
     );
   }

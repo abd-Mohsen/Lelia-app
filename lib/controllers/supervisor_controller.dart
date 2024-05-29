@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../constants.dart';
@@ -7,6 +8,7 @@ import '../models/user_model.dart';
 import '../services/remote_services.dart';
 import '../views/login_view.dart';
 import 'login_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SupervisorController extends GetxController {
   @override
@@ -37,6 +39,13 @@ class SupervisorController extends GetxController {
   bool get isLoadingSubs => _isLoadingSubs;
   void toggleLoadingSubs(bool value) {
     _isLoadingSubs = value;
+    update();
+  }
+
+  bool _isLoadingExport = false;
+  bool get isLoadingExport => _isLoadingExport;
+  void toggleLoadingExport(bool value) {
+    _isLoadingExport = value;
     update();
   }
 
@@ -88,6 +97,30 @@ class SupervisorController extends GetxController {
       toggleLoadingSubs(false);
     }
   }
+
+  TextEditingController fileName = TextEditingController();
+  // drop down button to select a certain subordinate or select all
+  // select the duration
+
+  Future<void> export() async {
+    PermissionStatus status = await Permission.storage.status;
+    if (!status.isGranted) {
+      PermissionStatus newStatus = await Permission.storage.request();
+      if (!newStatus.isGranted) {
+        Get.showSnackbar(const GetSnackBar(
+          message: "تم رفض اذن التخزين, لا يمكن التخزين",
+          duration: Duration(milliseconds: 1500),
+        ));
+        return;
+      }
+    }
+    buttonPressed = true;
+    bool isValid = dataFormKey.currentState!.validate();
+    if (!isValid) return;
+  }
+
+  GlobalKey<FormState> dataFormKey = GlobalKey<FormState>();
+  bool buttonPressed = false;
 
   void logout() async {
     //todo: console is printing that login controller is deleted when i enter the login page

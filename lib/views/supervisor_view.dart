@@ -2,16 +2,19 @@
 // page to generate excel file (according to date and other things)
 
 //
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:lelia/constants.dart';
 import 'package:lelia/controllers/supervisor_controller.dart';
 import 'package:lelia/models/user_model.dart';
+import 'package:lelia/views/components/custom_field.dart';
 import 'package:lelia/views/components/user_card.dart';
 
 import '../controllers/theme_controller.dart';
 import '../models/report_model.dart';
+import 'components/custom_dropdown.dart';
 import 'components/report_card.dart';
 
 class SupervisorView extends StatelessWidget {
@@ -79,6 +82,8 @@ class SupervisorView extends StatelessWidget {
             List<UserModel> subordinates = con.subordinates;
             return TabBarView(
               children: [
+                //todo: loading indicator for every tab
+                //todo: try bottom nav bar instead of tab bar
                 ListView.builder(
                   itemCount: allReports.length,
                   itemBuilder: (context, i) => ReportCard(
@@ -93,14 +98,96 @@ class SupervisorView extends StatelessWidget {
                     user: subordinates[i],
                   ),
                 ),
-                Container(
-                    /*
-                  drop down to select who's report to generate (all, or specific employee)
-                  select date
-                  select file name
-                  generate excel file (keep the supervisor name and current date in mind)
-                  */
+                Form(
+                  key: con.dataFormKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        CustomField(
+                          controller: con.fileName,
+                          hint: "اسم الملف",
+                          iconData: Icons.attach_file,
+                          validator: (s) => validateInput(s!, 4, 200, ""),
+                          onChanged: (s) {
+                            if (con.buttonPressed) con.dataFormKey.currentState!.validate();
+                          },
+                        ),
+                        CustomDropdown(
+                          icon: Icons.person_outline,
+                          title: "المندوب",
+                          items: const [
+                            "كل المندوبين لدي",
+                            "مندوب محدد",
+                          ],
+                          onSelect: (String? newVal) {
+                            //con.setSize(newVal!);
+                          },
+                          selectedValue: "كل المندوبين لدي",
+                        ),
+                        Visibility(
+                          visible: true,
+                          child: DropdownSearch<UserModel>(
+                            validator: (user) {
+                              //if (user == null && con.roleINEnglish == "salesman") return "الرجاء اختيار مندوب";
+                              return null;
+                            },
+                            popupProps: PopupProps.menu(
+                              showSearchBox: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white70,
+                                  hintText: "اسم المشرف",
+                                  prefix: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: Icon(Icons.search, color: cs.onSurface),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              dropdownSearchDecoration: InputDecoration(
+                                labelText: "المشرف".tr,
+                                labelStyle: tt.titleMedium!.copyWith(color: cs.onBackground),
+                                hintText: "اختر اسم المشرف".tr,
+                                icon: Icon(
+                                  Icons.supervisor_account_outlined,
+                                  color: cs.onBackground,
+                                ),
+                              ),
+                            ),
+                            items: con.subordinates,
+                            itemAsString: (UserModel user) => user.userName,
+                            onChanged: (UserModel? user) async {
+                              //con.setSupervisor(user!);
+                              await Future.delayed(Duration(milliseconds: 1000));
+                              if (con.buttonPressed) con.dataFormKey.currentState!.validate();
+                            },
+                            //enabled: !con.enabled,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            con.export();
+                          },
+                          child: IntrinsicWidth(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1E7045),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("تصدير ملف إكسل"),
+                              )),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
+                  ),
+                )
               ],
             );
           }),
