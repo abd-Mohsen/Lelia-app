@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class CustomDropdown extends StatelessWidget {
   const CustomDropdown({
     super.key,
-    required this.icon,
+    this.icon,
     required this.title,
     required this.items,
     required this.onSelect,
     required this.selectedValue,
   });
 
-  final IconData icon;
+  final IconData? icon;
   final String title;
   final String selectedValue;
   final List<String> items;
@@ -23,11 +23,13 @@ class CustomDropdown extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       child: ListTile(
-        leading: Icon(
-          icon,
-          size: 30,
-          color: cs.primary,
-        ),
+        leading: icon != null
+            ? Icon(
+                icon,
+                size: 30,
+                color: cs.primary,
+              )
+            : null,
         title: Text(
           title,
           style: tt.titleMedium!.copyWith(color: cs.onBackground.withOpacity(0.6), overflow: TextOverflow.ellipsis),

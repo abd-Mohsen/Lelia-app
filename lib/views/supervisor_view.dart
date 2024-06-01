@@ -102,89 +102,120 @@ class SupervisorView extends StatelessWidget {
                   key: con.dataFormKey,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        CustomField(
-                          controller: con.fileName,
-                          hint: "اسم الملف",
-                          iconData: Icons.attach_file,
-                          validator: (s) => validateInput(s!, 4, 200, ""),
-                          onChanged: (s) {
-                            if (con.buttonPressed) con.dataFormKey.currentState!.validate();
-                          },
-                        ),
-                        CustomDropdown(
-                          icon: Icons.person_outline,
-                          title: "المندوب",
-                          items: const [
-                            "كل المندوبين لدي",
-                            "مندوب محدد",
-                          ],
-                          onSelect: (String? newVal) {
-                            //con.setSize(newVal!);
-                          },
-                          selectedValue: "كل المندوبين لدي",
-                        ),
-                        Visibility(
-                          visible: true,
-                          child: DropdownSearch<UserModel>(
-                            validator: (user) {
-                              //if (user == null && con.roleINEnglish == "salesman") return "الرجاء اختيار مندوب";
-                              return null;
-                            },
-                            popupProps: PopupProps.menu(
-                              showSearchBox: true,
-                              searchFieldProps: TextFieldProps(
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white70,
-                                  hintText: "اسم المشرف",
-                                  prefix: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: Icon(Icons.search, color: cs.onSurface),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            dropdownDecoratorProps: DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                labelText: "المشرف".tr,
-                                labelStyle: tt.titleMedium!.copyWith(color: cs.onBackground),
-                                hintText: "اختر اسم المشرف".tr,
-                                icon: Icon(
-                                  Icons.supervisor_account_outlined,
-                                  color: cs.onBackground,
-                                ),
-                              ),
-                            ),
-                            items: con.subordinates,
-                            itemAsString: (UserModel user) => user.userName,
-                            onChanged: (UserModel? user) async {
-                              //con.setSupervisor(user!);
-                              await Future.delayed(Duration(milliseconds: 1000));
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          CustomField(
+                            controller: con.fileName,
+                            hint: "اسم الملف",
+                            iconData: Icons.attach_file,
+                            validator: (s) => validateInput(s!, 4, 200, ""),
+                            onChanged: (s) {
                               if (con.buttonPressed) con.dataFormKey.currentState!.validate();
                             },
-                            //enabled: !con.enabled,
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            con.export();
-                          },
-                          child: IntrinsicWidth(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF1E7045),
-                                borderRadius: BorderRadius.circular(5),
+                          CustomDropdown(
+                            //icon: Icons.person_outline,
+                            title: "تصدير من أجل",
+                            items: const [
+                              "كل المندوبين لدي",
+                              "مندوب محدد",
+                            ],
+                            onSelect: (String? newVal) {
+                              con.setGenerateFor(newVal!);
+                            },
+                            selectedValue: con.generateFor,
+                          ),
+                          Visibility(
+                            visible: con.generateFor == "مندوب محدد",
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12.0),
+                              child: DropdownSearch<UserModel>(
+                                validator: (user) {
+                                  if (user == null && con.generateFor == "مندوب محدد") return "الرجاء اختيار مندوب";
+                                  return null;
+                                },
+                                popupProps: PopupProps.menu(
+                                  showSearchBox: true,
+                                  searchFieldProps: TextFieldProps(
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white70,
+                                      hintText: "اسم المندوب",
+                                      prefix: Padding(
+                                        padding: const EdgeInsets.all(4),
+                                        child: Icon(Icons.search, color: cs.onSurface),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelText: "اسم المندوب",
+                                    labelStyle: tt.titleMedium!.copyWith(color: cs.onBackground),
+                                    //hintText: "اختر اسم المندوب".tr,
+                                    // icon: Icon(
+                                    //   Icons.text,
+                                    //   color: cs.onBackground,
+                                    // ),
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                  ),
+                                ),
+                                items: con.subordinates,
+                                itemAsString: (UserModel user) => user.userName,
+                                onChanged: (UserModel? user) async {
+                                  //con.setSupervisor(user!);
+                                  await Future.delayed(const Duration(milliseconds: 1000));
+                                  if (con.buttonPressed) con.dataFormKey.currentState!.validate();
+                                },
+                                //enabled: !con.enabled,
                               ),
-                              child: Center(
-                                  child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text("تصدير ملف إكسل"),
-                              )),
                             ),
                           ),
-                        )
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: ListTile(
+                              onTap: () async {
+                                DateTime? newDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2002),
+                                  lastDate: DateTime.now(),
+                                  currentDate: con.fromDate,
+                                );
+                                con.setFromDate(newDate!);
+                              },
+                              title: Text("تاريخ البدء"),
+                              leading: Icon(Icons.date_range),
+                              trailing: Text(con.fromDate?.toIso8601String() ?? ""),
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                con.export();
+                              },
+                              child: IntrinsicWidth(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF1E7045),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: const Center(
+                                      child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text("تصدير ملف إكسل"),
+                                  )),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 )

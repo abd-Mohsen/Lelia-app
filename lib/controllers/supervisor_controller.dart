@@ -99,8 +99,25 @@ class SupervisorController extends GetxController {
   }
 
   TextEditingController fileName = TextEditingController();
-  // drop down button to select a certain subordinate or select all
-  // select the duration
+
+  String generateFor = "كل المندوبين لدي";
+
+  void setGenerateFor(String val) {
+    generateFor = val;
+    update();
+  }
+
+  DateTime? fromDate;
+  void setFromDate(DateTime val) {
+    fromDate = val;
+    update();
+  }
+
+  DateTime? toDate;
+  void setToDate(DateTime val) {
+    toDate = val;
+    update();
+  }
 
   Future<void> export() async {
     PermissionStatus status = await Permission.storage.status;
@@ -117,13 +134,14 @@ class SupervisorController extends GetxController {
     buttonPressed = true;
     bool isValid = dataFormKey.currentState!.validate();
     if (!isValid) return;
+    // if the reports are empty -> return with a message
+    print('exported');
   }
 
   GlobalKey<FormState> dataFormKey = GlobalKey<FormState>();
   bool buttonPressed = false;
 
   void logout() async {
-    //todo: console is printing that login controller is deleted when i enter the login page
     if (await RemoteServices.logout()) {
       _getStorage.remove("token");
       _getStorage.remove("role");
