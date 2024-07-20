@@ -267,4 +267,50 @@ class RemoteServices {
     Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
     return null;
   }
+
+  // just bs
+  Future<bool> uploadImage(File imageFile) async {
+    var request = http.MultipartRequest("POST", Uri.parse("your end point"));
+
+    request.headers.addAll({
+      "Accept": "Application/json",
+      "Authorization": "Bearer $token",
+    });
+
+    var stream = http.ByteStream(imageFile.openRead());
+    int length = await imageFile.length();
+    var multipartFile = http.MultipartFile(
+      'image',
+      stream,
+      length,
+      filename: basename(imageFile.path),
+    );
+    request.files.add(multipartFile);
+
+    var response = await request.send();
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return true;
+    }
+    response.stream.transform(utf8.decoder).listen((value) {
+      print(value); // to print response body
+    });
+    return false;
+  }
+
+  static Future<void> getString() async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/"),
+      headers: headers,
+    );
+    print(response.body);
+  }
+
+  static Future<void> sendString() async {
+    var response = await http.post(
+      Uri.parse("http://192.168.1.36:8000/api/song_name/"),
+      headers: headers,
+      body: jsonEncode({'name': 'anything'}),
+    );
+    print(response.body);
+  }
 }
