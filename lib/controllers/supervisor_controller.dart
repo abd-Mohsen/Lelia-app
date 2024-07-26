@@ -140,17 +140,19 @@ class SupervisorController extends GetxController {
       }
     }
 
-    List<ReportModel> excelReports = []; //todo: fill this depending on the choice above
+    List<ReportModel> excelReports = reports; //todo: fill this depending on the choice above
     var excel = Excel.createExcel();
-    Sheet sheet = excel['تقرير مسح تسويقي'];
+    Sheet sheet = excel['report'];
+    excel.setDefaultSheet('report');
+    excel.delete('Sheet1');
     sheet.isRTL = true;
 
     // Add metadata
-    sheet.appendRow([TextCellValue('مشرف :'), TextCellValue(currentUser!.userName)]);
-    sheet.appendRow([TextCellValue('تاريخ :'), TextCellValue(DateTime.now().toIso8601String())]);
-    sheet.appendRow([TextCellValue('المنطقة :')]);
-    sheet.appendRow([TextCellValue('مندوب :')]); //todo: show only if the file was for only single employee
-    sheet.appendRow([]);
+    sheet.appendRow([TextCellValue('مشرف'), TextCellValue(currentUser!.userName)]);
+    sheet.appendRow([TextCellValue('تاريخ'), TextCellValue(DateTime.now().toIso8601String())]);
+    sheet.appendRow([TextCellValue('المنطقة')]);
+    sheet.appendRow([TextCellValue('مندوب')]); //todo: show only if the file was for only single employee
+    sheet.appendRow([const TextCellValue('')]);
     sheet.appendRow([
       TextCellValue('#'),
       TextCellValue('اسم'),
@@ -210,12 +212,13 @@ class SupervisorController extends GetxController {
     }
 
     // Save the Excel file
-    var fileBytes = excel.save();
-    var directory = await getApplicationDocumentsDirectory(); //todo: choose a suitable path
+    List<int>? fileBytes = excel.save();
+    //var directory = await DownloadsPathProvider.downloadsDirectory; //todo: choose a suitable path
 
-    File(join('$directory/تقرير جولة المشرف.xlsx'))
+    File(join('/storage/emulated/0/Download/${fileName.text}.xlsx'))
       ..createSync(recursive: true)
       ..writeAsBytesSync(fileBytes!);
+    print("finished");
     //todo: instead of saving, share the file
     // if the reports are empty -> return with a message
   }
