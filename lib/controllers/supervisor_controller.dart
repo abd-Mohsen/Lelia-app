@@ -3,6 +3,7 @@ import 'package:excel/excel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import '../constants.dart';
@@ -149,11 +150,16 @@ class SupervisorController extends GetxController {
 
     // Add metadata
     sheet.appendRow([TextCellValue('مشرف'), TextCellValue(currentUser!.userName)]);
-    sheet.appendRow([TextCellValue('تاريخ'), TextCellValue(DateTime.now().toIso8601String())]);
+    sheet.appendRow(
+      [
+        TextCellValue('تاريخ'),
+        TextCellValue("${Jiffy(DateTime.now()).format("d/M/y")}  ${Jiffy(DateTime.now()).jms}"),
+      ],
+    );
     sheet.appendRow([TextCellValue('المنطقة')]);
-    sheet.appendRow([TextCellValue('مندوب')]); //todo: show only if the file was for only single employee
+    if (generateFor == "مندوب محدد") sheet.appendRow([TextCellValue('مندوب')]);
     sheet.appendRow([const TextCellValue('')]);
-    sheet.appendRow([
+    sheet.appendRow(const [
       TextCellValue('#'),
       TextCellValue('اسم'),
       TextCellValue('نوع'),
@@ -220,6 +226,7 @@ class SupervisorController extends GetxController {
       ..writeAsBytesSync(fileBytes!);
     print("finished");
     //todo: instead of saving, share the file
+    //todo: show a snack bar that its exported to 'downloads'
     // if the reports are empty -> return with a message
   }
 

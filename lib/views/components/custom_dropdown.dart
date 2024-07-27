@@ -32,7 +32,7 @@ class CustomDropdown extends StatelessWidget {
             : null,
         title: Text(
           title,
-          style: tt.titleMedium!.copyWith(color: cs.onBackground.withOpacity(0.6), overflow: TextOverflow.ellipsis),
+          style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6), overflow: TextOverflow.ellipsis),
         ),
         trailing: DropdownButton<String>(
           value: selectedValue,

@@ -18,6 +18,8 @@ class UserCard extends StatelessWidget {
       subtitle: Text(
         user.email,
         style: tt.titleSmall!.copyWith(color: cs.onBackground),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
       trailing: Text(
         user.role,

@@ -39,7 +39,7 @@ class CustomField extends StatelessWidget {
             color: cs.primary,
           ),
           hintText: hint,
-          hintStyle: tt.titleMedium!.copyWith(color: cs.onBackground.withOpacity(0.6)),
+          hintStyle: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),

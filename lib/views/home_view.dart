@@ -424,7 +424,7 @@ class HomeView extends StatelessWidget {
                             ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 12.0, bottom: 4),
+                      padding: const EdgeInsets.only(top: 12.0, bottom: 8, left: 4, right: 4),
                       child: ElevatedButton(
                         onPressed: () {
                           con.submit();
@@ -436,7 +436,7 @@ class HomeView extends StatelessWidget {
                             children: [
                               Text(
                                 'حفظ في الذاكرة',
-                                style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+                                style: tt.titleLarge!.copyWith(color: cs.onPrimary),
                               ),
                               SizedBox(width: 12),
                               Icon(Icons.save_alt, size: 40),

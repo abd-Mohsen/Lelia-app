@@ -6,6 +6,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:lelia/constants.dart';
 import 'package:lelia/controllers/supervisor_controller.dart';
 import 'package:lelia/models/user_model.dart';
@@ -130,6 +131,8 @@ class SupervisorView extends StatelessWidget {
                             visible: con.generateFor == "مندوب محدد",
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
+                              //todo: this below
+                              //todo: list tile borders positions arent updating until i touch the screen
                               child: DropdownSearch<UserModel>(
                                 validator: (user) {
                                   if (user == null && con.generateFor == "مندوب محدد") return "الرجاء اختيار مندوب";
@@ -151,7 +154,7 @@ class SupervisorView extends StatelessWidget {
                                 dropdownDecoratorProps: DropDownDecoratorProps(
                                   dropdownSearchDecoration: InputDecoration(
                                     labelText: "اسم المندوب",
-                                    labelStyle: tt.titleMedium!.copyWith(color: cs.onBackground),
+                                    labelStyle: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
                                     //hintText: "اختر اسم المندوب".tr,
                                     // icon: Icon(
                                     //   Icons.text,
@@ -184,9 +187,16 @@ class SupervisorView extends StatelessWidget {
                                 );
                                 con.setFromDate(newDate!);
                               },
-                              title: Text("تاريخ البدء"),
-                              leading: Icon(Icons.date_range),
-                              trailing: Text(con.fromDate?.toIso8601String() ?? ""),
+                              //todo: add validator to date picker and another date picker
+                              title: Text(
+                                "تاريخ البدء",
+                                style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
+                              ),
+                              //leading: Icon(Icons.date_range),
+                              trailing: Text(
+                                con.fromDate != null ? Jiffy(con.fromDate).format("d / M / y") : "انقر للاختيار",
+                                style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.6)),
+                              ),
                               shape: RoundedRectangleBorder(
                                 side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
                                 borderRadius: BorderRadius.circular(10),
