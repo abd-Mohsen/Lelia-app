@@ -132,6 +132,7 @@ class SupervisorView extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
                               //todo: this below
                               //todo: list tile borders positions arent updating until i touch the screen
+                              //todo: when i change tab, selected user disappears
                               child: DropdownSearch<UserModel>(
                                 validator: (user) {
                                   if (user == null && con.generateFor == "مندوب محدد") return "الرجاء اختيار مندوب";

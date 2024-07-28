@@ -22,7 +22,9 @@ class DateSelector extends StatelessWidget {
             onTap: () async {
               DateTime? newDate = await showDatePicker(
                 context: context,
-                initialDate: DateTime.now(),
+                initialDate: start
+                    ? (con.fromDate == null ? DateTime.now() : con.fromDate!)
+                    : (con.toDate == null ? DateTime.now() : con.toDate!),
                 firstDate: start || con.fromDate == null ? DateTime(2002) : con.fromDate!,
                 lastDate: !start || con.toDate == null ? DateTime.now() : con.toDate!,
                 currentDate: start ? sC.fromDate : sC.toDate,
@@ -31,7 +33,7 @@ class DateSelector extends StatelessWidget {
             },
             //todo: add validator to date picker
             title: Text(
-              start ? "تاريخ البدء" : "تاريخ الانتهاء",
+              start ? "من تاريخ" : "الى تاريخ",
               style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
             ),
             //leading: Icon(Icons.date_range),
