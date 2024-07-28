@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import '../constants.dart';
 import '../models/report_model.dart';
 import '../models/user_model.dart';
@@ -107,7 +106,14 @@ class SupervisorController extends GetxController {
 
   String generateFor = "كل المندوبين لدي";
   void setGenerateFor(String val) {
+    if (val == "كل المندوبين لدي") selectedSubordinate = null;
     generateFor = val;
+    update();
+  }
+
+  UserModel? selectedSubordinate;
+  void selectSubordinate(UserModel? user) {
+    selectedSubordinate = user;
     update();
   }
 

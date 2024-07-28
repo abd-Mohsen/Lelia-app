@@ -6,11 +6,11 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:lelia/constants.dart';
 import 'package:lelia/controllers/supervisor_controller.dart';
 import 'package:lelia/models/user_model.dart';
 import 'package:lelia/views/components/custom_field.dart';
+import 'package:lelia/views/components/date_selector.dart';
 import 'package:lelia/views/components/user_card.dart';
 
 import '../controllers/theme_controller.dart';
@@ -84,7 +84,6 @@ class SupervisorView extends StatelessWidget {
             return TabBarView(
               children: [
                 //todo: loading indicator for every tab
-                //todo: try bottom nav bar instead of tab bar
                 ListView.builder(
                   itemCount: allReports.length,
                   itemBuilder: (context, i) => ReportCard(
@@ -166,7 +165,7 @@ class SupervisorView extends StatelessWidget {
                                 items: con.subordinates,
                                 itemAsString: (UserModel user) => user.userName,
                                 onChanged: (UserModel? user) async {
-                                  //con.setSupervisor(user!);
+                                  con.selectSubordinate(user);
                                   await Future.delayed(const Duration(milliseconds: 1000));
                                   if (con.buttonPressed) con.dataFormKey.currentState!.validate();
                                 },
@@ -174,35 +173,8 @@ class SupervisorView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: ListTile(
-                              onTap: () async {
-                                DateTime? newDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2002),
-                                  lastDate: DateTime.now(),
-                                  currentDate: con.fromDate,
-                                );
-                                con.setFromDate(newDate!);
-                              },
-                              //todo: add validator to date picker and another date picker
-                              title: Text(
-                                "تاريخ البدء",
-                                style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
-                              ),
-                              //leading: Icon(Icons.date_range),
-                              trailing: Text(
-                                con.fromDate != null ? Jiffy(con.fromDate).format("d / M / y") : "انقر للاختيار",
-                                style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.6)),
-                              ),
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
+                          DateSelector(start: true), // do not put const, it wont be rebuilt
+                          DateSelector(start: false),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: GestureDetector(
@@ -216,10 +188,11 @@ class SupervisorView extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: const Center(
-                                      child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Text("تصدير ملف إكسل"),
-                                  )),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text("تصدير ملف إكسل"),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
