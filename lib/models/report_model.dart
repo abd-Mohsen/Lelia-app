@@ -12,6 +12,9 @@ List<ReportModel> reportModelFromJson(String str) {
 
 String reportModelToJson(List<ReportModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+String reportModelToJsonLocal(List<ReportModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJsonLocal())));
+
 class ReportModel {
   int? id;
   String title;

@@ -1,4 +1,5 @@
 //import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
@@ -134,60 +135,60 @@ class ReportCard extends StatelessWidget {
                                 height: 300,
                                 child: Column(
                                   children: [
-                                    // CarouselSlider(
-                                    //   items: [
-                                    //     ...report.images
-                                    //         .map(
-                                    //           (image) => Padding(
-                                    //             padding: const EdgeInsets.all(8.0),
-                                    //             child: GestureDetector(
-                                    //               onTap: () {
-                                    //                 Get.dialog(
-                                    //                   AlertDialog(
-                                    //                     title: Text(
-                                    //                       "عرض الصورة",
-                                    //                       style: tt.titleLarge!.copyWith(color: cs.onSurface),
-                                    //                     ),
-                                    //                     actions: [
-                                    //                       TextButton(
-                                    //                         onPressed: () {
-                                    //                           Get.back();
-                                    //                         },
-                                    //                         child: Text(
-                                    //                           "ok",
-                                    //                           style: tt.titleMedium?.copyWith(color: cs.primary),
-                                    //                         ),
-                                    //                       ),
-                                    //                     ],
-                                    //                     content: InteractiveViewer(
-                                    //                       child: local
-                                    //                           ? Image.file(File(image))
-                                    //                           : Image.network(
-                                    //                               "$kHostIP/${Uri.encodeComponent(image)}",
-                                    //                               headers: {"Keep-Alive": "timeout=5, max=1000"},
-                                    //                             ),
-                                    //                     ),
-                                    //                   ),
-                                    //                 );
-                                    //               },
-                                    //               child: local
-                                    //                   ? Image.file(File(image))
-                                    //                   : Image.network(
-                                    //                       "$kHostIP/${Uri.encodeComponent(image)}",
-                                    //                       headers: {"Keep-Alive": "timeout=5, max=1000"},
-                                    //                     ),
-                                    //             ),
-                                    //           ),
-                                    //         )
-                                    //         .toList(),
-                                    //   ],
-                                    //   options: CarouselOptions(
-                                    //     enableInfiniteScroll: false,
-                                    //     aspectRatio: 4 / 4,
-                                    //     onPageChanged: (i, reason) => con.setPicIndex(i),
-                                    //     viewportFraction: 1,
-                                    //   ),
-                                    // ),
+                                    CarouselSlider(
+                                      items: [
+                                        ...report.images
+                                            .map(
+                                              (image) => Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Get.dialog(
+                                                      AlertDialog(
+                                                        title: Text(
+                                                          "عرض الصورة",
+                                                          style: tt.titleLarge!.copyWith(color: cs.onSurface),
+                                                        ),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Get.back();
+                                                            },
+                                                            child: Text(
+                                                              "ok",
+                                                              style: tt.titleMedium?.copyWith(color: cs.primary),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                        content: InteractiveViewer(
+                                                          child: local
+                                                              ? Image.file(File(image))
+                                                              : Image.network(
+                                                                  "$kHostIP/${Uri.encodeComponent(image)}",
+                                                                  headers: {"Keep-Alive": "timeout=5, max=1000"},
+                                                                ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: local
+                                                      ? Image.file(File(image))
+                                                      : Image.network(
+                                                          "$kHostIP/${Uri.encodeComponent(image)}",
+                                                          headers: {"Keep-Alive": "timeout=5, max=1000"},
+                                                        ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ],
+                                      options: CarouselOptions(
+                                        enableInfiniteScroll: false,
+                                        aspectRatio: 4 / 4,
+                                        onPageChanged: (i, reason) => con.setPicIndex(i),
+                                        viewportFraction: 1,
+                                      ),
+                                    ),
                                     const SizedBox(height: 12),
                                     AnimatedSmoothIndicator(
                                       activeIndex: con.picIndex,

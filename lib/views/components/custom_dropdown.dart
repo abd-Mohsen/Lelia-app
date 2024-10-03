@@ -51,7 +51,7 @@ class CustomDropdown extends StatelessWidget {
           style: tt.titleLarge!.copyWith(color: cs.onSurface),
         ),
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
+          side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.5)),
           borderRadius: BorderRadius.circular(10),
         ),
       ),

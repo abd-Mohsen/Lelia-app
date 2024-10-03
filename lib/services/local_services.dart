@@ -7,6 +7,7 @@ class LocalServices {
   static List<ReportModel> loadReports() {
     List<ReportModel> reports = [];
     if (_local.hasData("reports")) {
+      print(_local.read("reports"));
       reports.addAll(reportModelFromJsonLocal(_local.read("reports")));
     }
     return reports;
@@ -15,10 +16,10 @@ class LocalServices {
   static void storeReport(ReportModel report) {
     List<ReportModel> reports = loadReports();
     reports.add(report);
-    _local.write("reports", reportModelToJson(reports));
+    _local.write("reports", reportModelToJsonLocal(reports));
   }
 
   static void storeReports(List<ReportModel> reports) {
-    _local.write("reports", reportModelToJson(reports));
+    _local.write("reports", reportModelToJsonLocal(reports));
   }
 }

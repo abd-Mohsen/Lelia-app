@@ -161,6 +161,7 @@ class RegisterView extends StatelessWidget {
                           if (user == null && con.roleINEnglish == "salesman") return "الرجاء اختيار مشرف";
                           return null;
                         },
+                        compareFn: (u1, u2) => u1.id == u2.id,
                         popupProps: PopupProps.menu(
                           showSearchBox: true,
                           searchFieldProps: TextFieldProps(
@@ -175,6 +176,7 @@ class RegisterView extends StatelessWidget {
                           ),
                         ),
                         decoratorProps: DropDownDecoratorProps(
+                          baseStyle: tt.titleMedium!.copyWith(color: cs.onBackground),
                           decoration: InputDecoration(
                             labelText: "المشرف".tr,
                             labelStyle: tt.titleMedium!.copyWith(color: cs.onBackground),

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-//import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -250,6 +250,9 @@ class HomeView extends StatelessWidget {
                                 onPressed: () {
                                   con.getLocation(context);
                                 },
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all<Color>(cs.primary),
+                                ),
                                 child: Text(
                                   'حفظ',
                                   style: tt.titleMedium!.copyWith(color: cs.onPrimary),
@@ -268,6 +271,9 @@ class HomeView extends StatelessWidget {
                                       ),
                                     );
                                   },
+                                  style: ButtonStyle(
+                                    backgroundColor: WidgetStateProperty.all<Color>(cs.primary),
+                                  ),
                                   child: Text(
                                     'معاينة',
                                     style: tt.titleMedium!.copyWith(color: cs.onPrimary),
@@ -334,86 +340,86 @@ class HomeView extends StatelessWidget {
                             )
                           : Column(
                               children: [
-                                // CarouselSlider(
-                                //   items: [
-                                //     ...con.images
-                                //         .map(
-                                //           (image) => Padding(
-                                //             padding: const EdgeInsets.all(8.0),
-                                //             child: GestureDetector(
-                                //               onTap: () {
-                                //                 Get.dialog(
-                                //                   AlertDialog(
-                                //                     title: Text(
-                                //                       "عرض الصورة",
-                                //                       style: tt.titleLarge!.copyWith(color: cs.onSurface),
-                                //                     ),
-                                //                     actions: [
-                                //                       TextButton(
-                                //                         onPressed: () {
-                                //                           con.removeImage(image);
-                                //                           Get.back();
-                                //                         },
-                                //                         child: Text(
-                                //                           "حذف",
-                                //                           style: tt.titleMedium?.copyWith(color: cs.error),
-                                //                         ),
-                                //                       ),
-                                //                       TextButton(
-                                //                         onPressed: () {
-                                //                           Get.back();
-                                //                         },
-                                //                         child: Text(
-                                //                           "ok",
-                                //                           style: tt.titleMedium?.copyWith(color: cs.primary),
-                                //                         ),
-                                //                       ),
-                                //                     ],
-                                //                     content: InteractiveViewer(
-                                //                       child: Image.file(File(image.path)),
-                                //                     ),
-                                //                   ),
-                                //                 );
-                                //               },
-                                //               child: Image.file(File(image.path)),
-                                //             ),
-                                //           ),
-                                //         )
-                                //         .toList(),
-                                //     Padding(
-                                //       padding: const EdgeInsets.all(8.0),
-                                //       child: GestureDetector(
-                                //         onTap: () {
-                                //           showPickPicSheet();
-                                //         },
-                                //         child: Container(
-                                //           //width: 100,
-                                //           //height: 150,
-                                //           decoration: BoxDecoration(
-                                //             border: Border.all(
-                                //               color: Colors.grey,
-                                //               width: 1.0,
-                                //             ),
-                                //             borderRadius: BorderRadius.circular(8.0),
-                                //           ),
-                                //           child: Center(
-                                //             child: Icon(
-                                //               Icons.add_photo_alternate_outlined,
-                                //               size: 40,
-                                //               color: cs.onBackground,
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ],
-                                //   options: CarouselOptions(
-                                //     enableInfiniteScroll: false,
-                                //     aspectRatio: 4 / 3,
-                                //     onPageChanged: (i, reason) => con.setPicIndex(i),
-                                //     viewportFraction: 1,
-                                //   ),
-                                // ),
+                                CarouselSlider(
+                                  items: [
+                                    ...con.images
+                                        .map(
+                                          (image) => Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Get.dialog(
+                                                  AlertDialog(
+                                                    title: Text(
+                                                      "عرض الصورة",
+                                                      style: tt.titleLarge!.copyWith(color: cs.onSurface),
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          con.removeImage(image);
+                                                          Get.back();
+                                                        },
+                                                        child: Text(
+                                                          "حذف",
+                                                          style: tt.titleMedium?.copyWith(color: cs.error),
+                                                        ),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Get.back();
+                                                        },
+                                                        child: Text(
+                                                          "ok",
+                                                          style: tt.titleMedium?.copyWith(color: cs.primary),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                    content: InteractiveViewer(
+                                                      child: Image.file(File(image.path)),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Image.file(File(image.path)),
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          showPickPicSheet();
+                                        },
+                                        child: Container(
+                                          //width: 100,
+                                          //height: 150,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius: BorderRadius.circular(8.0),
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.add_photo_alternate_outlined,
+                                              size: 40,
+                                              color: cs.onBackground,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  options: CarouselOptions(
+                                    enableInfiniteScroll: false,
+                                    aspectRatio: 4 / 3,
+                                    onPageChanged: (i, reason) => con.setPicIndex(i),
+                                    viewportFraction: 1,
+                                  ),
+                                ),
                                 const SizedBox(height: 12),
                                 AnimatedSmoothIndicator(
                                   activeIndex: con.picIndex,
@@ -429,6 +435,9 @@ class HomeView extends StatelessWidget {
                         onPressed: () {
                           con.submit();
                         },
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all<Color>(cs.primary),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(
@@ -439,7 +448,11 @@ class HomeView extends StatelessWidget {
                                 style: tt.titleLarge!.copyWith(color: cs.onPrimary),
                               ),
                               SizedBox(width: 12),
-                              Icon(Icons.save_alt, size: 40),
+                              Icon(
+                                Icons.save_alt,
+                                size: 40,
+                                color: cs.onPrimary,
+                              ),
                             ],
                           ),
                         ),

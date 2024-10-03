@@ -17,7 +17,8 @@ class RemoteServices {
 
   static Map<String, String> headers = {
     "Accept": "Application/json",
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
+    "sent-from": "mobile",
   };
 
   static var client = http.Client();

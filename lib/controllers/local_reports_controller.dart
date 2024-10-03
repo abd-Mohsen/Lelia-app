@@ -32,6 +32,11 @@ class LocalReportsController extends GetxController {
       report.uploaded = true;
       LocalServices.storeReports(reports);
       update();
+      Get.back();
+      Get.showSnackbar(const GetSnackBar(
+        message: "تم الارسال بنجاح",
+        duration: Duration(milliseconds: 2500),
+      ));
     } else {
       print("error when uploading");
     }
