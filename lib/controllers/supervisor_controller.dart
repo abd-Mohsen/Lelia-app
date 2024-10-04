@@ -86,6 +86,25 @@ class SupervisorController extends GetxController {
     }
   }
 
+  Future<List<ReportModel>> getExportReports() async {
+    List<ReportModel> res = [];
+    try {
+      toggleLoadingExport(true);
+      res.addAll((await RemoteServices.fetchExportedReports(
+        fromDate!.toIso8601String(),
+        toDate!.toIso8601String(),
+        selectedSubordinate?.id,
+      ).timeout(kTimeOutDuration))!);
+    } on TimeoutException {
+      kTimeOutDialog();
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      toggleLoadingExport(false);
+      return res;
+    }
+  }
+
   final List<UserModel> _subordinates = [];
   List<UserModel> get subordinates => _subordinates;
 
@@ -132,7 +151,7 @@ class SupervisorController extends GetxController {
   //todo: add loading indicator to export
   Future<void> export() async {
     buttonPressed = true;
-    if (currentUser == null) return;
+    if (currentUser == null || fromDate == null || toDate == null) return;
     bool isValid = dataFormKey.currentState!.validate();
     if (!isValid) return;
 
@@ -148,7 +167,7 @@ class SupervisorController extends GetxController {
       }
     }
 
-    List<ReportModel> excelReports = reports; //todo: fill this depending on the choice above
+    List<ReportModel> excelReports = await getExportReports();
     var excel = Excel.createExcel();
     Sheet sheet = excel['report'];
     excel.setDefaultSheet('report');

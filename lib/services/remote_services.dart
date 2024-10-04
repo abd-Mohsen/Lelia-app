@@ -268,4 +268,25 @@ class RemoteServices {
     Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
     return null;
   }
+
+  static Future<List<ReportModel>?> fetchExportedReports(String date1, String date2, int? salesmanID) async {
+    var response = await client.post(
+      Uri.parse("$_hostIP/reports/export"),
+      headers: {...headers, "Authorization": "Bearer $token"},
+      body: jsonEncode({
+        "start_date": date1,
+        "end_date": date2,
+        "user_id": salesmanID,
+      }),
+    );
+    print(response.body);
+    print(token);
+    if (response.statusCode == 200) {
+      var reports = reportModelFromJson(response.body);
+      print("returned fine");
+      return reports;
+    }
+    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
+    return null;
+  }
 }
