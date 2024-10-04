@@ -81,6 +81,7 @@ class SupervisorView extends StatelessWidget {
           body: GetBuilder<SupervisorController>(builder: (con) {
             List<ReportModel> allReports = con.reports;
             List<UserModel> subordinates = con.subordinates;
+            List<ReportModel> exportedReports = con.exportedReports;
             return TabBarView(
               children: [
                 //todo: loading indicator for every tab
@@ -189,16 +190,60 @@ class SupervisorView extends StatelessWidget {
                                     color: const Color(0xFF1E7045),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: const Center(
+                                  child: Center(
                                     child: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text("تصدير ملف إكسل"),
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: GetBuilder<SupervisorController>(
+                                        builder: (con) {
+                                          return con.isLoadingExport
+                                              ? SpinKitThreeBounce(color: Colors.white, size: 25)
+                                              : Text("تصدير ملف إكسل");
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          )
+                          ),
+                          Visibility(
+                            visible: con.exportedReports.isNotEmpty,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.bottomSheet(
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 1.5,
+                                      color: cs.surface,
+                                      child: ListView.builder(
+                                        itemCount: exportedReports.length,
+                                        itemBuilder: (context, i) => ReportCard(
+                                          report: exportedReports[i],
+                                          local: false,
+                                          supervisor: true,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: IntrinsicWidth(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: cs.primary,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text("معاينة التقارير"),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

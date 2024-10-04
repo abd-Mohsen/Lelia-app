@@ -73,6 +73,9 @@ class SupervisorController extends GetxController {
   final List<ReportModel> _reports = [];
   List<ReportModel> get reports => _reports;
 
+  final List<ReportModel> _exportedReports = [];
+  List<ReportModel> get exportedReports => _exportedReports;
+
   void getReports() async {
     try {
       toggleLoadingReports(true);
@@ -86,11 +89,10 @@ class SupervisorController extends GetxController {
     }
   }
 
-  Future<List<ReportModel>> getExportReports() async {
-    List<ReportModel> res = [];
+  Future<void> getExportReports() async {
     try {
       toggleLoadingExport(true);
-      res.addAll((await RemoteServices.fetchExportedReports(
+      _exportedReports.addAll((await RemoteServices.fetchExportedReports(
         fromDate!.toIso8601String(),
         toDate!.toIso8601String(),
         selectedSubordinate?.id,
@@ -101,7 +103,6 @@ class SupervisorController extends GetxController {
       print(e.toString());
     } finally {
       toggleLoadingExport(false);
-      return res;
     }
   }
 
@@ -166,8 +167,7 @@ class SupervisorController extends GetxController {
         return;
       }
     }
-
-    List<ReportModel> excelReports = await getExportReports();
+    await getExportReports();
     var excel = Excel.createExcel();
     Sheet sheet = excel['report'];
     excel.setDefaultSheet('report');
@@ -229,8 +229,8 @@ class SupervisorController extends GetxController {
     // sheet.cell(CellIndex.indexByString("K1")).value = TextCellValue("حركة المنتج");
     // sheet.cell(CellIndex.indexByString("L1")).value = TextCellValue("ملاحظات الزبون");
 
-    for (int i = 0; i < excelReports.length; i++) {
-      var report = reports[i];
+    for (int i = 0; i < _exportedReports.length; i++) {
+      var report = _exportedReports[i];
       sheet.appendRow([
         TextCellValue((i + 1).toString()),
         TextCellValue(report.title),
