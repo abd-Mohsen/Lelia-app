@@ -20,11 +20,17 @@ import '../constants.dart';
 class HomeController extends GetxController {
   final GetStorage _getStorage = GetStorage();
 
-  // todo: make separate loading for location
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   void toggleLoading(bool value) {
     _isLoading = value;
+    update();
+  }
+
+  bool _isLoadingUser = false;
+  bool get isLoadingUser => _isLoadingUser;
+  void toggleLoadingUser(bool value) {
+    _isLoadingUser = value;
     update();
   }
 
@@ -33,7 +39,7 @@ class HomeController extends GetxController {
 
   void getCurrentUser() async {
     try {
-      toggleLoading(true);
+      toggleLoadingUser(true);
       _currentUser = (await RemoteServices.fetchCurrentUser().timeout(kTimeOutDuration))!;
       print(_currentUser);
     } on TimeoutException {
@@ -41,7 +47,7 @@ class HomeController extends GetxController {
     } catch (e) {
       print(e.toString());
     } finally {
-      toggleLoading(false);
+      toggleLoadingUser(false);
     }
   }
 
@@ -212,6 +218,7 @@ class HomeController extends GetxController {
     List<String> storedImagesPaths = [];
 
     for (XFile image in images) {
+      //todo: compress images
       String imagePath = path.join(appDir.path, path.basename(image.path));
       File file = File(image.path);
       await file.copy(imagePath);
@@ -243,6 +250,7 @@ class HomeController extends GetxController {
 
   void logout() async {
     //todo: console is printing that login controller is deleted when i enter the login page
+    //todo: if token is not valid, iam getting socket exception instead of 401 (this might be because of wrong host)
     if (await RemoteServices.logout()) {
       _getStorage.remove("token");
       _getStorage.remove("role");

@@ -10,6 +10,7 @@ import 'package:path/path.dart';
 import '../constants.dart';
 
 //todo: implement 'session expired'
+//todo: clean this shit up, make separate services
 // todo: all dialogs here are broken with light mode
 class RemoteServices {
   static final String _hostIP = "$kHostIP/api";

@@ -11,6 +11,7 @@ import 'dart:io';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../controllers/report_controller.dart';
+import '../map_page.dart';
 
 class ReportCard extends StatelessWidget {
   final ReportModel report;
@@ -41,7 +42,7 @@ class ReportCard extends StatelessWidget {
               ? const Icon(Icons.upload, color: Colors.green)
               : const Icon(Icons.sd_storage),
       onTap: () {
-        /// todo: make a page instead of dialog, and hanle all cases, uploaded or not, or the user is a supervisor
+        // todo: make a page instead of dialog, and handle all cases, uploaded or not, or the user is a supervisor
         Get.dialog(AlertDialog(
           icon: Icon(
             Icons.checklist_rtl_outlined,
@@ -95,6 +96,20 @@ class ReportCard extends StatelessWidget {
                   "رفع",
                   style: tt.titleMedium?.copyWith(color: cs.primary),
                 ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Get.to(
+                  MapPage(
+                    latitude: report.latitude,
+                    longitude: report.longitude,
+                  ),
+                );
+              },
+              child: Text(
+                "الموقع",
+                style: tt.titleMedium?.copyWith(color: cs.primary),
               ),
             ),
             TextButton(
@@ -199,7 +214,6 @@ class ReportCard extends StatelessWidget {
                                 ),
                               );
                             }),
-                        // todo: add map to see location
                       ],
                     ),
                   ),

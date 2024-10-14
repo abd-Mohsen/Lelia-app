@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lelia/controllers/home_controller.dart';
 import 'package:lelia/controllers/local_reports_controller.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/views/components/report_card.dart';
@@ -11,7 +12,8 @@ class LocalReportsView extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
-    LocalReportsController lRC = Get.put(LocalReportsController());
+    HomeController hC = Get.find();
+    LocalReportsController lRC = Get.put(LocalReportsController(homeController: hC));
 
     return DefaultTabController(
       length: 2,
@@ -28,6 +30,12 @@ class LocalReportsView extends StatelessWidget {
                 lRC.clearReports();
               },
               icon: Icon(Icons.delete, color: cs.onPrimary),
+            ),
+            IconButton(
+              onPressed: () {
+                lRC.exportReports();
+              },
+              icon: Icon(Icons.print, color: cs.onPrimary),
             ),
           ],
           bottom: TabBar(

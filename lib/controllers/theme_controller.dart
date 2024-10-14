@@ -21,7 +21,7 @@ class ThemeController extends GetxController {
   }
 
   ThemeMode getThemeMode() {
-    //todo: method being called twice at launch and once when changing language
+    //method being called twice at launch and once when changing language
     if (_getStorage.read('is dark') == "true") {
       print("dark");
       _switchValue = true;

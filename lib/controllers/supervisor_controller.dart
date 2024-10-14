@@ -253,10 +253,12 @@ class SupervisorController extends GetxController {
     File(join('/storage/emulated/0/Download/${fileName.text}.xlsx'))
       ..createSync(recursive: true)
       ..writeAsBytesSync(fileBytes!);
-    print("finished");
+    Get.showSnackbar(const GetSnackBar(
+      message: "تم التخزين في مجلد التنزيلات",
+      duration: Duration(milliseconds: 2500),
+    ));
     //todo: instead of saving, share the file
-    //todo: show a snack bar that its exported to 'downloads'
-    // if the reports are empty -> return with a message
+    //todo: if the reports are empty -> return with a message
   }
 
   GlobalKey<FormState> dataFormKey = GlobalKey<FormState>();
