@@ -57,7 +57,7 @@ class LocalReportsController extends GetxController {
     sheet.isRTL = true;
 
     // Add metadata
-    sheet.appendRow([TextCellValue('مشرف'), TextCellValue(homeController.currentUser!.userName)]);
+    sheet.appendRow([TextCellValue('المندوب'), TextCellValue(homeController.currentUser!.userName)]);
     sheet.appendRow(
       [
         TextCellValue('تاريخ'),
@@ -68,7 +68,7 @@ class LocalReportsController extends GetxController {
       ],
     );
     sheet.appendRow([TextCellValue('المنطقة')]);
-    sheet.appendRow([TextCellValue('مندوب')]);
+    //sheet.appendRow([TextCellValue('مندوب')]);
     sheet.appendRow([TextCellValue('')]);
     sheet.appendRow([
       TextCellValue('#'),
@@ -144,6 +144,7 @@ class LocalReportsController extends GetxController {
   }
 
   Future<void> uploadReport(ReportModel report) async {
+    print(report.toJson());
     if (await RemoteServices.uploadReport(report)) {
       report.uploaded = true;
       LocalServices.storeReports(reports);

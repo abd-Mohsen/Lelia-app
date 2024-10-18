@@ -24,7 +24,7 @@ class HomeView extends StatelessWidget {
     HomeController hC = Get.put(HomeController());
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
-
+//todo: most dialogs are broken in light mode
     showPickPicSheet() => Get.bottomSheet(
           SizedBox(
             height: 120, //todo: find a way to never overflow
@@ -140,7 +140,7 @@ class HomeView extends StatelessWidget {
                           child: CustomField(
                             controller: con.street,
                             iconData: Icons.location_pin,
-                            hint: "اسم الحي",
+                            hint: "الحي",
                             validator: (s) {
                               return validateInput(s!, 2, 50, "name");
                             },
@@ -154,7 +154,7 @@ class HomeView extends StatelessWidget {
                           child: CustomField(
                             controller: con.neighborhood,
                             iconData: Icons.location_pin,
-                            hint: "اسم الشارع",
+                            hint: "الشارع",
                             validator: (s) {
                               return validateInput(s!, 2, 50, "name");
                             },
@@ -440,21 +440,25 @@ class HomeView extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'حفظ في الذاكرة',
-                                style: tt.titleLarge!.copyWith(color: cs.onPrimary),
-                              ),
-                              SizedBox(width: 12),
-                              Icon(
-                                Icons.save_alt,
-                                size: 40,
-                                color: cs.onPrimary,
-                              ),
-                            ],
-                          ),
+                          child: GetBuilder<HomeController>(builder: (con) {
+                            return con.isLoadingSubmit
+                                ? SpinKitThreeInOut(color: cs.onPrimary, size: 30)
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'حفظ في الذاكرة',
+                                        style: tt.titleLarge!.copyWith(color: cs.onPrimary),
+                                      ),
+                                      SizedBox(width: 12),
+                                      Icon(
+                                        Icons.save_alt,
+                                        size: 40,
+                                        color: cs.onPrimary,
+                                      ),
+                                    ],
+                                  );
+                          }),
                         ),
                       ),
                     ),

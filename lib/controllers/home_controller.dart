@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:image/image.dart' as img;
 
 import 'package:get_storage/get_storage.dart';
 import 'package:lelia/models/user_model.dart';
@@ -18,6 +19,7 @@ import 'package:path/path.dart' as path;
 import '../constants.dart';
 
 class HomeController extends GetxController {
+  //todo: implement otp here
   final GetStorage _getStorage = GetStorage();
 
   bool _isLoading = false;
@@ -31,6 +33,13 @@ class HomeController extends GetxController {
   bool get isLoadingUser => _isLoadingUser;
   void toggleLoadingUser(bool value) {
     _isLoadingUser = value;
+    update();
+  }
+
+  bool _isLoadingSubmit = false;
+  bool get isLoadingSubmit => _isLoadingSubmit;
+  void toggleLoadingSubmit(bool value) {
+    _isLoadingSubmit = value;
     update();
   }
 
@@ -162,7 +171,7 @@ class HomeController extends GetxController {
     _available = false;
     position = null;
     images.clear();
-    update();
+    toggleLoadingSubmit(false);
   }
 
   List<XFile> images = [];
@@ -191,7 +200,30 @@ class HomeController extends GetxController {
     update();
   }
 
+  Future<File> compressImage(XFile file) async {
+    File originalFile = File(file.path);
+
+    final bytes = await originalFile.readAsBytes();
+    img.Image? originalImage = img.decodeImage(bytes);
+
+    int quality = 100;
+    int maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+    List<int> compressedBytes;
+
+    do {
+      // Encode the image with the current quality
+      compressedBytes = img.encodeJpg(originalImage!, quality: quality);
+      quality -= 20;
+    } while (compressedBytes.length > maxSize && quality > 0);
+
+    File compressedFile = File('${originalFile.parent.path}/compressed_${originalFile.uri.pathSegments.last}');
+    await compressedFile.writeAsBytes(compressedBytes);
+
+    return compressedFile;
+  }
+
   Future<void> submit() async {
+    if (_isLoadingSubmit) return;
     PermissionStatus status = await Permission.storage.status;
     if (!status.isGranted) {
       PermissionStatus newStatus = await Permission.storage.request();
@@ -213,14 +245,15 @@ class HomeController extends GetxController {
       ));
       return;
     }
+    toggleLoadingSubmit(true);
     // save images in app dir
     Directory appDir = await getApplicationDocumentsDirectory();
     List<String> storedImagesPaths = [];
 
     for (XFile image in images) {
-      //todo: compress images
+      //todo: compress images (find another way, this might not be working properly)
       String imagePath = path.join(appDir.path, path.basename(image.path));
-      File file = File(image.path);
+      File file = await compressImage(image);
       await file.copy(imagePath);
       storedImagesPaths.add(imagePath);
     }
@@ -242,6 +275,7 @@ class HomeController extends GetxController {
       images: storedImagesPaths,
     );
     LocalServices.storeReport(report);
+    toggleLoadingSubmit(false);
     Get.showSnackbar(const GetSnackBar(
       message: "تم التخزين بنجاح",
       duration: Duration(milliseconds: 2500),

@@ -42,6 +42,9 @@ class ReportModel {
     "مركز تجاري (مول)": "mall",
     "صيدلية": "pharmacy",
     "بقالية": "supermarket",
+    "سريعة": "fast",
+    "جيدة": "fair",
+    "بطيئة": "slow",
   };
 
   ReportModel({
@@ -115,7 +118,7 @@ class ReportModel {
         "longitude": longitude.toString(),
         "latitude": latitude.toString(),
         "issue_date": date.toIso8601String(), //insure its like: '2024-05-11 23:34:50'
-        "status": status ?? "unavailable",
+        "status": translation[status] ?? "unavailable",
         "notes": notes ?? "",
         //"images": List<String>.from(images.map((x) => x)),
       };

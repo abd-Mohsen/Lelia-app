@@ -28,6 +28,7 @@ class SupervisorView extends StatelessWidget {
     ThemeController tC = Get.find();
     SupervisorController sC = Get.put(SupervisorController());
     //todo: implement search for users and reports (bottomsheet with dropdownsearch)
+    //todo: refresh indicator for each tab, and no internet error
 
     return DefaultTabController(
       length: 3,
