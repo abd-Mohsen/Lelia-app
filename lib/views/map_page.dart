@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:get/get.dart';
 
 class MapPage extends StatefulWidget {
   final double latitude;
@@ -43,8 +44,22 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme cs = Theme.of(context).colorScheme;
+    TextTheme tt = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(title: Text("موقع النقطة")),
+      appBar: AppBar(
+        title: Text(
+          "موقع النقطة",
+          style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+        ),
+        backgroundColor: cs.primary,
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: Icon(Icons.arrow_back, color: cs.onPrimary),
+        ),
+      ),
       body: OSMFlutter(
           controller: mapController,
           osmOption: OSMOption(
