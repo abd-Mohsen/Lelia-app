@@ -49,6 +49,12 @@ class LocalReportsController extends GetxController {
         return;
       }
     }
+    if (reports.isEmpty) {
+      Get.showSnackbar(const GetSnackBar(
+        message: "لا يوجد تقارير لتصديرها",
+        duration: Duration(milliseconds: 2500),
+      ));
+    }
     var excel = Excel.createExcel();
     Sheet sheet = excel['report'];
     excel.setDefaultSheet('report');
@@ -135,11 +141,10 @@ class LocalReportsController extends GetxController {
       ..createSync(recursive: true)
       ..writeAsBytesSync(fileBytes!);
     Get.showSnackbar(const GetSnackBar(
-      message: "تم التخزين في مجلد التنزيلات",
+      message: "تم تخزين ملف اكسل في مجلد التنزيلات",
       duration: Duration(milliseconds: 2500),
     ));
     //todo: instead of saving, share the file
-    //todo: if the reports are empty -> return with a message
   }
 
   Future<void> uploadReport(ReportModel report) async {
