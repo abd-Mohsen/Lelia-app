@@ -43,8 +43,13 @@ class ReportView extends StatelessWidget {
             onPressed: () {
               Get.defaultDialog(
                 title: "",
-                middleText: "هل تريد حذف هذا التقرير؟${(!report.uploaded!) ? "\n لم يتم رفع التقرير بعد" : ""}",
-                middleTextStyle: tt.headlineSmall!.copyWith(color: cs.onSurface),
+                content: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    "هل تريد حذف هذا التقرير؟${(!report.uploaded!) ? "\n لم يتم رفع التقرير بعد" : ""}",
+                    style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+                  ),
+                ),
                 confirm: TextButton(
                   onPressed: () {
                     Get.back();

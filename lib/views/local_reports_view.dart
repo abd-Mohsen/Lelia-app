@@ -27,9 +27,63 @@ class LocalReportsView extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                lRC.clearReports();
+                Get.defaultDialog(
+                  title: "",
+                  content: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      "هل تريد حذف جميع التقارير المحفوظة؟ ستخسر جميع التقارير الغير مرفوعة",
+                      style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+                    ),
+                  ),
+                  confirm: TextButton(
+                    onPressed: () {
+                      Get.defaultDialog(
+                        title: "",
+                        content: Text(
+                          "متأكد؟",
+                          style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+                        ),
+                        confirm: TextButton(
+                          onPressed: () {
+                            lRC.clearReports();
+                            Get.back();
+                            Get.back();
+                          },
+                          child: Text(
+                            "نعم",
+                            style: tt.titleMedium!.copyWith(color: Colors.red),
+                          ),
+                        ),
+                        cancel: TextButton(
+                          onPressed: () {
+                            Get.back();
+                            Get.back();
+                          },
+                          child: Text(
+                            "لا",
+                            style: tt.titleMedium!.copyWith(color: cs.primary),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      "نعم",
+                      style: tt.titleMedium!.copyWith(color: Colors.red),
+                    ),
+                  ),
+                  cancel: TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text(
+                      "لا",
+                      style: tt.titleMedium!.copyWith(color: cs.primary),
+                    ),
+                  ),
+                );
               },
-              icon: Icon(Icons.delete, color: cs.onPrimary),
+              icon: Icon(Icons.delete, color: cs.error),
             ),
             IconButton(
               onPressed: () {
