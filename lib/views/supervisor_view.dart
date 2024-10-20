@@ -15,6 +15,7 @@ import 'package:lelia/views/components/user_card.dart';
 
 import '../controllers/theme_controller.dart';
 import '../models/report_model.dart';
+import 'about_us_page.dart';
 import 'components/custom_dropdown.dart';
 import 'components/report_card.dart';
 
@@ -293,9 +294,7 @@ class SupervisorView extends StatelessWidget {
                         leading: const Icon(Icons.info_outline),
                         title: Text("حول التطبيق", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
                         onTap: () {
-                          Get.dialog(
-                            kAboutAppDialog(),
-                          );
+                          Get.to(const AboutUsPage());
                         },
                       ),
                       ListTile(

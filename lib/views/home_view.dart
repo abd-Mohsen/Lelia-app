@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:lelia/constants.dart';
 import 'package:lelia/controllers/home_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
+import 'package:lelia/views/about_us_page.dart';
 import 'package:lelia/views/all_reports_view.dart';
 import 'package:lelia/views/components/custom_dropdown.dart';
 import 'package:lelia/views/components/custom_field.dart';
@@ -523,7 +524,7 @@ class HomeView extends StatelessWidget {
                       leading: const Icon(Icons.info_outline),
                       title: Text("حول التطبيق", style: tt.titleMedium!.copyWith(color: cs.onBackground)),
                       onTap: () {
-                        Get.dialog(kAboutAppDialog());
+                        Get.to(const AboutUsPage());
                       },
                     ),
                     ListTile(
@@ -539,7 +540,7 @@ class HomeView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: Text(
-                  'جميع الحقوق محفوظة',
+                  'ليتيا® جميع الحقوق محفوظة',
                   style: tt.labelMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
                 ),
               ),

@@ -8,7 +8,6 @@ String kHostIP = "http://lelia.mooo.com";
 //"http://lelia-back.000webhostapp.com";
 
 String kFontFamily = 'Alexandria';
-//todo: fix dialogs in white mode here
 
 Duration kTimeOutDuration = const Duration(seconds: 25);
 Duration kTimeOutDuration2 = const Duration(seconds: 15);
@@ -51,40 +50,40 @@ AlertDialog kSessionExpiredDialog() => AlertDialog(
       ],
     );
 
-AlertDialog kAboutAppDialog() => AlertDialog(
-      //todo: fix the dialog length, and add contact info for both company and dev
-      actions: [
-        TextButton(
-          onPressed: () {
-            Get.back();
-          },
-          child: Text(
-            "ok",
-            //style: tt.titleMedium?.copyWith(color: cs.primary),
-          ),
-        ),
-      ],
-      content: Column(
-        children: [
-          Scrollbar(
-            thumbVisibility: true,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "تم تطوير هذا البرنامج لصالح شركة ليتيا المغفلة الخاصة, جميع الحقوق محفوظة",
-                      //style: tt.headlineSmall!.copyWith(color: cs.onSurface),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+// AlertDialog kAboutAppDialog() => AlertDialog(
+//       //todo: fix the dialog length, and add contact info for both company and dev
+//       actions: [
+//         TextButton(
+//           onPressed: () {
+//             Get.back();
+//           },
+//           child: Text(
+//             "ok",
+//             //style: tt.titleMedium?.copyWith(color: cs.primary),
+//           ),
+//         ),
+//       ],
+//       content: Column(
+//         children: [
+//           Scrollbar(
+//             thumbVisibility: true,
+//             child: SingleChildScrollView(
+//               child: Column(
+//                 children: [
+//                   Padding(
+//                     padding: const EdgeInsets.all(8.0),
+//                     child: Text(
+//                       "تم تطوير هذا البرنامج لصالح شركة ليتيا المغفلة الخاصة, جميع الحقوق محفوظة",
+//                       //style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
 
 Future kTimeOutDialog() => Get.defaultDialog(
       titleStyle: const TextStyle(color: Colors.black),
