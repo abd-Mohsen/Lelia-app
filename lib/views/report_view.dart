@@ -42,7 +42,7 @@ class ReportView extends StatelessWidget {
             icon: Icon(Icons.location_pin, color: cs.onPrimary),
           ),
           Visibility(
-            visible: !report.uploaded!,
+            visible: local,
             child: IconButton(
               onPressed: () {
                 Get.defaultDialog(
@@ -101,99 +101,97 @@ class ReportView extends StatelessWidget {
               }),
             )
           : null,
-      body: GetBuilder<LocalReportsController>(builder: (con) {
-        return Scrollbar(
-          thumbVisibility: true,
-          child: ListView(
-            padding: const EdgeInsets.only(top: 12, bottom: 16, right: 8, left: 8),
-            children: [
-              if (supervisor ?? false) ReportField(title: "اسم المندوب", value: report.owner!.userName),
-              ReportField(title: "اسم النقطة", value: report.title),
-              ReportField(title: "نوع النقطة", value: report.type),
-              ReportField(title: "حجم النقطة", value: report.size),
-              ReportField(title: "اسم الحي", value: report.neighborhood),
-              ReportField(title: "اسم الشارع", value: report.street),
-              ReportField(title: "رقم ارضي", value: report.landline),
-              ReportField(title: "رقم موبايل", value: report.mobile),
-              ReportField(title: "حركة المنتج", value: report.status ?? "غير متواجد"),
-              ReportField(title: "ملاحظات الزبون", value: report.notes ?? ""),
-              GetBuilder<ReportController>(
-                init: ReportController(),
-                builder: (con) {
-                  return SizedBox(
-                    width: 300,
-                    height: 400,
-                    child: Column(
-                      children: [
-                        CarouselSlider(
-                          items: [
-                            ...report.images
-                                .map(
-                                  (image) => Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Get.dialog(
-                                          AlertDialog(
-                                            title: Text(
-                                              "عرض الصورة",
-                                              style: tt.titleLarge!.copyWith(color: cs.onSurface),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Get.back();
-                                                },
-                                                child: Text(
-                                                  "ok",
-                                                  style: tt.titleMedium?.copyWith(color: cs.primary),
-                                                ),
-                                              ),
-                                            ],
-                                            content: InteractiveViewer(
-                                              child: local
-                                                  ? Image.file(File(image))
-                                                  : Image.network(
-                                                      "$kHostIP/${Uri.encodeComponent(image)}",
-                                                      headers: const {"Keep-Alive": "timeout=5, max=1000"},
-                                                    ),
-                                            ),
+      body: Scrollbar(
+        thumbVisibility: true,
+        child: ListView(
+          padding: const EdgeInsets.only(top: 12, bottom: 16, right: 8, left: 8),
+          children: [
+            if (supervisor ?? false) ReportField(title: "اسم المندوب", value: report.owner!.userName),
+            ReportField(title: "اسم النقطة", value: report.title),
+            ReportField(title: "نوع النقطة", value: report.type),
+            ReportField(title: "حجم النقطة", value: report.size),
+            ReportField(title: "اسم الحي", value: report.neighborhood),
+            ReportField(title: "اسم الشارع", value: report.street),
+            ReportField(title: "رقم ارضي", value: report.landline),
+            ReportField(title: "رقم موبايل", value: report.mobile),
+            ReportField(title: "حركة المنتج", value: report.status ?? "غير متواجد"),
+            ReportField(title: "ملاحظات الزبون", value: report.notes ?? ""),
+            GetBuilder<ReportController>(
+              init: ReportController(),
+              builder: (con) {
+                return SizedBox(
+                  width: 300,
+                  height: 400,
+                  child: Column(
+                    children: [
+                      CarouselSlider(
+                        items: [
+                          ...report.images
+                              .map(
+                                (image) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Get.dialog(
+                                        AlertDialog(
+                                          title: Text(
+                                            "عرض الصورة",
+                                            style: tt.titleLarge!.copyWith(color: cs.onSurface),
                                           ),
-                                        );
-                                      },
-                                      child: local
-                                          ? Image.file(File(image))
-                                          : Image.network(
-                                              "$kHostIP/${Uri.encodeComponent(image)}",
-                                              headers: const {"Keep-Alive": "timeout=5, max=1000"},
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Get.back();
+                                              },
+                                              child: Text(
+                                                "ok",
+                                                style: tt.titleMedium?.copyWith(color: cs.primary),
+                                              ),
                                             ),
-                                    ),
+                                          ],
+                                          content: InteractiveViewer(
+                                            child: local
+                                                ? Image.file(File(image))
+                                                : Image.network(
+                                                    "$kHostIP/${Uri.encodeComponent(image)}",
+                                                    headers: const {"Keep-Alive": "timeout=5, max=1000"},
+                                                  ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: local
+                                        ? Image.file(File(image))
+                                        : Image.network(
+                                            "$kHostIP/${Uri.encodeComponent(image)}",
+                                            headers: const {"Keep-Alive": "timeout=5, max=1000"},
+                                          ),
                                   ),
-                                )
-                                .toList(),
-                          ],
-                          options: CarouselOptions(
-                            enableInfiniteScroll: false,
-                            aspectRatio: 4 / 4,
-                            onPageChanged: (i, reason) => con.setPicIndex(i),
-                            viewportFraction: 1,
-                          ),
+                                ),
+                              )
+                              .toList(),
+                        ],
+                        options: CarouselOptions(
+                          enableInfiniteScroll: false,
+                          aspectRatio: 4 / 4,
+                          onPageChanged: (i, reason) => con.setPicIndex(i),
+                          viewportFraction: 1,
                         ),
-                        const SizedBox(height: 12),
-                        AnimatedSmoothIndicator(
-                          activeIndex: con.picIndex,
-                          count: report.images.length,
-                          effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        );
-      }),
+                      ),
+                      const SizedBox(height: 12),
+                      AnimatedSmoothIndicator(
+                        activeIndex: con.picIndex,
+                        count: report.images.length,
+                        effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

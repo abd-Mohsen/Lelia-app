@@ -18,13 +18,14 @@ AlertDialog kCloseAppDialog() => AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      title: Text("هل تريد الخروج من التطبيق؟"),
+      backgroundColor: Colors.white,
+      title: const Text("هل تريد الخروج من التطبيق؟", style: TextStyle(color: Colors.black)),
       actions: [
         TextButton(
             onPressed: () => SystemNavigator.pop(),
             child: Text(
               "نعم",
-              //style: kTextStyle20.copyWith(color: Colors.red),
+              style: TextStyle(color: Colors.red),
             )),
         TextButton(
             onPressed: () {
@@ -32,26 +33,21 @@ AlertDialog kCloseAppDialog() => AlertDialog(
             },
             child: Text(
               "لا",
-              //style: kTextStyle20,
+              style: TextStyle(color: Colors.black),
             )),
       ],
     );
 
 AlertDialog kSessionExpiredDialog() => AlertDialog(
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.circular(10),
-      // ),
-      title: Text("انتهت صلاحية الجلسة"),
-      content: Text("من فضلك سجل دخول مرة أخرى"),
+      backgroundColor: Colors.white,
+      title: const Text("انتهت صلاحية الجلسة", style: TextStyle(color: Colors.black)),
+      content: const Text("من فضلك سجل دخول مرة أخرى", style: TextStyle(color: Colors.black)),
       actions: [
         TextButton(
             onPressed: () {
               Get.offAll(() => const LoginView());
             },
-            child: Text(
-              "ok",
-              //style: kTextStyle20.copyWith(color: Colors.red),
-            )),
+            child: const Text("ok", style: TextStyle(color: Colors.black))),
       ],
     );
 
@@ -91,6 +87,9 @@ AlertDialog kAboutAppDialog() => AlertDialog(
     );
 
 Future kTimeOutDialog() => Get.defaultDialog(
+      titleStyle: const TextStyle(color: Colors.black),
+      middleTextStyle: const TextStyle(color: Colors.black),
+      backgroundColor: Colors.white,
       title: "فشل الاتصال",
       middleText: "تأكد من اتصالك بالانترنت ثم حاول مجدداً",
     );
