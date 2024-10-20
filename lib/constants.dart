@@ -8,6 +8,7 @@ String kHostIP = "http://lelia.mooo.com";
 //"http://lelia-back.000webhostapp.com";
 
 String kFontFamily = 'Alexandria';
+//todo: fix dialogs in white mode here
 
 Duration kTimeOutDuration = const Duration(seconds: 25);
 Duration kTimeOutDuration2 = const Duration(seconds: 15);

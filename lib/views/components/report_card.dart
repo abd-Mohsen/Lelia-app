@@ -1,18 +1,8 @@
-//import 'package:carousel_slider/carousel_slider.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:lelia/constants.dart';
-import 'package:lelia/controllers/local_reports_controller.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/views/report_view.dart';
-import 'dart:io';
-
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import '../../controllers/report_controller.dart';
-import '../map_page.dart';
 
 class ReportCard extends StatelessWidget {
   final ReportModel report;
@@ -22,8 +12,6 @@ class ReportCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late LocalReportsController lRC;
-    if (local) lRC = Get.find();
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
     return ListTile(

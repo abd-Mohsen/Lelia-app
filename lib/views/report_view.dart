@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/local_reports_controller.dart';
 import 'package:lelia/models/report_model.dart';
@@ -21,7 +22,8 @@ class ReportView extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
-    LocalReportsController lRC = Get.find();
+    late LocalReportsController lRC;
+    if (local) lRC = Get.find();
 
     return Scaffold(
       backgroundColor: cs.background,
@@ -39,40 +41,43 @@ class ReportView extends StatelessWidget {
             },
             icon: Icon(Icons.location_pin, color: cs.onPrimary),
           ),
-          IconButton(
-            onPressed: () {
-              Get.defaultDialog(
-                title: "",
-                content: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text(
-                    "هل تريد حذف هذا التقرير؟${(!report.uploaded!) ? "\n لم يتم رفع التقرير بعد" : ""}",
-                    style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+          Visibility(
+            visible: !report.uploaded!,
+            child: IconButton(
+              onPressed: () {
+                Get.defaultDialog(
+                  title: "",
+                  content: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      "هل تريد حذف هذا التقرير؟${(!report.uploaded!) ? "\n لم يتم رفع التقرير بعد" : ""}",
+                      style: tt.headlineSmall!.copyWith(color: cs.onSurface),
+                    ),
                   ),
-                ),
-                confirm: TextButton(
-                  onPressed: () {
-                    Get.back();
-                    Get.back();
-                    lRC.deleteReport(report);
-                  },
-                  child: Text(
-                    "نعم",
-                    style: tt.titleMedium!.copyWith(color: Colors.red),
+                  confirm: TextButton(
+                    onPressed: () {
+                      Get.back();
+                      Get.back();
+                      lRC.deleteReport(report);
+                    },
+                    child: Text(
+                      "نعم",
+                      style: tt.titleMedium!.copyWith(color: Colors.red),
+                    ),
                   ),
-                ),
-                cancel: TextButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: Text(
-                    "لا",
-                    style: tt.titleMedium!.copyWith(color: cs.primary),
+                  cancel: TextButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    child: Text(
+                      "لا",
+                      style: tt.titleMedium!.copyWith(color: cs.primary),
+                    ),
                   ),
-                ),
-              );
-            },
-            icon: Icon(Icons.delete, color: cs.error),
+                );
+              },
+              icon: Icon(Icons.delete, color: cs.error),
+            ),
           ),
         ],
         backgroundColor: cs.primary,
@@ -86,10 +91,14 @@ class ReportView extends StatelessWidget {
       floatingActionButton: !report.uploaded!
           ? FloatingActionButton(
               onPressed: () => lRC.uploadReport(report),
-              child: Icon(
-                Icons.upload,
-                color: cs.onPrimary,
-              ),
+              child: GetBuilder<LocalReportsController>(builder: (con) {
+                return con.isLoading
+                    ? SpinKitChasingDots(color: cs.onPrimary, size: 25)
+                    : Icon(
+                        Icons.upload,
+                        color: cs.onPrimary,
+                      );
+              }),
             )
           : null,
       body: GetBuilder<LocalReportsController>(builder: (con) {

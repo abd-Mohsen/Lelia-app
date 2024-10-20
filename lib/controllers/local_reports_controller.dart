@@ -147,8 +147,17 @@ class LocalReportsController extends GetxController {
     //todo: instead of saving, share the file
   }
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  void toggleLoading(bool value) {
+    _isLoading = value;
+    update();
+  }
+
   Future<void> uploadReport(ReportModel report) async {
+    if (_isLoading) return;
     print(report.toJson());
+    toggleLoading(true);
     if (await RemoteServices.uploadReport(report)) {
       report.uploaded = true;
       LocalServices.storeReports(reports);
@@ -161,5 +170,6 @@ class LocalReportsController extends GetxController {
     } else {
       print("error when uploading");
     }
+    toggleLoading(false);
   }
 }

@@ -14,6 +14,9 @@ class AllReportsView extends StatelessWidget {
     //AllReportsController aRC = Get.put(AllReportsController());
 
     //todo: pagination
+    //todo: Connection reset by peer, add a sign to know if not fetched
+    //todo: refresh indicator
+    // search
     return Scaffold(
       backgroundColor: cs.background,
       appBar: AppBar(

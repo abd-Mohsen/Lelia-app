@@ -283,8 +283,8 @@ class HomeController extends GetxController {
   }
 
   void logout() async {
-    //todo: console is printing that login controller is deleted when i enter the login page
-    //todo: if token is not valid, iam getting socket exception instead of 401 (this might be because of wrong host)
+    //console is printing that login controller is deleted when i enter the login page
+    //iam getting socket exception instead of 401 (this might be because of wrong host)
     if (await RemoteServices.logout()) {
       _getStorage.remove("token");
       _getStorage.remove("role");
