@@ -14,7 +14,8 @@ class AllReportsView extends StatelessWidget {
     //AllReportsController aRC = Get.put(AllReportsController());
 
     //todo: pagination
-    //todo: Connection reset by peer, add a sign to know if not fetched
+    //Connection reset by peer
+    //todo: add a sign (or snackbar) to know if not fetched
     //todo: refresh indicator
     // search
     return Scaffold(
@@ -50,7 +51,6 @@ class AllReportsView extends StatelessWidget {
                 size: 80,
               ));
             }
-            //todo: show network error icon if not fetched
             return ListView.builder(
               itemCount: con.reports.length,
               itemBuilder: (context, i) => ReportCard(

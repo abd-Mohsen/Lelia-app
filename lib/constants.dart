@@ -51,7 +51,6 @@ AlertDialog kSessionExpiredDialog() => AlertDialog(
     );
 
 // AlertDialog kAboutAppDialog() => AlertDialog(
-//       //todo: fix the dialog length, and add contact info for both company and dev
 //       actions: [
 //         TextButton(
 //           onPressed: () {

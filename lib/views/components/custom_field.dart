@@ -42,7 +42,7 @@ class CustomField extends StatelessWidget {
           hintStyle: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.5)),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(width: 0.1, color: cs.onBackground.withOpacity(0.1)), //todo: not changing
+            borderSide: BorderSide(width: 0.1, color: cs.onBackground.withOpacity(0.1)), // not changing
           ),
         ),
         style: tt.titleMedium!.copyWith(color: cs.onBackground),

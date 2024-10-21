@@ -15,6 +15,7 @@ class _MapPageState extends State<MapPage> {
   late MapController mapController;
 
   //todo: fix this and add marker on the initial position
+  //todo: fix map errors in console
   @override
   void initState() {
     super.initState();

@@ -149,7 +149,6 @@ class SupervisorController extends GetxController {
     update();
   }
 
-  //todo: add loading indicator to export
   Future<void> export() async {
     buttonPressed = true;
     if (currentUser == null || fromDate == null || toDate == null) return;
@@ -248,9 +247,9 @@ class SupervisorController extends GetxController {
 
     // Save the Excel file
     List<int>? fileBytes = excel.save();
-    //var directory = await DownloadsPathProvider.downloadsDirectory; //todo: choose a suitable path
+    //var directory = await DownloadsPathProvider.downloadsDirectory;
 
-    File(join('/storage/emulated/0/Download/${fileName.text}.xlsx'))
+    File(join('/storage/emulated/0/Download/${fileName.text}.xlsx')) //choose a suitable path
       ..createSync(recursive: true)
       ..writeAsBytesSync(fileBytes!);
     Get.showSnackbar(const GetSnackBar(
@@ -258,7 +257,6 @@ class SupervisorController extends GetxController {
       duration: Duration(milliseconds: 2500),
     ));
     //todo: instead of saving, share the file
-    //todo: if the reports are empty -> return with a message
   }
 
   GlobalKey<FormState> dataFormKey = GlobalKey<FormState>();

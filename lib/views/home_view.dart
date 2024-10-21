@@ -25,10 +25,10 @@ class HomeView extends StatelessWidget {
     HomeController hC = Get.put(HomeController());
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
-//todo: most dialogs are broken in light mode
+
     showPickPicSheet() => Get.bottomSheet(
           SizedBox(
-            height: 120, //todo: find a way to never overflow
+            height: 120, //find a way to never overflow
             child: Column(
               children: [
                 ListTile(
@@ -90,7 +90,7 @@ class HomeView extends StatelessWidget {
           //init: HomeController(),
           builder: (con) => Stack(
             children: [
-              //todo: put a warning here 'verify your email'
+              //todo: put a warning here 'verify your email' (and dont let user do any request)
               Form(
                 key: con.dataFormKey,
                 child: ListView(
@@ -262,7 +262,6 @@ class HomeView extends StatelessWidget {
                               SizedBox(width: 12),
                               Visibility(
                                 visible: con.position != null,
-                                //todo: fix map error in console
                                 child: ElevatedButton(
                                   onPressed: () {
                                     Get.to(

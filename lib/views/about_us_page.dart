@@ -70,6 +70,7 @@ class AboutUsPage extends StatelessWidget {
               style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.8)),
             ),
           ),
+          //todo: put company contact info if necessary
         ],
       ),
     );
