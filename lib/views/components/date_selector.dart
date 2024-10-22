@@ -32,18 +32,21 @@ class DateSelector extends StatelessWidget {
                 );
                 start ? sC.setFromDate(newDate!) : sC.setToDate(newDate!);
               },
-              //todo: add validator to date picker
               title: Text(
                 start ? "من تاريخ" : "الى تاريخ",
                 style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
               ),
               //leading: Icon(Icons.date_range),
-              trailing: Text(
-                (start ? con.fromDate : con.toDate) != null
-                    ? Jiffy.parseFromDateTime(start ? con.fromDate! : con.toDate!).format(pattern: "d / M / y")
-                    : "انقر للاختيار",
-                style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.6)),
-              ),
+              trailing: (start ? con.fromDate : con.toDate) != null
+                  ? Text(
+                      Jiffy.parseFromDateTime(start ? con.fromDate! : con.toDate!).format(pattern: "d / M / y"),
+                      style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.6)),
+                    )
+                  : Text(
+                      "انقر للاختيار",
+                      style: tt.titleSmall!.copyWith(color: cs.primary),
+                    ),
+
               shape: RoundedRectangleBorder(
                 side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
                 borderRadius: BorderRadius.circular(10),

@@ -102,6 +102,7 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                   GetBuilder<LoginController>(
+                    //todo: button stretches when loading
                     builder: (con) => Center(
                       child: GestureDetector(
                         child: Container(

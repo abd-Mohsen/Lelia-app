@@ -86,20 +86,29 @@ class SupervisorView extends StatelessWidget {
             List<ReportModel> exportedReports = con.exportedReports;
             return TabBarView(
               children: [
-                //todo: loading indicator for every tab
-                ListView.builder(
-                  itemCount: allReports.length,
-                  itemBuilder: (context, i) => ReportCard(
-                    report: allReports[i],
-                    local: false,
-                    supervisor: true,
-                  ),
+                RefreshIndicator(
+                  onRefresh: con.refreshReports,
+                  child: con.isLoadingReports
+                      ? Center(child: SpinKitCubeGrid(color: cs.primary))
+                      : ListView.builder(
+                          itemCount: allReports.length,
+                          itemBuilder: (context, i) => ReportCard(
+                            report: allReports[i],
+                            local: false,
+                            supervisor: true,
+                          ),
+                        ),
                 ),
-                ListView.builder(
-                  itemCount: subordinates.length,
-                  itemBuilder: (context, i) => UserCard(
-                    user: subordinates[i],
-                  ),
+                RefreshIndicator(
+                  onRefresh: con.refreshSubordinates,
+                  child: con.isLoadingSubs
+                      ? Center(child: SpinKitCubeGrid(color: cs.primary))
+                      : ListView.builder(
+                          itemCount: subordinates.length,
+                          itemBuilder: (context, i) => UserCard(
+                            user: subordinates[i],
+                          ),
+                        ),
                 ),
                 Form(
                   key: con.dataFormKey,
@@ -133,7 +142,6 @@ class SupervisorView extends StatelessWidget {
                             visible: con.generateFor == "مندوب محدد",
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
-                              //todo: this below
                               //todo: list tile borders positions arent updating until i touch the screen
                               //todo: when i change tab, selected user disappears
                               child: DropdownSearch<UserModel>(

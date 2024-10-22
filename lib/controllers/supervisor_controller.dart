@@ -89,6 +89,18 @@ class SupervisorController extends GetxController {
     }
   }
 
+  Future<void> refreshReports() async {
+    toggleLoadingReports(true);
+    reports.clear();
+    getReports();
+  }
+
+  Future<void> refreshSubordinates() async {
+    toggleLoadingSubs(true);
+    subordinates.clear();
+    getSubordinates();
+  }
+
   Future<void> getExportReports() async {
     try {
       toggleLoadingExport(true);
@@ -151,9 +163,9 @@ class SupervisorController extends GetxController {
 
   Future<void> export() async {
     buttonPressed = true;
-    if (currentUser == null || fromDate == null || toDate == null) return;
     bool isValid = dataFormKey.currentState!.validate();
     if (!isValid) return;
+    if (currentUser == null || fromDate == null || toDate == null) return;
 
     PermissionStatus status = await Permission.storage.status;
     if (!status.isGranted) {
