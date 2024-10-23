@@ -6,7 +6,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:lelia/controllers/local_reports_controller.dart';
+import 'package:lelia/controllers/user_controller.dart';
 import 'package:lelia/models/report_model.dart';
+import 'package:lelia/views/components/report_card.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../constants.dart';
 import '../controllers/report_controller.dart';
@@ -41,10 +43,9 @@ class UserView extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: cs.onPrimary),
         ),
       ),
-      body: Scrollbar(
-        thumbVisibility: true,
-        child: ListView(
-          padding: const EdgeInsets.only(top: 12, bottom: 16, right: 8, left: 8),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 12, bottom: 16, right: 8, left: 8),
+        child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(4),
@@ -75,6 +76,7 @@ class UserView extends StatelessWidget {
                           child: Text(
                             user.email,
                             style: tt.titleSmall!.copyWith(color: cs.onSurface),
+                            overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
                         ),
@@ -110,7 +112,7 @@ class UserView extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.person,
-                          size: 130,
+                          size: 125,
                           color: cs.onSurface,
                         ),
                         Text(
@@ -122,7 +124,37 @@ class UserView extends StatelessWidget {
                   ],
                 ),
               ),
-            )
+            ),
+            Visibility(
+              visible: user.role == "مندوب مبيعات",
+              child: Padding(
+                padding: const EdgeInsets.only(top: 40, bottom: 8),
+                child: Text(
+                  "التقارير المرسلة",
+                  style: tt.titleLarge!.copyWith(color: cs.onSurface, decoration: TextDecoration.underline),
+                  maxLines: 1,
+                ),
+              ),
+            ),
+            GetBuilder<UserController>(
+                init: UserController(user: user),
+                builder: (controller) {
+                  return Visibility(
+                    visible: user.role == "مندوب مبيعات",
+                    child: Expanded(
+                      child: controller.isLoadingReports
+                          ? Center(child: SpinKitDualRing(color: cs.primary))
+                          : ListView.builder(
+                              itemCount: controller.reports.length,
+                              itemBuilder: (context, i) => ReportCard(
+                                report: controller.reports[i],
+                                local: false,
+                                supervisor: true,
+                              ),
+                            ),
+                    ),
+                  );
+                })
           ],
         ),
       ),

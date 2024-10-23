@@ -244,6 +244,22 @@ class RemoteServices {
     return null;
   }
 
+  static Future<List<ReportModel>?> fetchSubordinateReports(int id) async {
+    var response = await client.get(
+      Uri.parse("$_hostIP/reports/$id"),
+      headers: {...headers, "Authorization": "Bearer $token"},
+    );
+    print(response.body);
+    print(token);
+    if (response.statusCode == 200) {
+      var reports = reportModelFromJson(response.body);
+      print("returned fine");
+      return reports;
+    }
+    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
+    return null;
+  }
+
   static Future<List<ReportModel>?> fetchSupervisorReports() async {
     var response = await client.get(
       Uri.parse("$_hostIP/reports/supervisor"),

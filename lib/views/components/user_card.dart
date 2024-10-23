@@ -28,9 +28,8 @@ class UserCard extends StatelessWidget {
         style: tt.titleSmall!.copyWith(color: cs.onBackground),
       ),
       onTap: () {
+        // add statistics here (like in dashboard) if possible
         Get.to(UserView(user: user));
-        //todo: open a user's report view for this user, and in top show basic information about the user, like joining
-        // time, acceptance time, total number of reports, reports last month, last week,mobile and such
       },
     );
   }
