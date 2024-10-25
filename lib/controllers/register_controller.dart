@@ -89,11 +89,14 @@ class RegisterController extends GetxController {
         rePassword.text,
         phone.text,
         roleINEnglish,
-        selectedSupervisor?.id,
+        roleINEnglish == "salesman" ? selectedSupervisor?.id : null,
       ).timeout(kTimeOutDuration));
       if (success) {
         Get.back();
         Get.defaultDialog(
+          titleStyle: const TextStyle(color: Colors.black),
+          middleTextStyle: const TextStyle(color: Colors.black),
+          backgroundColor: Colors.white,
           title: "تم التسجيل",
           middleText: "الرجاء انتظار موافقة المسؤول في الشركة",
           // confirm: TextButton(

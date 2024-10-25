@@ -20,10 +20,23 @@ class SupervisorController extends GetxController {
     getCurrentUser();
     getReports();
     getSubordinates();
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+        getReports();
+      }
+    });
     super.onInit();
   }
 
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
+
   final GetStorage _getStorage = GetStorage();
+
+  ScrollController scrollController = ScrollController();
 
   bool _isLoadingUser = false;
   bool get isLoadingUser => _isLoadingUser;
@@ -76,10 +89,15 @@ class SupervisorController extends GetxController {
   final List<ReportModel> _exportedReports = [];
   List<ReportModel> get exportedReports => _exportedReports;
 
+  int page = 0, limit = 10;
+  bool hasMore = true;
+
   void getReports() async {
+    if (page == 0) toggleLoadingReports(true);
     try {
-      toggleLoadingReports(true);
-      _reports.addAll((await RemoteServices.fetchSupervisorReports().timeout(kTimeOutDuration))!);
+      List<ReportModel> newReports = await RemoteServices.fetchSupervisorReports(page).timeout(kTimeOutDuration) ?? [];
+      if (newReports.length < 5) hasMore = false;
+      _reports.addAll(newReports);
     } on TimeoutException {
       kTimeOutDialog();
     } catch (e) {
@@ -87,10 +105,12 @@ class SupervisorController extends GetxController {
     } finally {
       toggleLoadingReports(false);
     }
+    page++;
   }
 
   Future<void> refreshReports() async {
-    toggleLoadingReports(true);
+    page = 0;
+    hasMore = true;
     reports.clear();
     getReports();
   }

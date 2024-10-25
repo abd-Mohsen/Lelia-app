@@ -28,8 +28,6 @@ class SupervisorView extends StatelessWidget {
     TextTheme tt = Theme.of(context).textTheme;
     ThemeController tC = Get.find();
     SupervisorController sC = Get.put(SupervisorController());
-    //todo: implement search for users and reports (bottomsheet with dropdownsearch)
-    //todo: refresh indicator for each tab, and no internet error
 
     return DefaultTabController(
       length: 3,
@@ -46,7 +44,7 @@ class SupervisorView extends StatelessWidget {
               style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
             ),
             actions: [
-              //
+              //todo: implement search for users and reports (bottomsheet with dropdownsearch)
             ],
             bottom: TabBar(
               indicatorColor: Colors.deepOrange,
@@ -91,12 +89,30 @@ class SupervisorView extends StatelessWidget {
                   child: con.isLoadingReports
                       ? Center(child: SpinKitCubeGrid(color: cs.primary))
                       : ListView.builder(
-                          itemCount: allReports.length,
-                          itemBuilder: (context, i) => ReportCard(
-                            report: allReports[i],
-                            local: false,
-                            supervisor: true,
-                          ),
+                          //todo: if the limit is less than the screen size, we can tt load more
+                          //todo: first page is loaded twice
+                          controller: con.scrollController,
+                          itemCount: allReports.length + 1,
+                          itemBuilder: (context, i) {
+                            if (i < allReports.length) {
+                              return ReportCard(
+                                report: allReports[i],
+                                local: false,
+                                supervisor: true,
+                              );
+                            }
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 24),
+                                child: con.hasMore && con.reports.isNotEmpty
+                                    ? CircularProgressIndicator(color: cs.primary)
+                                    : CircleAvatar(
+                                        radius: 5,
+                                        backgroundColor: Colors.grey.withOpacity(0.7),
+                                      ),
+                              ),
+                            );
+                          },
                         ),
                 ),
                 RefreshIndicator(

@@ -29,7 +29,7 @@ class UserView extends StatelessWidget {
       backgroundColor: cs.background,
       appBar: AppBar(
         title: Text(
-          "ملف المندوب",
+          "ملف الموظف",
           style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
         ),
         actions: [

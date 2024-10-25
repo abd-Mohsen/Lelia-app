@@ -43,7 +43,7 @@ class RemoteServices {
         "password_confirmation": passwordConfirmation,
         "role": role,
         "phone": phone,
-        "supervisor_id": supervisorId,
+        if (supervisorId != null) "supervisor_id": supervisorId,
       }),
     );
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -260,9 +260,9 @@ class RemoteServices {
     return null;
   }
 
-  static Future<List<ReportModel>?> fetchSupervisorReports() async {
+  static Future<List<ReportModel>?> fetchSupervisorReports(int page) async {
     var response = await client.get(
-      Uri.parse("$_hostIP/reports/supervisor"),
+      Uri.parse("$_hostIP/reports/supervisor/?page=$page"),
       headers: {...headers, "Authorization": "Bearer $token"},
     );
     if (response.statusCode == 200) {
