@@ -476,7 +476,7 @@ class HomeView extends StatelessWidget {
                 child: ListView(
                   children: [
                     GetBuilder<HomeController>(builder: (con) {
-                      return con.isLoading
+                      return con.isLoadingUser
                           ? SpinKitPianoWave(color: cs.primary)
                           : UserAccountsDrawerHeader(
                               //todo: showing old data or not showing at all, add loading (is it solved?)

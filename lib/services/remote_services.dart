@@ -260,9 +260,9 @@ class RemoteServices {
     return null;
   }
 
-  static Future<List<ReportModel>?> fetchSupervisorReports(int page) async {
+  static Future<List<ReportModel>?> fetchSupervisorReports(int page, int limit) async {
     var response = await client.get(
-      Uri.parse("$_hostIP/reports/supervisor/?page=$page"),
+      Uri.parse("$_hostIP/reports/supervisor/?page=$page&limit=$limit"),
       headers: {...headers, "Authorization": "Bearer $token"},
     );
     if (response.statusCode == 200) {

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lelia/controllers/locale_controller.dart';
 import 'package:lelia/controllers/theme_controller.dart';
+import 'package:lelia/services/screen_service.dart';
 import 'package:lelia/themes.dart';
 import 'package:lelia/views/redirect_page.dart';
 
@@ -11,6 +12,7 @@ import 'locale.dart';
 void main() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await Get.putAsync(() => ScreenService().init());
   runApp(const MyApp());
 }
 

@@ -84,37 +84,51 @@ class SupervisorView extends StatelessWidget {
             List<ReportModel> exportedReports = con.exportedReports;
             return TabBarView(
               children: [
-                RefreshIndicator(
-                  onRefresh: con.refreshReports,
-                  child: con.isLoadingReports
-                      ? Center(child: SpinKitCubeGrid(color: cs.primary))
-                      : ListView.builder(
-                          //todo: if the limit is less than the screen size, we can tt load more
-                          //todo: first page is loaded twice
-                          controller: con.scrollController,
-                          itemCount: allReports.length + 1,
-                          itemBuilder: (context, i) {
-                            if (i < allReports.length) {
-                              return ReportCard(
-                                report: allReports[i],
-                                local: false,
-                                supervisor: true,
-                              );
-                            }
-                            return Center(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 24),
-                                child: con.hasMore && con.reports.isNotEmpty
-                                    ? CircularProgressIndicator(color: cs.primary)
-                                    : CircleAvatar(
-                                        radius: 5,
-                                        backgroundColor: Colors.grey.withOpacity(0.7),
+                con.isLoadingReports
+                    ? Center(child: SpinKitCubeGrid(color: cs.primary))
+                    : RefreshIndicator(
+                        onRefresh: con.refreshReports,
+                        child: allReports.isEmpty
+                            ? ListView(
+                                children: [
+                                  Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Text(
+                                        'لا يوجد تقارير بعد, أو هناك مشكلة اتصال\n اسحب للتحديث',
+                                        style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                                        textAlign: TextAlign.center,
                                       ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : ListView.builder(
+                                controller: con.scrollController,
+                                itemCount: allReports.length + 1,
+                                itemBuilder: (context, i) {
+                                  if (i < allReports.length) {
+                                    return ReportCard(
+                                      report: allReports[i],
+                                      local: false,
+                                      supervisor: true,
+                                    );
+                                  }
+                                  // Show loading indicator or end-of-list indication
+                                  return Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 24),
+                                      child: con.hasMore
+                                          ? CircularProgressIndicator(color: cs.primary)
+                                          : CircleAvatar(
+                                              radius: 5,
+                                              backgroundColor: Colors.grey.withOpacity(0.7),
+                                            ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                        ),
-                ),
+                      ),
                 RefreshIndicator(
                   onRefresh: con.refreshSubordinates,
                   child: con.isLoadingSubs

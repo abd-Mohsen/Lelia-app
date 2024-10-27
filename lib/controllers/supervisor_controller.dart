@@ -9,6 +9,7 @@ import '../constants.dart';
 import '../models/report_model.dart';
 import '../models/user_model.dart';
 import '../services/remote_services.dart';
+import '../services/screen_service.dart';
 import '../views/login_view.dart';
 import 'login_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -17,11 +18,12 @@ import 'dart:io';
 class SupervisorController extends GetxController {
   @override
   void onInit() {
+    limit = (screenService.screenHeightCm / 1.1).toInt();
     getCurrentUser();
     getReports();
     getSubordinates();
     scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent == scrollController.offset) {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         getReports();
       }
     });
@@ -35,6 +37,8 @@ class SupervisorController extends GetxController {
   }
 
   final GetStorage _getStorage = GetStorage();
+
+  final screenService = Get.find<ScreenService>();
 
   ScrollController scrollController = ScrollController();
 
@@ -89,14 +93,16 @@ class SupervisorController extends GetxController {
   final List<ReportModel> _exportedReports = [];
   List<ReportModel> get exportedReports => _exportedReports;
 
-  int page = 0, limit = 10;
+  int page = 1, limit = 12;
   bool hasMore = true;
 
   void getReports() async {
-    if (page == 0) toggleLoadingReports(true);
+    if (isLoadingReports || !hasMore) return;
+    if (page == 1) toggleLoadingReports(true);
     try {
-      List<ReportModel> newReports = await RemoteServices.fetchSupervisorReports(page).timeout(kTimeOutDuration) ?? [];
-      if (newReports.length < 5) hasMore = false;
+      List<ReportModel> newReports =
+          await RemoteServices.fetchSupervisorReports(page, limit).timeout(kTimeOutDuration) ?? [];
+      if (newReports.length < limit) hasMore = false;
       _reports.addAll(newReports);
     } on TimeoutException {
       kTimeOutDialog();
@@ -109,7 +115,7 @@ class SupervisorController extends GetxController {
   }
 
   Future<void> refreshReports() async {
-    page = 0;
+    page = 1;
     hasMore = true;
     reports.clear();
     getReports();
