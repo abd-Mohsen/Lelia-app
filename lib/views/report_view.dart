@@ -116,79 +116,88 @@ class ReportView extends StatelessWidget {
             ReportField(title: "رقم موبايل", value: report.mobile),
             ReportField(title: "حركة المنتج", value: report.status ?? "غير متواجد"),
             ReportField(title: "ملاحظات الزبون", value: report.notes ?? ""),
-            GetBuilder<ReportController>(
-              init: ReportController(),
-              builder: (con) {
-                return SizedBox(
-                  width: 300,
-                  height: 400,
-                  child: Column(
-                    children: [
-                      CarouselSlider(
-                        items: [
-                          ...report.images
-                              .map(
-                                (image) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Get.dialog(
-                                        AlertDialog(
-                                          title: Text(
-                                            "عرض الصورة",
-                                            style: tt.titleLarge!.copyWith(color: cs.onSurface),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Get.back();
-                                              },
-                                              child: Text(
-                                                "ok",
-                                                style: tt.titleMedium?.copyWith(color: cs.primary),
-                                              ),
-                                            ),
-                                          ],
-                                          content: InteractiveViewer(
-                                            child: local
-                                                ? Image.file(File(image))
-                                                : Image.network(
-                                                    "$kHostIP/${Uri.encodeComponent(image)}",
-                                                    headers: const {"Keep-Alive": "timeout=5, max=1000"},
+            report.images.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40),
+                    child: Icon(
+                      Icons.image_not_supported_outlined,
+                      color: cs.onSurface,
+                      size: 100,
+                    ),
+                  )
+                : GetBuilder<ReportController>(
+                    init: ReportController(),
+                    builder: (con) {
+                      return SizedBox(
+                        width: 300,
+                        height: 400,
+                        child: Column(
+                          children: [
+                            CarouselSlider(
+                              items: [
+                                ...report.images
+                                    .map(
+                                      (image) => Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Get.dialog(
+                                              AlertDialog(
+                                                title: Text(
+                                                  "عرض الصورة",
+                                                  style: tt.titleLarge!.copyWith(color: cs.onSurface),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Get.back();
+                                                    },
+                                                    child: Text(
+                                                      "ok",
+                                                      style: tt.titleMedium?.copyWith(color: cs.primary),
+                                                    ),
                                                   ),
-                                          ),
+                                                ],
+                                                content: InteractiveViewer(
+                                                  child: local
+                                                      ? Image.file(File(image))
+                                                      : Image.network(
+                                                          "$kHostIP/${Uri.encodeComponent(image)}",
+                                                          headers: const {"Keep-Alive": "timeout=5, max=1000"},
+                                                        ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: local
+                                              ? Image.file(File(image))
+                                              : Image.network(
+                                                  "$kHostIP/${Uri.encodeComponent(image)}",
+                                                  headers: const {"Keep-Alive": "timeout=5, max=1000"},
+                                                ),
                                         ),
-                                      );
-                                    },
-                                    child: local
-                                        ? Image.file(File(image))
-                                        : Image.network(
-                                            "$kHostIP/${Uri.encodeComponent(image)}",
-                                            headers: const {"Keep-Alive": "timeout=5, max=1000"},
-                                          ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ],
-                        options: CarouselOptions(
-                          enableInfiniteScroll: false,
-                          aspectRatio: 4 / 4,
-                          onPageChanged: (i, reason) => con.setPicIndex(i),
-                          viewportFraction: 1,
+                                      ),
+                                    )
+                                    .toList(),
+                              ],
+                              options: CarouselOptions(
+                                enableInfiniteScroll: false,
+                                aspectRatio: 4 / 4,
+                                onPageChanged: (i, reason) => con.setPicIndex(i),
+                                viewportFraction: 1,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            AnimatedSmoothIndicator(
+                              activeIndex: con.picIndex,
+                              count: report.images.length,
+                              effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      AnimatedSmoothIndicator(
-                        activeIndex: con.picIndex,
-                        count: report.images.length,
-                        effect: WormEffect(dotHeight: 9, dotWidth: 9, activeDotColor: cs.primary),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ],
         ),
       ),

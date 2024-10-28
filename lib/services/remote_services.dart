@@ -12,7 +12,9 @@ import '../constants.dart';
 //todo: implement 'session expired'
 //todo: clean this shit up, make separate services
 // todo: all dialogs here are broken with light mode
+//todo: remove get default dialogs from here
 class RemoteServices {
+  static final GetStorage _getStorage = GetStorage();
   static final String _hostIP = "$kHostIP/api";
   static String get token => GetStorage().read("token");
 
@@ -92,6 +94,8 @@ class RemoteServices {
       return true;
     }
     if (response.statusCode == 401) {
+      _getStorage.remove("token");
+      _getStorage.remove("role");
       Get.dialog(kSessionExpiredDialog());
       return true;
     }
@@ -108,6 +112,8 @@ class RemoteServices {
       return UserModel.fromJson(jsonDecode(response.body));
     }
     if (response.statusCode == 401) {
+      _getStorage.remove("token");
+      _getStorage.remove("role");
       Get.dialog(kSessionExpiredDialog());
     }
     return null;
