@@ -479,10 +479,8 @@ class HomeView extends StatelessWidget {
                       return con.isLoadingUser
                           ? SpinKitPianoWave(color: cs.primary)
                           : UserAccountsDrawerHeader(
-                              //todo: showing old data or not showing at all, add loading (is it solved?)
-                              // decoration: BoxDecoration(
-                              //   color: cs.primary,
-                              // ),
+                              //showing old data or not showing at all, add loading (is it solved?)
+                              //todo: refresh button if not fetched
                               accountName: Text(
                                 con.currentUser?.userName ?? "",
                                 style: tt.headlineMedium,

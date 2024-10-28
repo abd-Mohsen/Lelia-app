@@ -32,9 +32,9 @@ class UserView extends StatelessWidget {
           "ملف الموظف",
           style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
         ),
-        actions: [
-          //
-        ],
+        // actions: [
+        //   //todo: report (make admin receive a notification of that)
+        // ],
         backgroundColor: cs.primary,
         leading: IconButton(
           onPressed: () {
@@ -138,19 +138,55 @@ class UserView extends StatelessWidget {
             ),
             GetBuilder<UserController>(
                 init: UserController(user: user),
-                builder: (controller) {
+                builder: (con) {
+                  List<ReportModel> allReports = con.reports;
                   return Visibility(
                     visible: user.role == "مندوب مبيعات",
                     child: Expanded(
-                      child: controller.isLoadingReports
-                          ? Center(child: SpinKitDualRing(color: cs.primary))
-                          : ListView.builder(
-                              itemCount: controller.reports.length,
-                              itemBuilder: (context, i) => ReportCard(
-                                report: controller.reports[i],
-                                local: false,
-                                supervisor: true,
-                              ),
+                      child: con.isLoadingReports
+                          ? Center(child: SpinKitCubeGrid(color: cs.primary))
+                          : RefreshIndicator(
+                              onRefresh: con.refreshReports,
+                              child: allReports.isEmpty
+                                  ? ListView(
+                                      children: [
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(32),
+                                            child: Text(
+                                              'لا يوجد تقارير بعد, أو هناك مشكلة اتصال\n اسحب للتحديث',
+                                              style: tt.titleSmall!.copyWith(color: cs.onSurface),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : ListView.builder(
+                                      controller: con.scrollController,
+                                      itemCount: allReports.length + 1,
+                                      itemBuilder: (context, i) {
+                                        if (i < allReports.length) {
+                                          return ReportCard(
+                                            report: allReports[i],
+                                            local: false,
+                                            supervisor: true,
+                                          );
+                                        }
+                                        // Show loading indicator or end-of-list indication
+                                        return Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 24),
+                                            child: con.hasMore
+                                                ? CircularProgressIndicator(color: cs.primary)
+                                                : CircleAvatar(
+                                                    radius: 5,
+                                                    backgroundColor: Colors.grey.withOpacity(0.7),
+                                                  ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                             ),
                     ),
                   );

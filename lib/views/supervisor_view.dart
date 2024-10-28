@@ -306,6 +306,7 @@ class SupervisorView extends StatelessWidget {
                                 child: SpinKitPianoWave(color: cs.primary),
                               )
                             : UserAccountsDrawerHeader(
+                                //todo: refresh button if not fetched
                                 accountName: Text(
                                   con.currentUser?.userName ?? "",
                                   style: tt.headlineMedium,
