@@ -234,9 +234,9 @@ class RemoteServices {
     return false;
   }
 
-  static Future<List<ReportModel>?> fetchSalesmanReports() async {
+  static Future<List<ReportModel>?> fetchSalesmanReports(int page, int limit) async {
     var response = await client.get(
-      Uri.parse("$_hostIP/reports"),
+      Uri.parse("$_hostIP/reports?page=$page&limit=$limit"),
       headers: {...headers, "Authorization": "Bearer $token"},
     );
     print(response.body);

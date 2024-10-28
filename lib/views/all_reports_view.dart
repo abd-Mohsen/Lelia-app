@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:lelia/controllers/all_reports_controller.dart';
 import 'package:lelia/views/components/report_card.dart';
 
+import '../models/report_model.dart';
+
 class AllReportsView extends StatelessWidget {
   const AllReportsView({super.key});
 
@@ -13,11 +15,7 @@ class AllReportsView extends StatelessWidget {
     TextTheme tt = Theme.of(context).textTheme;
     //AllReportsController aRC = Get.put(AllReportsController());
 
-    //todo: pagination
-    //Connection reset by peer
-    //todo: add a sign (or snackbar) to know if not fetched
-    //todo: refresh indicator
-    // search
+    // todo: search (search in my reports only)
     return Scaffold(
       backgroundColor: cs.background,
       appBar: AppBar(
@@ -42,23 +40,56 @@ class AllReportsView extends StatelessWidget {
         ),
       ),
       body: GetBuilder<AllReportsController>(
-          init: AllReportsController(),
-          builder: (con) {
-            if (con.isLoading) {
-              return Center(
-                  child: SpinKitFoldingCube(
-                color: cs.primary,
-                size: 80,
-              ));
-            }
-            return ListView.builder(
-              itemCount: con.reports.length,
-              itemBuilder: (context, i) => ReportCard(
-                report: con.reports[i],
-                local: false,
-              ),
-            );
-          }),
+        init: AllReportsController(),
+        builder: (con) {
+          List<ReportModel> allReports = con.reports;
+          return con.isLoading
+              ? Center(child: SpinKitCubeGrid(color: cs.primary))
+              : RefreshIndicator(
+                  onRefresh: con.refreshReports,
+                  child: allReports.isEmpty
+                      ? ListView(
+                          children: [
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Text(
+                                  'لا يوجد تقارير بعد, أو هناك مشكلة اتصال\n اسحب للتحديث',
+                                  style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : ListView.builder(
+                          controller: con.scrollController,
+                          itemCount: allReports.length + 1,
+                          itemBuilder: (context, i) {
+                            if (i < allReports.length) {
+                              return ReportCard(
+                                report: allReports[i],
+                                local: false,
+                                supervisor: true,
+                              );
+                            }
+                            // Show loading indicator or end-of-list indication
+                            return Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 24),
+                                child: con.hasMore
+                                    ? CircularProgressIndicator(color: cs.primary)
+                                    : CircleAvatar(
+                                        radius: 5,
+                                        backgroundColor: Colors.grey.withOpacity(0.7),
+                                      ),
+                              ),
+                            );
+                          },
+                        ),
+                );
+        },
+      ),
     );
   }
 }
