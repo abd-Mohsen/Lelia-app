@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class MapPage extends StatefulWidget {
   final double latitude;
   final double longitude;
+
   const MapPage({super.key, required this.latitude, required this.longitude});
 
   @override
@@ -14,39 +15,46 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   late MapController mapController;
 
-  //todo: fix this and add marker on the initial position
-  //todo: fix map errors in console
   @override
   void initState() {
     super.initState();
+    // Initialize the map controller with the initial position
     mapController = MapController.withPosition(
       initPosition: GeoPoint(
         latitude: widget.latitude,
         longitude: widget.longitude,
       ),
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Add the initial marker after the widget is built
-      mapController.addMarker(
-        GeoPoint(
-          latitude: widget.latitude,
-          longitude: widget.longitude,
-        ),
-        markerIcon: MarkerIcon(
-          icon: Icon(
-            Icons.location_history_rounded,
-            color: Colors.red,
-            size: 48,
-          ),
-        ),
-      );
+
+    // Use Future.delayed to ensure the map has loaded before adding the marker
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(Duration(milliseconds: 500)); // Adjust if needed
+      await _addInitialMarker();
     });
+  }
+
+  // Function to add the initial marker
+  Future<void> _addInitialMarker() async {
+    await mapController.addMarker(
+      GeoPoint(
+        latitude: widget.latitude,
+        longitude: widget.longitude,
+      ),
+      markerIcon: MarkerIcon(
+        icon: Icon(
+          Icons.location_on,
+          color: Colors.red,
+          size: 48,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -62,46 +70,34 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
       body: OSMFlutter(
-          controller: mapController,
-          osmOption: OSMOption(
-            // userTrackingOption: UserTrackingOption(
-            //   enableTracking: true,
-            //   unFollowUser: false,
-            // ),
-            zoomOption: const ZoomOption(
-              initZoom: 20,
-              minZoomLevel: 3,
-              maxZoomLevel: 19,
-              stepZoom: 1.0,
-            ),
-            userLocationMarker: UserLocationMaker(
-              personMarker: MarkerIcon(
-                icon: Icon(
-                  Icons.location_history_rounded,
-                  color: Colors.red,
-                  size: 48,
-                ),
-              ),
-              directionArrowMarker: MarkerIcon(
-                icon: Icon(
-                  Icons.double_arrow,
-                  size: 48,
-                ),
+        controller: mapController,
+        osmOption: OSMOption(
+          zoomOption: const ZoomOption(
+            initZoom: 20, // Set closer zoom for a better view
+            minZoomLevel: 3,
+            maxZoomLevel: 19,
+            stepZoom: 1.0,
+          ),
+          userLocationMarker: UserLocationMaker(
+            personMarker: MarkerIcon(
+              icon: Icon(
+                Icons.location_history_rounded,
+                color: Colors.red,
+                size: 48,
               ),
             ),
-            roadConfiguration: const RoadOption(
-              roadColor: Colors.yellowAccent,
+            directionArrowMarker: MarkerIcon(
+              icon: Icon(
+                Icons.double_arrow,
+                size: 48,
+              ),
             ),
-            // markerOption: MarkerOption(
-            //   defaultMarker: const MarkerIcon(
-            //     icon: Icon(
-            //       Icons.person_pin_circle,
-            //       color: Colors.blue,
-            //       size: 56,
-            //     ),
-            //   ),
-            // ),
-          )),
+          ),
+          roadConfiguration: const RoadOption(
+            roadColor: Colors.yellowAccent,
+          ),
+        ),
+      ),
     );
   }
 }
