@@ -7,8 +7,8 @@ import 'components/auth_field.dart';
 import 'components/custom_field.dart';
 
 ///if otp is correct , set a new password for the account with the email entered earlier
-class ForgotPasswordView2 extends StatelessWidget {
-  const ForgotPasswordView2({super.key});
+class ResetPasswordView2 extends StatelessWidget {
+  const ResetPasswordView2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -98,23 +98,28 @@ class ForgotPasswordView2 extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: GetBuilder<ResetPassController>(
-                      builder: (con) => GestureDetector(
-                        onTap: () {
-                          rPC.resetPass();
-                          //hideKeyboard(context);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: cs.primary,
+                      builder: (con) => Center(
+                        child: GestureDetector(
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            margin: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: cs.primary,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: con.isLoading2
+                                ? SizedBox(width: 60, child: SpinKitThreeBounce(color: cs.onPrimary, size: 24))
+                                : Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: Text(
+                                      "موافق",
+                                      style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                    ),
+                                  ),
                           ),
-                          margin: EdgeInsets.all(8),
-                          padding: EdgeInsets.all(12),
-                          child: rPC.isLoading2
-                              ? SpinKitThreeBounce(color: cs.onPrimary, size: 24)
-                              : Text(
-                                  "موافق",
-                                  style: tt.titleMedium!.copyWith(color: cs.onPrimary),
-                                ),
+                          onTap: () {
+                            con.resetPass();
+                          },
                         ),
                       ),
                     ),

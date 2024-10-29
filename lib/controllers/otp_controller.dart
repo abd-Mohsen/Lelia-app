@@ -74,7 +74,7 @@ class OTPController extends GetxController {
           return;
         }
         resetController!.setResetToken(resetToken);
-        Get.off(() => const ForgotPasswordView2());
+        Get.off(() => const ResetPasswordView2());
       }
     } on TimeoutException {
       kTimeOutDialog();

@@ -64,23 +64,28 @@ class ResetPasswordView1 extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: GetBuilder<ResetPassController>(
-                    builder: (con) => GestureDetector(
-                      onTap: () {
-                        con.toOTP();
-                        //hideKeyboard(context);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: cs.primary,
+                    builder: (con) => Center(
+                      child: GestureDetector(
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          margin: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: cs.primary,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: con.isLoading1
+                              ? SizedBox(width: 60, child: SpinKitThreeBounce(color: cs.onPrimary, size: 24))
+                              : Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: Text(
+                                    "التالي",
+                                    style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                  ),
+                                ),
                         ),
-                        margin: EdgeInsets.all(8),
-                        padding: EdgeInsets.all(12),
-                        child: con.isLoading1
-                            ? SpinKitThreeBounce(color: cs.onPrimary, size: 24)
-                            : Text(
-                                "التالي",
-                                style: tt.titleMedium!.copyWith(color: cs.onPrimary),
-                              ),
+                        onTap: () {
+                          con.toOTP();
+                        },
                       ),
                     ),
                   ),
