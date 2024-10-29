@@ -13,6 +13,8 @@ class UserModel {
   final String role;
   final UserModel? supervisor;
   final bool isVerified;
+  final bool isActivated;
+  final DateTime joinDate;
 
   UserModel({
     required this.id,
@@ -22,6 +24,8 @@ class UserModel {
     required this.role,
     required this.supervisor,
     required this.isVerified,
+    required this.isActivated,
+    required this.joinDate,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -32,6 +36,8 @@ class UserModel {
         role: json["role"],
         supervisor: json["supervisor"] != null ? UserModel.fromJson(json["supervisor"]) : null,
         isVerified: json["is_verified"],
+        isActivated: json["is_activated"],
+        joinDate: DateTime.parse(json["join_date"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,6 +48,8 @@ class UserModel {
         "role": role,
         "supervisor": supervisor!.toJson(),
         "is_verified": isVerified,
+        "is_activated": isActivated,
+        "join_date": joinDate,
       };
 
   @override

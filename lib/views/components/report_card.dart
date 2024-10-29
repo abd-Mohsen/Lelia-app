@@ -21,6 +21,7 @@ class ReportCard extends StatelessWidget {
         style: tt.titleMedium!.copyWith(color: cs.onBackground),
       ),
       subtitle: Text(
+        //todo: show what day (in weeks)
         "${Jiffy.parseFromDateTime(report.date).format(pattern: "d / M / y")}  ${Jiffy.parseFromDateTime(report.date).jms}",
         //" ${report.date.hour}:${report.date.minute}",
         style: tt.labelLarge!.copyWith(color: cs.onBackground),

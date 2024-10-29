@@ -1,19 +1,12 @@
-import 'dart:io';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:lelia/controllers/local_reports_controller.dart';
 import 'package:lelia/controllers/user_controller.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/views/components/report_card.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../constants.dart';
-import '../controllers/report_controller.dart';
 import '../models/user_model.dart';
-import 'map_page.dart';
 
 class UserView extends StatelessWidget {
   final UserModel user;
@@ -33,7 +26,7 @@ class UserView extends StatelessWidget {
           style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
         ),
         // actions: [
-        //   //todo: report (make admin receive a notification of that)
+        //   //todo (later): report user (make admin receive a notification of that)
         // ],
         backgroundColor: cs.primary,
         leading: IconButton(
@@ -88,21 +81,19 @@ class UserView extends StatelessWidget {
                             maxLines: 1,
                           ),
                         ),
-                        //todo fetch real date
                         Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
-                            "انضم في ${Jiffy.parseFromDateTime(DateTime.now()).format(pattern: "d / M / y")}",
+                            "انضم في ${Jiffy.parseFromDateTime(user.joinDate).format(pattern: "d / M / y")}",
                             style: tt.titleSmall!.copyWith(color: cs.onSurface),
                             maxLines: 1,
                           ),
                         ),
-                        //todo fetch is_activated
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                           child: Text(
-                            user.isVerified ? "تم تفعيل حسابه من الشركة" : "الحساب غير مفعل من الشركة",
-                            style: tt.titleSmall!.copyWith(color: user.isVerified ? Colors.green : Colors.red),
+                            user.isActivated ? "تم تفعيل حسابه من الشركة" : "الحساب غير مفعل من الشركة",
+                            style: tt.titleSmall!.copyWith(color: user.isActivated ? Colors.green : Colors.red),
                             maxLines: 1,
                           ),
                         ),

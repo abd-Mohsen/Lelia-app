@@ -133,12 +133,23 @@ class SupervisorView extends StatelessWidget {
                   onRefresh: con.refreshSubordinates,
                   child: con.isLoadingSubs
                       ? Center(child: SpinKitCubeGrid(color: cs.primary))
-                      : ListView.builder(
-                          itemCount: subordinates.length,
-                          itemBuilder: (context, i) => UserCard(
-                            user: subordinates[i],
-                          ),
-                        ),
+                      : subordinates.isEmpty
+                          ? Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Text(
+                                  'لا يوجد لديك مندوبين بعد, أو هناك مشكلة اتصال\n اسحب للتحديث',
+                                  style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: subordinates.length,
+                              itemBuilder: (context, i) => UserCard(
+                                user: subordinates[i],
+                              ),
+                            ),
                 ),
                 Form(
                   key: con.dataFormKey,
@@ -172,8 +183,8 @@ class SupervisorView extends StatelessWidget {
                             visible: con.generateFor == "مندوب محدد",
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
-                              //todo: list tile borders positions arent updating until i touch the screen
-                              //todo: when i change tab, selected user disappears
+                              //todo (later): list tile borders positions arent updating until i touch the screen
+                              //todo (later): when i change tab, selected user disappears
                               child: DropdownSearch<UserModel>(
                                 validator: (user) {
                                   if (user == null && con.generateFor == "مندوب محدد") return "الرجاء اختيار مندوب";
