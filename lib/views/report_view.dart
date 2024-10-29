@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:lelia/controllers/local_reports_controller.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -114,6 +115,12 @@ class ReportView extends StatelessWidget {
             ReportField(title: "اسم الشارع", value: report.street),
             ReportField(title: "رقم ارضي", value: report.landline),
             ReportField(title: "رقم موبايل", value: report.mobile),
+            ReportField(
+              title: "التاريخ",
+              value: "${Jiffy.parseFromDateTime(report.date).E} "
+                  "${Jiffy.parseFromDateTime(report.date).format(pattern: "d/M/y")}",
+            ),
+            ReportField(title: "الساعة", value: "${Jiffy.parseFromDateTime(report.date).jms}"),
             ReportField(title: "حركة المنتج", value: report.status ?? "غير متواجد"),
             ReportField(title: "ملاحظات الزبون", value: report.notes ?? ""),
             report.images.isEmpty
