@@ -101,8 +101,8 @@ class LoginView extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 16),
                   GetBuilder<LoginController>(
-                    //todo: button stretches when loading
                     builder: (con) => Center(
                       child: GestureDetector(
                         child: Container(
@@ -113,7 +113,7 @@ class LoginView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: con.isLoading
-                              ? SpinKitThreeBounce(color: cs.onPrimary, size: 24)
+                              ? SizedBox(width: 120, child: SpinKitThreeBounce(color: cs.onPrimary, size: 24))
                               : Padding(
                                   padding: const EdgeInsets.all(4),
                                   child: Text(
