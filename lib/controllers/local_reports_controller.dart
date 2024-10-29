@@ -135,7 +135,6 @@ class LocalReportsController extends GetxController {
 
     // Save the Excel file
     List<int>? fileBytes = excel.save();
-    //var directory = await DownloadsPathProvider.downloadsDirectory; //todo: choose a suitable path
 
     File(join('/storage/emulated/0/Download/${homeController.currentUser!.userName}.xlsx'))
       ..createSync(recursive: true)
@@ -144,7 +143,6 @@ class LocalReportsController extends GetxController {
       message: "تم تخزين ملف اكسل في مجلد التنزيلات",
       duration: Duration(milliseconds: 2500),
     ));
-    //todo: instead of saving, share the file
   }
 
   bool _isLoading = false;

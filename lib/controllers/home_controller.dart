@@ -19,6 +19,12 @@ import 'package:path/path.dart' as path;
 import '../constants.dart';
 
 class HomeController extends GetxController {
+  @override
+  onInit() {
+    getCurrentUser();
+    super.onInit();
+  }
+
   //todo: implement otp here
   final GetStorage _getStorage = GetStorage();
 
@@ -58,12 +64,6 @@ class HomeController extends GetxController {
     } finally {
       toggleLoadingUser(false);
     }
-  }
-
-  @override
-  onInit() {
-    getCurrentUser();
-    super.onInit();
   }
 
   GlobalKey<FormState> dataFormKey = GlobalKey<FormState>();
@@ -251,7 +251,7 @@ class HomeController extends GetxController {
     List<String> storedImagesPaths = [];
 
     for (XFile image in images) {
-      //todo: compress images (find another way, this might not be working properly)
+      //compress images (find another way, this might not be working properly)
       String imagePath = path.join(appDir.path, path.basename(image.path));
       File file = await compressImage(image);
       await file.copy(imagePath);

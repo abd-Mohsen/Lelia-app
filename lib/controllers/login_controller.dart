@@ -42,7 +42,7 @@ class LoginController extends GetxController {
   }
 
   void login() async {
-    if (isLoading) return; // todo: do this for every button, to not send multiple requests
+    if (isLoading) return; // todo (later): do this for every button, to not send multiple requests
     buttonPressed = true;
     bool isValid = loginFormKey.currentState!.validate();
     if (isValid) {

@@ -90,7 +90,7 @@ class HomeView extends StatelessWidget {
           //init: HomeController(),
           builder: (con) => Stack(
             children: [
-              //todo: put a warning here 'verify your email' (and dont let user do any request)
+              //todo: put a warning here 'verify your email' (and dont let user do any request) verify or logout
               Form(
                 key: con.dataFormKey,
                 child: ListView(
@@ -477,21 +477,39 @@ class HomeView extends StatelessWidget {
                   children: [
                     GetBuilder<HomeController>(builder: (con) {
                       return con.isLoadingUser
-                          ? SpinKitPianoWave(color: cs.primary)
-                          : UserAccountsDrawerHeader(
-                              //showing old data or not showing at all, add loading (is it solved?)
-                              //todo: refresh button if not fetched
-                              accountName: Text(
-                                con.currentUser?.userName ?? "",
-                                style: tt.headlineMedium,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              accountEmail: Text(
-                                con.currentUser?.email ?? "",
-                                style: tt.titleMedium,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            );
+                          ? Padding(
+                              padding: const EdgeInsets.all(24),
+                              child: SpinKitPianoWave(color: cs.primary),
+                            )
+                          : con.currentUser == null
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      con.getCurrentUser();
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.all<Color>(cs.primary),
+                                    ),
+                                    child: Text(
+                                      'خطأ, انقر للتحديث',
+                                      style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                    ),
+                                  ),
+                                )
+                              : UserAccountsDrawerHeader(
+                                  //showing old data or not showing at all, add loading (is it solved?)
+                                  accountName: Text(
+                                    con.currentUser!.userName,
+                                    style: tt.headlineMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  accountEmail: Text(
+                                    con.currentUser!.email,
+                                    style: tt.titleMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                );
                     }),
                     ListTile(
                       leading: const Icon(Icons.dark_mode_outlined),

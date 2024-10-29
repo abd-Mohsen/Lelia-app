@@ -300,24 +300,40 @@ class SupervisorView extends StatelessWidget {
                   child: ListView(
                     children: [
                       GetBuilder<SupervisorController>(builder: (con) {
-                        return con.isLoadingReports
+                        return con.isLoadingUser
                             ? Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(24),
                                 child: SpinKitPianoWave(color: cs.primary),
                               )
-                            : UserAccountsDrawerHeader(
-                                //todo: refresh button if not fetched
-                                accountName: Text(
-                                  con.currentUser?.userName ?? "",
-                                  style: tt.headlineMedium,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                accountEmail: Text(
-                                  con.currentUser?.email ?? "",
-                                  style: tt.titleMedium,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              );
+                            : con.currentUser == null
+                                ? Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        con.getCurrentUser();
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor: WidgetStateProperty.all<Color>(cs.primary),
+                                      ),
+                                      child: Text(
+                                        'خطأ, انقر للتحديث',
+                                        style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                      ),
+                                    ),
+                                  )
+                                : UserAccountsDrawerHeader(
+                                    //showing old data or not showing at all, add loading (is it solved?)
+                                    accountName: Text(
+                                      con.currentUser!.userName,
+                                      style: tt.headlineMedium,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    accountEmail: Text(
+                                      con.currentUser!.email,
+                                      style: tt.titleMedium,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  );
                       }),
                       ListTile(
                         leading: const Icon(Icons.dark_mode_outlined),
