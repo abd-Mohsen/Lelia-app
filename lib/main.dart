@@ -6,8 +6,10 @@ import 'package:lelia/controllers/theme_controller.dart';
 import 'package:lelia/services/screen_service.dart';
 import 'package:lelia/themes.dart';
 import 'package:lelia/views/redirect_page.dart';
-
+import 'api.dart';
 import 'locale.dart';
+
+final Api api = Api();
 
 void main() async {
   await GetStorage.init();

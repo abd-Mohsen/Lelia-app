@@ -8,11 +8,14 @@ import 'package:lelia/models/report_model.dart';
 import 'package:lelia/models/user_model.dart';
 import 'package:path/path.dart';
 import '../constants.dart';
+import 'package:lelia/main.dart';
+import 'package:flutter/material.dart';
 
 //todo: implement 'session expired'
 //todo: clean this shit up, make separate services
 // todo: all dialogs here are broken with light mode
 //todo: remove get default dialogs from here
+//todo: remove timeout dialogs from controllers
 class RemoteServices {
   static final GetStorage _getStorage = GetStorage();
   static final String _hostIP = "$kHostIP/api";
@@ -35,71 +38,52 @@ class RemoteServices {
     String role,
     int? supervisorId,
   ) async {
-    var response = await client.post(
-      Uri.parse("$_hostIP/register"),
-      headers: headers,
-      body: jsonEncode({
-        "name": userName,
-        "email": email,
-        "password": password,
-        "password_confirmation": passwordConfirmation,
-        "role": role,
-        "phone": phone,
-        if (supervisorId != null) "supervisor_id": supervisorId,
-      }),
-    );
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return true;
+    Map<String, dynamic> body = {
+      "name": userName,
+      "email": email,
+      "password": password,
+      "password_confirmation": passwordConfirmation,
+      "role": role,
+      "phone": phone,
+      if (supervisorId != null) "supervisor_id": supervisorId,
+    };
+    String? json = await api.postRequest("register", body, auth: false);
+    if (json == null) {
+      Get.defaultDialog(
+        titleStyle: const TextStyle(color: Colors.black),
+        middleTextStyle: const TextStyle(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: "خطأ",
+        middleText: "يرجى التأكد من البيانات المدخلة أو المحاولة مجدداً",
+      );
+      return false;
     }
-    Get.defaultDialog(
-      title: "خطأ",
-      middleText: jsonDecode(response.body)["message"],
-    );
-    return false;
+    return true;
   }
 
   static Future<LoginModel?> login(String email, String password) async {
-    var response = await client.post(
-      Uri.parse("$_hostIP/login"),
-      headers: headers,
-      body: jsonEncode({
-        "email": email,
-        "password": password,
-      }),
-    );
-    print(response.body);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return LoginModel.fromJson(jsonDecode(response.body));
-    }
-    if (response.statusCode == 422) {
+    Map<String, dynamic> body = {
+      "email": email,
+      "password": password,
+    };
+    String? json = await api.postRequest("login", body, auth: false);
+    if (json == null) {
       Get.defaultDialog(
+        titleStyle: const TextStyle(color: Colors.black),
+        middleTextStyle: const TextStyle(color: Colors.black),
+        backgroundColor: Colors.white,
         title: "خطأ",
-        middleText: "البربد الاكتروني او كلمة المرور غير صحيحين",
+        middleText: "يرجى التأكد من البيانات المدخلة و المحاولة مجدداً, قد يكون الاتصال ضعيف, أو الحساب غير مفعل من "
+            "الشركة",
       );
       return null;
     }
-    Get.defaultDialog(
-      title: "خطأ",
-      middleText: jsonDecode(response.body)["message"],
-    );
-    return null;
+    return LoginModel.fromJson(jsonDecode(json));
   }
 
   static Future<bool> logout() async {
-    var response = await client.get(
-      Uri.parse("$_hostIP/logout"),
-      headers: {...headers, "Authorization": "Bearer $token"},
-    );
-    if (response.statusCode == 200) {
-      return true;
-    }
-    if (response.statusCode == 401) {
-      _getStorage.remove("token");
-      _getStorage.remove("role");
-      Get.dialog(kSessionExpiredDialog());
-      return true;
-    }
-    return false;
+    String? json = await api.getRequest("logout", auth: true);
+    return json != null;
   }
 
   static Future<UserModel?> fetchCurrentUser() async {
