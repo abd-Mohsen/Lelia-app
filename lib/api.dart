@@ -145,43 +145,55 @@ class Api {
 
   Future<String?> postRequestWithImage(String endPoint, List<String> images, Map<String, String> body,
       {bool auth = false, bool canRefresh = true}) async {
-    var request = http.MultipartRequest(
-      "POST",
-      Uri.parse("$_hostIP/$endPoint"),
-    );
+    try {
+      var request = http.MultipartRequest(
+        "POST",
+        Uri.parse("$_hostIP/$endPoint"),
+      );
 
-    request.headers.addAll({
-      ...headers,
-      if (auth) "Authorization": "Bearer $accessToken",
-    });
+      request.headers.addAll({
+        ...headers,
+        if (auth) "Authorization": "Bearer $accessToken",
+      });
 
-    request.fields.addAll(body);
+      request.fields.addAll(body);
 
-    var response = await request.send();
-    if (canRefresh && response.statusCode == 401) {
-      _getStorage.remove("token");
-      _getStorage.remove("role");
-      Get.dialog(kSessionExpiredDialog());
+      var response = await request.send();
+      print(response.statusCode);
+      if (canRefresh && response.statusCode == 401) {
+        _getStorage.remove("token");
+        _getStorage.remove("role");
+        Get.dialog(kSessionExpiredDialog());
+        return null;
+      }
+
+      for (var imagePath in images) {
+        File imageFile = File(imagePath);
+        var stream = http.ByteStream(imageFile.openRead());
+        var length = await imageFile.length();
+        var multipartFile = http.MultipartFile(
+          'images[]',
+          stream,
+          length,
+          filename: basename(imageFile.path),
+        );
+        request.files.add(multipartFile);
+      }
+
+      String responseBody = await response.stream.bytesToString();
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return responseBody;
+      }
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+      });
+      return null;
+    } on TimeoutException {
+      kTimeOutDialog();
+      return null;
+    } catch (e) {
+      print(e.toString());
       return null;
     }
-
-    for (var imagePath in images) {
-      File imageFile = File(imagePath);
-      var stream = http.ByteStream(imageFile.openRead());
-      var length = await imageFile.length();
-      var multipartFile = http.MultipartFile(
-        'images[]',
-        stream,
-        length,
-        filename: basename(imageFile.path),
-      );
-      request.files.add(multipartFile);
-    }
-
-    String responseBody = await response.stream.bytesToString();
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return responseBody;
-    }
-    return null;
   }
 }

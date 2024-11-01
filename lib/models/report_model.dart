@@ -99,7 +99,7 @@ class ReportModel {
         latitude: json["latitude"]?.toDouble(),
         availability: json["status"] != null,
         status: json["status"],
-        date: DateTime.parse(json["issue_date"]),
+        date: DateTime.parse(json["issue_date"]), //todo: time is 3 hrs early from server
         notes: json["notes"],
         owner: UserModel.fromJson(json["owner"]),
         uploaded: true,

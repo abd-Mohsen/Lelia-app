@@ -42,9 +42,9 @@ class AboutUsPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 12, left: 12, top: 28, bottom: 12),
+            padding: const EdgeInsets.only(right: 12, left: 12, top: 40, bottom: 12),
             child: Text(
-              "للتواصل مع المطور",
+              "للاستفسار يرجى التواصل مع المطور",
               style: tt.titleMedium!.copyWith(color: cs.onSurface),
             ),
           ),

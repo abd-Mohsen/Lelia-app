@@ -123,7 +123,7 @@ class RemoteServices {
   static Future<bool> sendForgotPasswordOtp(String email) async {
     Map<String, dynamic> body = {"email": email};
     String? json = await api.postRequest("send-reset-otp", body, auth: false);
-    return json == null;
+    return json != null;
   }
 
   static Future<String?> verifyForgotPasswordOtp(String email, String otp) async {
@@ -141,115 +141,46 @@ class RemoteServices {
       "token": resetToken,
     };
     String? json = await api.postRequest("reset-password", body, auth: true);
-    return json == null;
+    return json != null;
   }
 
   static Future<bool> uploadReport(ReportModel report) async {
-    var request = http.MultipartRequest("POST", Uri.parse("$_hostIP/reports"));
-
-    request.fields.addAll(report.toJson());
-    request.headers.addAll({...headers, "Authorization": "Bearer $token"});
-
-    for (var imagePath in report.images) {
-      File imageFile = File(imagePath);
-      var stream = http.ByteStream(imageFile.openRead());
-      var length = await imageFile.length();
-      var multipartFile = http.MultipartFile(
-        'images[]',
-        stream,
-        length,
-        filename: basename(imageFile.path),
-      );
-      request.files.add(multipartFile);
-    }
-
-    var response = await request.send();
-    print(response.statusCode);
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return true;
-    }
-    response.stream.transform(utf8.decoder).listen((value) {
-      print(value);
-    });
-    return false;
+    String? json = await api.postRequestWithImage("reports", report.images, report.toJson(), auth: true);
+    return json != null;
   }
 
   static Future<List<ReportModel>?> fetchSalesmanReports(int page, int limit) async {
-    var response = await client.get(
-      Uri.parse("$_hostIP/reports?page=$page&limit=$limit"),
-      headers: {...headers, "Authorization": "Bearer $token"},
-    );
-    print(response.body);
-    print(token);
-    if (response.statusCode == 200) {
-      var reports = reportModelFromJson(response.body);
-      print("returned fine");
-      return reports;
-    }
-    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
-    return null;
+    String? json = await api.getRequest("reports?page=$page&limit=$limit", auth: true);
+    if (json == null) return null;
+    return reportModelFromJson(json);
   }
 
   static Future<List<ReportModel>?> fetchSubordinateReports(int id, int page, int limit) async {
-    var response = await client.get(
-      Uri.parse("$_hostIP/reports/$id?page=$page&limit=$limit"),
-      headers: {...headers, "Authorization": "Bearer $token"},
-    );
-    print(response.body);
-    print(token);
-    if (response.statusCode == 200) {
-      var reports = reportModelFromJson(response.body);
-      print("returned fine");
-      return reports;
-    }
-    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
-    return null;
+    String? json = await api.getRequest("reports/$id?page=$page&limit=$limit", auth: true);
+    if (json == null) return null;
+    return reportModelFromJson(json);
   }
 
   static Future<List<ReportModel>?> fetchSupervisorReports(int page, int limit) async {
-    var response = await client.get(
-      Uri.parse("$_hostIP/reports/supervisor/?page=$page&limit=$limit"),
-      headers: {...headers, "Authorization": "Bearer $token"},
-    );
-    if (response.statusCode == 200) {
-      var reports = reportModelFromJson(response.body);
-      return reports;
-    }
-    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
-    return null;
+    String? json = await api.getRequest("reports/supervisor/?page=$page&limit=$limit", auth: true);
+    if (json == null) return null;
+    return reportModelFromJson(json);
   }
 
   static Future<List<UserModel>?> fetchSupervisorSubordinates() async {
-    var response = await client.get(
-      Uri.parse("$_hostIP/users/my-subs"),
-      headers: {...headers, "Authorization": "Bearer $token"},
-    );
-    print(response.body);
-    if (response.statusCode == 200) {
-      return userModelFromJson(response.body);
-    }
-    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
-    return null;
+    String? json = await api.getRequest("users/my-subs", auth: true);
+    if (json == null) return null;
+    return userModelFromJson(json);
   }
 
   static Future<List<ReportModel>?> fetchExportedReports(String date1, String date2, int? salesmanID) async {
-    var response = await client.post(
-      Uri.parse("$_hostIP/reports/export"),
-      headers: {...headers, "Authorization": "Bearer $token"},
-      body: jsonEncode({
-        "start_date": date1,
-        "end_date": date2,
-        "user_id": salesmanID,
-      }),
-    );
-    print(response.body);
-    print(token);
-    if (response.statusCode == 200) {
-      var reports = reportModelFromJson(response.body);
-      print("returned fine");
-      return reports;
-    }
-    Get.defaultDialog(title: "error", middleText: jsonDecode(response.body)["message"]);
-    return null;
+    Map<String, dynamic> body = {
+      "start_date": date1,
+      "end_date": date2,
+      "user_id": salesmanID,
+    };
+    String? json = await api.postRequest("reports/export", body, auth: true);
+    if (json == null) return null;
+    return reportModelFromJson(json);
   }
 }

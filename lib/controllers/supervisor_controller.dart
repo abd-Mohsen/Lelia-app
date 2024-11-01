@@ -95,6 +95,7 @@ class SupervisorController extends GetxController {
 
   int page = 1, limit = 12;
   bool hasMore = true;
+  //todo: add flag that tells you if the fetch has failed, to show a button and load more
 
   void getReports() async {
     if (isLoadingReports || !hasMore) return;
@@ -127,18 +128,22 @@ class SupervisorController extends GetxController {
     getSubordinates();
   }
 
-  Future<void> getExportReports() async {
+  Future<bool> getExportReports() async {
     try {
       toggleLoadingExport(true);
+      _exportedReports.clear();
       _exportedReports.addAll((await RemoteServices.fetchExportedReports(
         fromDate!.toIso8601String(),
         toDate!.toIso8601String(),
         selectedSubordinate?.id,
       ).timeout(kTimeOutDuration))!);
+      return true;
     } on TimeoutException {
       kTimeOutDialog();
+      return false;
     } catch (e) {
       print(e.toString());
+      return false;
     } finally {
       toggleLoadingExport(false);
     }
@@ -204,7 +209,7 @@ class SupervisorController extends GetxController {
         return;
       }
     }
-    await getExportReports();
+    if (!await getExportReports()) return;
     var excel = Excel.createExcel();
     Sheet sheet = excel['report'];
     excel.setDefaultSheet('report');

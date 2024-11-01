@@ -237,6 +237,49 @@ class SupervisorView extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: GestureDetector(
                               onTap: () {
+                                Get.bottomSheet(
+                                  Container(
+                                    height: MediaQuery.of(context).size.height / 1.5,
+                                    color: cs.surface,
+                                    child: con.exportedReports.isEmpty
+                                        ? Center(
+                                            child: Text(
+                                              'ليس هناك تقارير',
+                                              style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          )
+                                        : ListView.builder(
+                                            itemCount: exportedReports.length,
+                                            itemBuilder: (context, i) => ReportCard(
+                                              report: exportedReports[i],
+                                              local: false,
+                                              supervisor: true,
+                                            ),
+                                          ),
+                                  ),
+                                );
+                              },
+                              child: IntrinsicWidth(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: cs.primary,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: const Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text("معاينة التقارير المصدرة"),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
                                 con.export();
                               },
                               child: IntrinsicWidth(
@@ -254,44 +297,6 @@ class SupervisorView extends StatelessWidget {
                                               ? SpinKitThreeBounce(color: Colors.white, size: 25)
                                               : Text("تصدير ملف إكسل");
                                         },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: con.exportedReports.isNotEmpty,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.bottomSheet(
-                                    Container(
-                                      height: MediaQuery.of(context).size.height / 1.5,
-                                      color: cs.surface,
-                                      child: ListView.builder(
-                                        itemCount: exportedReports.length,
-                                        itemBuilder: (context, i) => ReportCard(
-                                          report: exportedReports[i],
-                                          local: false,
-                                          supervisor: true,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: IntrinsicWidth(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: cs.primary,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: const Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text("معاينة التقارير"),
                                       ),
                                     ),
                                   ),
