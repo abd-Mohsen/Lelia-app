@@ -84,12 +84,23 @@ AlertDialog kSessionExpiredDialog() => AlertDialog(
 //       ),
 //     );
 
-Future kTimeOutDialog() => Get.defaultDialog(
+kTimeOutDialog() => Get.defaultDialog(
       titleStyle: const TextStyle(color: Colors.black),
       middleTextStyle: const TextStyle(color: Colors.black),
       backgroundColor: Colors.white,
       title: "فشل الاتصال",
       middleText: "تأكد من اتصالك بالانترنت ثم حاول مجدداً",
+    );
+
+kTimeOutSnackBar() => Get.snackbar(
+      "لا يوجد اتصال بالانترنت",
+      "تأكد من اتصالك أو حاول لاحقاً ",
+      icon: const Padding(
+        padding: EdgeInsets.only(right: 8),
+        child: Icon(Icons.wifi_off, color: Colors.white),
+      ),
+      colorText: Colors.white,
+      backgroundColor: Colors.red,
     );
 
 TextTheme kMyTextTheme = TextTheme(

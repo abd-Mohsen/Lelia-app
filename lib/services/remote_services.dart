@@ -1,25 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:lelia/models/login_model.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/models/user_model.dart';
-import 'package:path/path.dart';
-import '../constants.dart';
 import 'package:lelia/main.dart';
 import 'package:flutter/material.dart';
 
-//todo: implement 'session expired'
-//todo: clean this shit up, make separate services
-// todo: all dialogs here are broken with light mode
-//todo: remove get default dialogs from here
 //todo: remove timeout dialogs from controllers
 class RemoteServices {
-  static final GetStorage _getStorage = GetStorage();
-  static final String _hostIP = "$kHostIP/api";
-  static String get token => GetStorage().read("token");
 
   static Map<String, String> headers = {
     "Accept": "Application/json",

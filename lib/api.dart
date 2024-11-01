@@ -7,7 +7,9 @@ import 'package:path/path.dart';
 import 'package:get/get.dart';
 import 'constants.dart';
 
-//todo: replace timeout dialog with snackbar, and pass a parameter to show snackbar or not
+//todo: show different snackbar if there is a server error "5--"
+//todo: show different snackbar if there is a user error "422"
+//todo: replace ugly dialogs with snackbars
 class Api {
   var client = http.Client();
   final String _hostIP = "$kHostIP/api";
@@ -37,7 +39,7 @@ class Api {
       }
       return response.statusCode == 200 ? response.body : null;
     } on TimeoutException {
-      kTimeOutDialog();
+      kTimeOutSnackBar();
       return null;
     } catch (e) {
       print(e.toString());
@@ -73,7 +75,7 @@ class Api {
       }
       return (response.statusCode == 200 || response.statusCode == 201) ? response.body : null;
     } on TimeoutException {
-      kTimeOutDialog();
+      kTimeOutSnackBar();
       return null;
     } catch (e) {
       print(e.toString());
@@ -109,7 +111,7 @@ class Api {
       print(response.body);
       return (response.statusCode == 200 || response.statusCode == 201) ? response.body : null;
     } on TimeoutException {
-      kTimeOutDialog();
+      kTimeOutSnackBar();
       return null;
     } catch (e) {
       print(e.toString());
@@ -135,7 +137,7 @@ class Api {
       print(response.body + "===========" + response.statusCode.toString());
       return response.statusCode == 204;
     } on TimeoutException {
-      kTimeOutDialog();
+      kTimeOutSnackBar();
       return false;
     } catch (e) {
       print(e.toString());
@@ -189,7 +191,7 @@ class Api {
       });
       return null;
     } on TimeoutException {
-      kTimeOutDialog();
+      kTimeOutSnackBar();
       return null;
     } catch (e) {
       print(e.toString());

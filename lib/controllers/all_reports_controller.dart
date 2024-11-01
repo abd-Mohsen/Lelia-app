@@ -26,6 +26,7 @@ class AllReportsController extends GetxController {
 
   int page = 1, limit = 4;
   bool hasMore = true;
+  //todo: add flag that tells you if the fetch has failed, to show a button and load more
 
   final List<ReportModel> _reports = [];
   List<ReportModel> get reports => _reports;

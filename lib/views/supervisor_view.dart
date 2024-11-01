@@ -188,7 +188,6 @@ class SupervisorView extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 12.0),
                               //todo (later): list tile borders positions arent updating until i touch the screen
-                              //todo (later): when i change tab, selected user disappears
                               child: DropdownSearch<UserModel>(
                                 validator: (user) {
                                   if (user == null && con.generateFor == "مندوب محدد") return "الرجاء اختيار مندوب";
@@ -234,7 +233,7 @@ class SupervisorView extends StatelessWidget {
                           DateSelector(start: true), // do not put const, it wont be rebuilt
                           DateSelector(start: false),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
                             child: GestureDetector(
                               onTap: () {
                                 Get.bottomSheet(
@@ -277,7 +276,7 @@ class SupervisorView extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: GestureDetector(
                               onTap: () {
                                 con.export();
