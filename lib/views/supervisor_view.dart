@@ -134,15 +134,19 @@ class SupervisorView extends StatelessWidget {
                   child: con.isLoadingSubs
                       ? Center(child: SpinKitCubeGrid(color: cs.primary))
                       : subordinates.isEmpty
-                          ? Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Text(
-                                  'لا يوجد لديك مندوبين بعد, أو هناك مشكلة اتصال\n اسحب للتحديث',
-                                  style: tt.titleMedium!.copyWith(color: cs.onSurface),
-                                  textAlign: TextAlign.center,
+                          ? ListView(
+                              children: [
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Text(
+                                      'لا يوجد لديك مندوبين بعد, أو هناك مشكلة اتصال\n اسحب للتحديث',
+                                      style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             )
                           : ListView.builder(
                               itemCount: subordinates.length,
@@ -376,7 +380,7 @@ class SupervisorView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Text(
-                    'جميع الحقوق محفوظة',
+                    'ليتيا® جميع الحقوق محفوظة',
                     style: tt.labelMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
                   ),
                 ),

@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 import 'package:get/get.dart';
 import 'constants.dart';
 
+//todo: replace timeout dialog with snackbar, and pass a parameter to show snackbar or not
 class Api {
   var client = http.Client();
   final String _hostIP = "$kHostIP/api";

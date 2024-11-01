@@ -87,105 +87,61 @@ class RemoteServices {
   }
 
   static Future<UserModel?> fetchCurrentUser() async {
-    var response = await client.get(
-      Uri.parse("$_hostIP/users/profile"),
-      headers: {...headers, "Authorization": "Bearer $token"},
-    );
-    print("${response.body}+${response.statusCode}");
-    if (response.statusCode == 200) {
-      return UserModel.fromJson(jsonDecode(response.body));
-    }
-    if (response.statusCode == 401) {
-      _getStorage.remove("token");
-      _getStorage.remove("role");
-      Get.dialog(kSessionExpiredDialog());
-    }
-    return null;
+    String? json = await api.getRequest("users/profile", auth: true);
+    if (json == null) return null;
+    return UserModel.fromJson(jsonDecode(json));
   }
 
   static Future<List<UserModel>?> fetchSupervisors() async {
-    var response = await client.get(
-      Uri.parse("$_hostIP/users/supervisors"),
-      headers: headers,
-    );
-    if (response.statusCode == 200) {
-      return userModelFromJson(response.body);
-    }
-    return null;
+    String? json = await api.getRequest("users/supervisors", auth: false);
+    if (json == null) return null;
+    return userModelFromJson(json);
   }
 
   static Future<String?> sendRegisterOtp() async {
-    var response = await client.get(
-      Uri.parse("$_hostIP/email/send-otp-code"),
-      headers: {...headers, "Authorization": "Bearer $token"},
-    );
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return jsonDecode(response.body)["url"];
-    } else {
-      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
-      return null;
-    }
+    String? json = await api.getRequest("email/send-otp-code", auth: true);
+    if (json == null) return null;
+    return jsonDecode(json)["url"];
   }
 
   static Future<bool> verifyRegisterOtp(String apiUrl, String otp) async {
-    var response = await client.post(
-      Uri.parse(apiUrl),
-      body: jsonEncode({"otp_code": otp}),
-      headers: {...headers, "Authorization": "Bearer $token"},
-    );
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return true;
-    } else {
-      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
+    Map<String, dynamic> body = {"otp_code": otp};
+    String? json = await api.postRequest(apiUrl, body, auth: true);
+    if (json == null) {
+      Get.defaultDialog(
+        titleStyle: const TextStyle(color: Colors.black),
+        middleTextStyle: const TextStyle(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: "خطأ",
+        middleText: "يرجى التأكد من البيانات المدخلة و المحاولة مجدداً قد يكون الاتصال ضعيف ",
+      );
       return false;
     }
+    return true;
   }
 
   static Future<bool> sendForgotPasswordOtp(String email) async {
-    var response = await client.post(
-      Uri.parse("$_hostIP/send-reset-otp"),
-      headers: headers,
-      body: jsonEncode({"email": email}),
-    );
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return true;
-    } else {
-      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
-      return false;
-    }
+    Map<String, dynamic> body = {"email": email};
+    String? json = await api.postRequest("send-reset-otp", body, auth: false);
+    return json == null;
   }
 
   static Future<String?> verifyForgotPasswordOtp(String email, String otp) async {
-    var response = await client.post(
-      Uri.parse("$_hostIP/verify-reset-otp"),
-      body: jsonEncode({"email": email, "otp": otp}),
-      headers: headers,
-    );
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return jsonDecode(response.body)["reset_token"];
-    } else {
-      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
-      return null;
-    }
+    Map<String, dynamic> body = {"email": email, "otp": otp};
+    String? json = await api.postRequest("verify-reset-otp", body, auth: false);
+    if (json == null) return null;
+    return jsonDecode(json)["reset_token"];
   }
 
   static Future<bool> resetPassword(String email, String password, String resetToken) async {
-    var response = await client.post(
-      Uri.parse("$_hostIP/reset-password"),
-      body: jsonEncode({
-        "email": email,
-        "password": password,
-        "password_confirmation": password,
-        "token": resetToken,
-      }),
-      headers: headers,
-    );
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return true;
-    } else {
-      Get.defaultDialog(title: "error".tr, middleText: jsonDecode(response.body)["message"]);
-      return false;
-    }
+    Map<String, dynamic> body = {
+      "email": email,
+      "password": password,
+      "password_confirmation": password,
+      "token": resetToken,
+    };
+    String? json = await api.postRequest("reset-password", body, auth: true);
+    return json == null;
   }
 
   static Future<bool> uploadReport(ReportModel report) async {
