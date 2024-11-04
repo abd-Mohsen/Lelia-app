@@ -12,6 +12,7 @@ import 'package:lelia/models/user_model.dart';
 import 'package:lelia/views/components/custom_field.dart';
 import 'package:lelia/views/components/date_selector.dart';
 import 'package:lelia/views/components/user_card.dart';
+import 'package:lelia/views/report_search_view.dart';
 
 import '../controllers/theme_controller.dart';
 import '../models/report_model.dart';
@@ -44,7 +45,12 @@ class SupervisorView extends StatelessWidget {
               style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
             ),
             actions: [
-              //todo: implement search for users and reports (bottomsheet with dropdownsearch)
+              IconButton(
+                onPressed: () {
+                  Get.to(() => const ReportSearchView());
+                },
+                icon: Icon(Icons.search, color: cs.onPrimary),
+              )
             ],
             bottom: TabBar(
               indicatorColor: Colors.deepOrange,

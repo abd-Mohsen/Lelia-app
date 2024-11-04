@@ -16,7 +16,7 @@ class CustomField extends StatelessWidget {
   final TextEditingController controller;
   final IconData? iconData;
   final String hint;
-  final String? Function(String?) validator;
+  final String? Function(String?)? validator;
   final void Function(String?) onChanged;
   final TextInputType? keyboard;
   final int? lines;

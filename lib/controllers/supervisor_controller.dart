@@ -100,18 +100,12 @@ class SupervisorController extends GetxController {
   void getReports() async {
     if (isLoadingReports || !hasMore) return;
     if (page == 1) toggleLoadingReports(true);
-    try {
-      List<ReportModel> newReports =
-          await RemoteServices.fetchSupervisorReports(page, limit).timeout(kTimeOutDuration) ?? [];
-      if (newReports.length < limit) hasMore = false;
-      _reports.addAll(newReports);
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      toggleLoadingReports(false);
-    }
+
+    List<ReportModel> newReports =
+        await RemoteServices.fetchSupervisorReports(page, limit).timeout(kTimeOutDuration) ?? [];
+    if (newReports.length < limit) hasMore = false;
+    _reports.addAll(newReports);
+    toggleLoadingReports(false);
     page++;
   }
 
@@ -129,40 +123,28 @@ class SupervisorController extends GetxController {
   }
 
   Future<bool> getExportReports() async {
-    try {
-      toggleLoadingExport(true);
-      _exportedReports.clear();
-      _exportedReports.addAll((await RemoteServices.fetchExportedReports(
-        fromDate!.toIso8601String(),
-        toDate!.toIso8601String(),
-        selectedSubordinate?.id,
-      ).timeout(kTimeOutDuration))!);
-      return true;
-    } on TimeoutException {
-      kTimeOutDialog();
-      return false;
-    } catch (e) {
-      print(e.toString());
-      return false;
-    } finally {
-      toggleLoadingExport(false);
-    }
+    toggleLoadingExport(true);
+    _exportedReports.clear();
+    List<ReportModel>? res = await RemoteServices.fetchExportedReports(
+      fromDate!.toIso8601String(),
+      toDate!.toIso8601String(),
+      selectedSubordinate?.id,
+    );
+    toggleLoadingExport(false);
+    if (res == null) return false;
+
+    _exportedReports.addAll(res);
+    return true;
   }
 
   final List<UserModel> _subordinates = [];
   List<UserModel> get subordinates => _subordinates;
 
   void getSubordinates() async {
-    try {
-      toggleLoadingSubs(true);
-      _subordinates.addAll((await RemoteServices.fetchSupervisorSubordinates().timeout(kTimeOutDuration))!);
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      toggleLoadingSubs(false);
-    }
+    //todo (later): consider adding pagination to subs
+    toggleLoadingSubs(true);
+    _subordinates.addAll((await RemoteServices.fetchSupervisorSubordinates().timeout(kTimeOutDuration))!);
+    toggleLoadingSubs(false);
   }
 
   TextEditingController fileName = TextEditingController();

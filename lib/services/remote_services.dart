@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 
 //todo: remove timeout dialogs from controllers
 class RemoteServices {
-
   static Map<String, String> headers = {
     "Accept": "Application/json",
     "Content-Type": "application/json",
@@ -169,6 +168,12 @@ class RemoteServices {
       "user_id": salesmanID,
     };
     String? json = await api.postRequest("reports/export", body, auth: true);
+    if (json == null) return null;
+    return reportModelFromJson(json);
+  }
+
+  static Future<List<ReportModel>?> fetchSearchReports(int page, int limit, String query) async {
+    String? json = await api.getRequest("reports/search/$query?page=$page&limit=$limit", auth: true);
     if (json == null) return null;
     return reportModelFromJson(json);
   }
