@@ -120,16 +120,28 @@ class SupervisorView extends StatelessWidget {
                                       supervisor: true,
                                     );
                                   }
-                                  // Show loading indicator or end-of-list indication
                                   return Center(
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 24),
-                                      child: con.hasMore
-                                          ? CircularProgressIndicator(color: cs.primary)
-                                          : CircleAvatar(
-                                              radius: 5,
-                                              backgroundColor: Colors.grey.withOpacity(0.7),
-                                            ),
+                                      child: con.failed
+                                          ? ElevatedButton(
+                                              onPressed: () {
+                                                con.getReports();
+                                              },
+                                              style: ButtonStyle(
+                                                backgroundColor: WidgetStateProperty.all<Color>(cs.primary),
+                                              ),
+                                              child: Text(
+                                                'خطأ, انقر للتحديث',
+                                                style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                              ),
+                                            )
+                                          : con.hasMore
+                                              ? CircularProgressIndicator(color: cs.primary)
+                                              : CircleAvatar(
+                                                  radius: 5,
+                                                  backgroundColor: Colors.grey.withOpacity(0.7),
+                                                ),
                                     ),
                                   );
                                 },

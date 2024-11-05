@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:path/path.dart';
-import '../constants.dart';
 import '../models/report_model.dart';
 import '../models/user_model.dart';
 import '../services/remote_services.dart';
@@ -24,7 +23,7 @@ class SupervisorController extends GetxController {
     getSubordinates();
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        getReports();
+        if (!failed) getReports();
       }
     });
     super.onInit();
@@ -74,17 +73,10 @@ class SupervisorController extends GetxController {
   UserModel? get currentUser => _currentUser;
 
   void getCurrentUser() async {
-    try {
-      toggleLoadingUser(true);
-      _currentUser = (await RemoteServices.fetchCurrentUser().timeout(kTimeOutDuration))!;
-      print(_currentUser);
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      toggleLoadingUser(false);
-    }
+    toggleLoadingUser(true);
+    _currentUser = (await RemoteServices.fetchCurrentUser())!;
+    print(_currentUser);
+    toggleLoadingUser(false);
   }
 
   final List<ReportModel> _reports = [];
@@ -95,23 +87,29 @@ class SupervisorController extends GetxController {
 
   int page = 1, limit = 12;
   bool hasMore = true;
-  //todo: add flag that tells you if the fetch has failed, to show a button and load more
+  bool failed = false;
 
   void getReports() async {
     if (isLoadingReports || !hasMore) return;
+    failed = false;
+    update();
     if (page == 1) toggleLoadingReports(true);
 
-    List<ReportModel> newReports =
-        await RemoteServices.fetchSupervisorReports(page, limit).timeout(kTimeOutDuration) ?? [];
-    if (newReports.length < limit) hasMore = false;
-    _reports.addAll(newReports);
+    List<ReportModel>? newReports = await RemoteServices.fetchSupervisorReports(page, limit);
+    if (newReports == null) {
+      failed = true;
+    } else {
+      if (newReports.length < limit) hasMore = false;
+      _reports.addAll(newReports);
+      page++;
+    }
     toggleLoadingReports(false);
-    page++;
   }
 
   Future<void> refreshReports() async {
     page = 1;
     hasMore = true;
+    failed = false;
     reports.clear();
     getReports();
   }
@@ -143,7 +141,7 @@ class SupervisorController extends GetxController {
   void getSubordinates() async {
     //todo (later): consider adding pagination to subs
     toggleLoadingSubs(true);
-    _subordinates.addAll((await RemoteServices.fetchSupervisorSubordinates().timeout(kTimeOutDuration))!);
+    _subordinates.addAll((await RemoteServices.fetchSupervisorSubordinates()) ?? []);
     toggleLoadingSubs(false);
   }
 
