@@ -18,7 +18,7 @@ class UserController extends GetxController {
     if (user.role == "مندوب مبيعات") getReports();
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        getReports();
+        if (!failed) getReports();
       }
     });
     super.onInit();
@@ -30,6 +30,7 @@ class UserController extends GetxController {
 
   int page = 1, limit = 7;
   bool hasMore = true;
+  bool failed = false;
 
   List<ReportModel> reports = [];
 
@@ -42,20 +43,19 @@ class UserController extends GetxController {
 
   void getReports() async {
     if (isLoadingReports || !hasMore) return;
+    failed = false;
+    update();
     if (page == 1) toggleLoadingReports(true);
-    try {
-      List<ReportModel> newReports =
-          await RemoteServices.fetchSubordinateReports(user.id, page, limit).timeout(kTimeOutDuration) ?? [];
+
+    List<ReportModel>? newReports = await RemoteServices.fetchSubordinateReports(user.id, page, limit);
+    if (newReports == null) {
+      failed = true;
+    } else {
       if (newReports.length < limit) hasMore = false;
       reports.addAll(newReports);
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      toggleLoadingReports(false);
+      page++;
     }
-    page++;
+    toggleLoadingReports(false);
   }
 
   Future<void> refreshReports() async {

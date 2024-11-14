@@ -14,7 +14,7 @@ class AllReportsController extends GetxController {
     getReports();
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        getReports();
+        if (!failed) getReports();
       }
     });
     super.onInit();
@@ -26,7 +26,7 @@ class AllReportsController extends GetxController {
 
   int page = 1, limit = 4;
   bool hasMore = true;
-  //todo: add flag that tells you if the fetch has failed, to show a button and load more
+  bool failed = false;
 
   final List<ReportModel> _reports = [];
   List<ReportModel> get reports => _reports;
@@ -40,25 +40,25 @@ class AllReportsController extends GetxController {
 
   void getReports() async {
     if (isLoading || !hasMore) return;
+    failed = false;
+    update();
     if (page == 1) toggleLoading(true);
-    try {
-      List<ReportModel> newReports =
-          await RemoteServices.fetchSalesmanReports(page, limit).timeout(kTimeOutDuration) ?? [];
+
+    List<ReportModel>? newReports = await RemoteServices.fetchSalesmanReports(page, limit);
+    if (newReports == null) {
+      failed = true;
+    } else {
       if (newReports.length < limit) hasMore = false;
       _reports.addAll(newReports);
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      toggleLoading(false);
+      page++;
     }
-    page++;
+    toggleLoading(false);
   }
 
   Future<void> refreshReports() async {
     page = 1;
     hasMore = true;
+    failed = false;
     reports.clear();
     getReports();
   }

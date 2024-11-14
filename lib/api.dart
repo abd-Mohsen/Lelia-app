@@ -7,9 +7,9 @@ import 'package:path/path.dart';
 import 'package:get/get.dart';
 import 'constants.dart';
 
-//todo: show different snackbar if there is a server error "5--"
+//todo (later): show different snackbar if there is a server error "5--"
 //todo: show different snackbar if there is a user error "422"
-//todo: replace ugly dialogs with snackbars
+//todo (later): replace ugly dialogs with snackbars
 //todo: add a parameter to show or not show a timeout
 class Api {
   var client = http.Client();
