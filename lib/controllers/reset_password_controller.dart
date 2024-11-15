@@ -35,17 +35,12 @@ class ResetPassController extends GetxController {
     bool isValid = firstFormKey.currentState!.validate();
     if (!isValid) return;
     toggleLoading1(true);
-    try {
-      if (await RemoteServices.sendForgotPasswordOtp(email.text).timeout(kTimeOutDuration)) {
-        Get.to(() => const OTPView(source: "reset"));
-      }
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      //print(e.toString());
-    } finally {
-      toggleLoading1(false);
+
+    if (await RemoteServices.sendForgotPasswordOtp(email.text).timeout(kTimeOutDuration)) {
+      Get.to(() => const OTPView(source: "reset"));
     }
+
+    toggleLoading1(false);
   }
 
   //--------------------------------------------------------------------------------
@@ -80,17 +75,12 @@ class ResetPassController extends GetxController {
     bool isValid = secondFormKey.currentState!.validate();
     if (!isValid) return;
     toggleLoading2(true);
-    try {
-      if (await RemoteServices.resetPassword(email.text, newPassword.text, _resetToken!).timeout(kTimeOutDuration)) {
-        Get.offAll(() => const LoginView());
-        Get.defaultDialog(middleText: "تم تغيير كلمة المرور بنجاح");
-      }
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      toggleLoading2(false);
+
+    if (await RemoteServices.resetPassword(email.text, newPassword.text, _resetToken!).timeout(kTimeOutDuration)) {
+      Get.offAll(() => const LoginView());
+      Get.defaultDialog(middleText: "تم تغيير كلمة المرور بنجاح");
     }
+
+    toggleLoading2(false);
   }
 }

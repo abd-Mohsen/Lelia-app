@@ -34,22 +34,17 @@ class OTPController extends GetxController {
   void resendOtp() async {
     if (!_isTimeUp) return;
     toggleLoadingOtp(true);
-    try {
-      if (resetController == null) {
-        _verifyUrl = (await RemoteServices.sendRegisterOtp().timeout(kTimeOutDuration))!;
-      } else {
-        await RemoteServices.sendForgotPasswordOtp(resetController!.email.text).timeout(kTimeOutDuration);
-      }
-      timeController.restart();
-      otpController.clear();
-      _isTimeUp = false;
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      toggleLoadingOtp(false);
+
+    if (resetController == null) {
+      _verifyUrl = (await RemoteServices.sendRegisterOtp().timeout(kTimeOutDuration))!;
+    } else {
+      await RemoteServices.sendForgotPasswordOtp(resetController!.email.text).timeout(kTimeOutDuration);
     }
+    timeController.restart();
+    otpController.clear();
+    _isTimeUp = false;
+
+    toggleLoadingOtp(false);
   }
 
   void verifyOtp(String pin) async {
@@ -58,30 +53,24 @@ class OTPController extends GetxController {
       return;
     }
     toggleLoadingOtp(true);
-    try {
-      if (resetController == null) {
-        if (await RemoteServices.verifyRegisterOtp(_verifyUrl, pin).timeout(kTimeOutDuration)) {
-          Get.offAll(() => const HomeView());
-          Get.defaultDialog(middleText: "تم تأكيد بريدك الالكتروني بنجاح");
-        } else {
-          Get.defaultDialog(middleText: "رمز التحقق خاطئ");
-        }
+
+    if (resetController == null) {
+      if (await RemoteServices.verifyRegisterOtp(_verifyUrl, pin).timeout(kTimeOutDuration)) {
+        Get.offAll(() => const HomeView());
+        Get.defaultDialog(middleText: "تم تأكيد بريدك الالكتروني بنجاح");
       } else {
-        String? resetToken =
-            (await RemoteServices.verifyForgotPasswordOtp(resetController!.email.text, pin).timeout(kTimeOutDuration));
-        if (resetToken == null) {
-          Get.defaultDialog(middleText: "رمز التحقق خاطئ");
-          return;
-        }
-        resetController!.setResetToken(resetToken);
-        Get.off(() => const ResetPasswordView2());
+        Get.defaultDialog(middleText: "رمز التحقق خاطئ");
       }
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      //print(e.toString());
-    } finally {
-      toggleLoadingOtp(false);
+    } else {
+      String? resetToken =
+          (await RemoteServices.verifyForgotPasswordOtp(resetController!.email.text, pin).timeout(kTimeOutDuration));
+      if (resetToken == null) {
+        Get.defaultDialog(middleText: "رمز التحقق خاطئ");
+        return;
+      }
+      resetController!.setResetToken(resetToken);
+      Get.off(() => const ResetPasswordView2());
     }
+    toggleLoadingOtp(false);
   }
 }

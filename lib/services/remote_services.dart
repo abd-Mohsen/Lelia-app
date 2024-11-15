@@ -7,7 +7,6 @@ import 'package:lelia/models/user_model.dart';
 import 'package:lelia/main.dart';
 import 'package:flutter/material.dart';
 
-//todo: remove timeout dialogs from controllers
 class RemoteServices {
   static Map<String, String> headers = {
     "Accept": "Application/json",
