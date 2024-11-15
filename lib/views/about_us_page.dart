@@ -41,6 +41,34 @@ class AboutUsPage extends StatelessWidget {
               style: tt.titleMedium!.copyWith(color: cs.onSurface),
             ),
           ),
+          ListTile(
+            leading: Icon(Icons.phone, color: cs.primary),
+            title: Text(
+              "3333583",
+              style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.8)),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.fax, color: cs.primary),
+            title: Text(
+              "3333578",
+              style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.8)),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.language, color: cs.primary),
+            title: Text(
+              "Letia.sy",
+              style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.8)),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.email, color: cs.primary),
+            title: Text(
+              "contact@Letia.com",
+              style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.8)),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 12, left: 12, top: 40, bottom: 12),
             child: Text(
@@ -50,27 +78,26 @@ class AboutUsPage extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.phone_android, color: cs.primary),
+            // title: Text(
+            //   "موبايل",
+            //   style: tt.titleMedium!.copyWith(color: cs.onSurface),
+            // ),
             title: Text(
-              "موبايل",
-              style: tt.titleMedium!.copyWith(color: cs.onSurface),
-            ),
-            subtitle: Text(
               "0964622616",
               style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.8)),
             ),
           ),
           ListTile(
             leading: Icon(Icons.email, color: cs.primary),
+            // title: Text(
+            //   "بريد الكتروني",
+            //   style: tt.titleMedium!.copyWith(color: cs.onSurface),
+            // ),
             title: Text(
-              "بريد الكتروني",
-              style: tt.titleMedium!.copyWith(color: cs.onSurface),
-            ),
-            subtitle: Text(
               "abdMohsen333@gmail.com",
               style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.8)),
             ),
           ),
-          //todo: put company contact info if necessary
         ],
       ),
     );

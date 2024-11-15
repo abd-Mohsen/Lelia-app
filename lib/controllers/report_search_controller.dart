@@ -11,7 +11,7 @@ class ReportSearchController extends GetxController {
   @override
   void onInit() {
     limit = (screenService.screenHeightCm / 1.1).toInt();
-    print("limit: " + limit.toString()); //todo: might be 0 sometimes
+    print("limit: " + limit.toString()); //might be 0 sometimes
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         search(false);
