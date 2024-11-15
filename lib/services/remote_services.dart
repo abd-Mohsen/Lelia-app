@@ -75,13 +75,13 @@ class RemoteServices {
   }
 
   static Future<UserModel?> fetchCurrentUser() async {
-    String? json = await api.getRequest("users/profile", auth: true);
+    String? json = await api.getRequest("users/profile", auth: true, showTimeout: false);
     if (json == null) return null;
     return UserModel.fromJson(jsonDecode(json));
   }
 
   static Future<List<UserModel>?> fetchSupervisors() async {
-    String? json = await api.getRequest("users/supervisors", auth: false);
+    String? json = await api.getRequest("users/supervisors", auth: false, showTimeout: false);
     if (json == null) return null;
     return userModelFromJson(json);
   }
@@ -138,25 +138,25 @@ class RemoteServices {
   }
 
   static Future<List<ReportModel>?> fetchSalesmanReports(int page, int limit) async {
-    String? json = await api.getRequest("reports?page=$page&limit=$limit", auth: true);
+    String? json = await api.getRequest("reports?page=$page&limit=$limit", auth: true, showTimeout: false);
     if (json == null) return null;
     return reportModelFromJson(json);
   }
 
   static Future<List<ReportModel>?> fetchSubordinateReports(int id, int page, int limit) async {
-    String? json = await api.getRequest("reports/$id?page=$page&limit=$limit", auth: true);
+    String? json = await api.getRequest("reports/$id?page=$page&limit=$limit", auth: true, showTimeout: false);
     if (json == null) return null;
     return reportModelFromJson(json);
   }
 
   static Future<List<ReportModel>?> fetchSupervisorReports(int page, int limit) async {
-    String? json = await api.getRequest("reports/supervisor/?page=$page&limit=$limit", auth: true);
+    String? json = await api.getRequest("reports/supervisor/?page=$page&limit=$limit", auth: true, showTimeout: false);
     if (json == null) return null;
     return reportModelFromJson(json);
   }
 
   static Future<List<UserModel>?> fetchSupervisorSubordinates() async {
-    String? json = await api.getRequest("users/my-subs", auth: true);
+    String? json = await api.getRequest("users/my-subs", auth: true, showTimeout: false);
     if (json == null) return null;
     return userModelFromJson(json);
   }

@@ -10,7 +10,6 @@ import 'constants.dart';
 //todo (later): show different snackbar if there is a server error "5--"
 //todo: show different snackbar if there is a user error "422"
 //todo (later): replace ugly dialogs with snackbars
-//todo: add a parameter to show or not show a timeout
 class Api {
   var client = http.Client();
   final String _hostIP = "$kHostIP/api";
@@ -23,7 +22,12 @@ class Api {
     "sent-from": "mobile",
   };
 
-  Future<String?> getRequest(String endPoint, {bool auth = false, bool canRefresh = true}) async {
+  Future<String?> getRequest(
+    String endPoint, {
+    bool auth = false,
+    bool canRefresh = true,
+    bool showTimeout = true,
+  }) async {
     try {
       var response = await client
           .get(
@@ -40,7 +44,7 @@ class Api {
       }
       return response.statusCode == 200 ? response.body : null;
     } on TimeoutException {
-      kTimeOutSnackBar();
+      if (showTimeout) kTimeOutSnackBar();
       return null;
     } catch (e) {
       print(e.toString());
@@ -53,6 +57,7 @@ class Api {
     Map<String, dynamic> body, {
     bool auth = false,
     bool canRefresh = true,
+    bool showTimeout = true,
   }) async {
     try {
       var response = await client
@@ -76,7 +81,7 @@ class Api {
       }
       return (response.statusCode == 200 || response.statusCode == 201) ? response.body : null;
     } on TimeoutException {
-      kTimeOutSnackBar();
+      if (showTimeout) kTimeOutSnackBar();
       return null;
     } catch (e) {
       print(e.toString());
@@ -89,6 +94,7 @@ class Api {
     Map<String, dynamic> body, {
     bool auth = false,
     bool canRefresh = true,
+    bool showTimeout = true,
   }) async {
     try {
       var response = await client
@@ -112,7 +118,7 @@ class Api {
       print(response.body);
       return (response.statusCode == 200 || response.statusCode == 201) ? response.body : null;
     } on TimeoutException {
-      kTimeOutSnackBar();
+      if (showTimeout) kTimeOutSnackBar();
       return null;
     } catch (e) {
       print(e.toString());
@@ -120,7 +126,12 @@ class Api {
     }
   }
 
-  Future<bool> deleteRequest(String endPoint, {bool auth = false, bool canRefresh = true}) async {
+  Future<bool> deleteRequest(
+    String endPoint, {
+    bool auth = false,
+    bool canRefresh = true,
+    bool showTimeout = true,
+  }) async {
     try {
       var response = await client
           .delete(
@@ -138,7 +149,7 @@ class Api {
       print(response.body + "===========" + response.statusCode.toString());
       return response.statusCode == 204;
     } on TimeoutException {
-      kTimeOutSnackBar();
+      if (showTimeout) kTimeOutSnackBar();
       return false;
     } catch (e) {
       print(e.toString());
@@ -147,7 +158,7 @@ class Api {
   }
 
   Future<String?> postRequestWithImage(String endPoint, List<String> images, Map<String, String> body,
-      {bool auth = false, bool canRefresh = true}) async {
+      {bool auth = false, bool canRefresh = true, bool showTimeout = true}) async {
     try {
       var request = http.MultipartRequest(
         "POST",
@@ -192,7 +203,7 @@ class Api {
       });
       return null;
     } on TimeoutException {
-      kTimeOutSnackBar();
+      if (showTimeout) kTimeOutSnackBar();
       return null;
     } catch (e) {
       print(e.toString());
