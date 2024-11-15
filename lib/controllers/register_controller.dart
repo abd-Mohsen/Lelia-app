@@ -81,39 +81,34 @@ class RegisterController extends GetxController {
     bool isValid = registerFormKey.currentState!.validate();
     if (!isValid) return;
     toggleLoadingRegister(true);
-    try {
-      bool success = (await RemoteServices.register(
-        userName.text,
-        email.text,
-        password.text,
-        rePassword.text,
-        phone.text,
-        roleINEnglish,
-        roleINEnglish == "salesman" ? selectedSupervisor?.id : null,
-      ).timeout(kTimeOutDuration));
-      if (success) {
-        Get.back();
-        Get.defaultDialog(
-          titleStyle: const TextStyle(color: Colors.black),
-          middleTextStyle: const TextStyle(color: Colors.black),
-          backgroundColor: Colors.white,
-          title: "تم التسجيل",
-          middleText: "الرجاء انتظار موافقة المسؤول في الشركة",
-          // confirm: TextButton(
-          //   onPressed: () {
-          //     Get.back();
-          //   },
-          //   child: Text("ok"),
-          // )
-        );
-      }
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      toggleLoadingRegister(false);
+
+    bool success = (await RemoteServices.register(
+      userName.text,
+      email.text,
+      password.text,
+      rePassword.text,
+      phone.text,
+      roleINEnglish,
+      roleINEnglish == "salesman" ? selectedSupervisor?.id : null,
+    ).timeout(kTimeOutDuration));
+    if (success) {
+      Get.back();
+      Get.defaultDialog(
+        titleStyle: const TextStyle(color: Colors.black),
+        middleTextStyle: const TextStyle(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: "تم التسجيل",
+        middleText: "الرجاء انتظار موافقة المسؤول في الشركة",
+        // confirm: TextButton(
+        //   onPressed: () {
+        //     Get.back();
+        //   },
+        //   child: Text("ok"),
+        // )
+      );
     }
+
+    toggleLoadingRegister(false);
   }
   //--------------------------------------------------------------------------------
   //for otp

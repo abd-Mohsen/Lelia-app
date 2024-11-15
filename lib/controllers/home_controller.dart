@@ -53,17 +53,10 @@ class HomeController extends GetxController {
   UserModel? get currentUser => _currentUser;
 
   void getCurrentUser() async {
-    try {
-      toggleLoadingUser(true);
-      _currentUser = (await RemoteServices.fetchCurrentUser().timeout(kTimeOutDuration))!;
-      print(_currentUser);
-    } on TimeoutException {
-      kTimeOutDialog();
-    } catch (e) {
-      print(e.toString());
-    } finally {
-      toggleLoadingUser(false);
-    }
+    toggleLoadingUser(true);
+    _currentUser = (await RemoteServices.fetchCurrentUser().timeout(kTimeOutDuration))!;
+    print(_currentUser);
+    toggleLoadingUser(false);
   }
 
   GlobalKey<FormState> dataFormKey = GlobalKey<FormState>();
