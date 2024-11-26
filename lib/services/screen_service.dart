@@ -5,6 +5,7 @@ class ScreenService extends GetxService {
   late double screenHeightCm;
 
   Future<ScreenService> init() async {
+    //todo: this code is deprecated and returns wrong result at times
     final screenHeightPixels = window.physicalSize.height; // Total height in pixels
     final pixelRatio = window.devicePixelRatio; // Pixel density
     final dpi = pixelRatio * 160; // Dots per inch

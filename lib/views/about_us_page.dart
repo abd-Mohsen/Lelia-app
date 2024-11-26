@@ -20,7 +20,7 @@ class AboutUsPage extends StatelessWidget {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 36),
+            padding: const EdgeInsets.only(top: 40, bottom: 24),
             child: Hero(
               tag: "logo",
               child: Center(
@@ -69,8 +69,13 @@ class AboutUsPage extends StatelessWidget {
               style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.8)),
             ),
           ),
+          Divider(
+            color: cs.onSurface,
+            indent: 75,
+            endIndent: 75,
+          ),
           Padding(
-            padding: const EdgeInsets.only(right: 12, left: 12, top: 40, bottom: 12),
+            padding: const EdgeInsets.only(right: 12, left: 12, top: 24, bottom: 12),
             child: Text(
               "للاستفسار يرجى التواصل مع المطور",
               style: tt.titleMedium!.copyWith(color: cs.onSurface),

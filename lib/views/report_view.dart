@@ -171,6 +171,13 @@ class ReportView extends StatelessWidget {
                                                       : Image.network(
                                                           "$kHostIP/${Uri.encodeComponent(image)}",
                                                           headers: const {"Keep-Alive": "timeout=5, max=1000"},
+
+                                                          /// add loading
+                                                          // loadingBuilder: (context, child, loadingProgress) {
+                                                          //   return const Center(
+                                                          //     child: CircularProgressIndicator(),
+                                                          //   );
+                                                          // },
                                                         ),
                                                 ),
                                               ),
