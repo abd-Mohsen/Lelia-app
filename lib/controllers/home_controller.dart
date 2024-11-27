@@ -25,7 +25,6 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
-  //todo: implement otp here
   final GetStorage _getStorage = GetStorage();
 
   bool _isLoading = false;
@@ -54,8 +53,10 @@ class HomeController extends GetxController {
 
   void getCurrentUser() async {
     toggleLoadingUser(true);
-    _currentUser = (await RemoteServices.fetchCurrentUser().timeout(kTimeOutDuration))!;
-    print(_currentUser);
+    _currentUser = await RemoteServices.fetchCurrentUser();
+    if (_currentUser != null && !_currentUser!.isActivated) {
+      Get.dialog(kActivateAccountDialog(), barrierDismissible: false);
+    }
     toggleLoadingUser(false);
   }
 

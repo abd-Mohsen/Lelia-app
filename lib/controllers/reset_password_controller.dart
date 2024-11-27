@@ -30,7 +30,6 @@ class ResetPassController extends GetxController {
   bool button1Pressed = false;
 
   Future toOTP() async {
-    //todo: smtp not working
     button1Pressed = true;
     bool isValid = firstFormKey.currentState!.validate();
     if (!isValid) return;
@@ -78,7 +77,13 @@ class ResetPassController extends GetxController {
 
     if (await RemoteServices.resetPassword(email.text, newPassword.text, _resetToken!).timeout(kTimeOutDuration)) {
       Get.offAll(() => const LoginView());
-      Get.defaultDialog(middleText: "تم تغيير كلمة المرور بنجاح");
+      Get.defaultDialog(
+        titleStyle: const TextStyle(color: Colors.black),
+        middleTextStyle: const TextStyle(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: "نجحت العملية",
+        middleText: "تم تغيير كلمة المرور بنجاح",
+      );
     }
 
     toggleLoading2(false);

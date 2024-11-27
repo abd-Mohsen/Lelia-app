@@ -47,8 +47,11 @@ class LoginController extends GetxController {
     bool isValid = loginFormKey.currentState!.validate();
     if (!isValid) return;
     toggleLoading(true);
-    LoginModel? loginData = await RemoteServices.login(email.text, password.text).timeout(kTimeOutDuration);
-    if (loginData == null) return;
+    LoginModel? loginData = await RemoteServices.login(email.text, password.text);
+    if (loginData == null) {
+      toggleLoading(false);
+      return;
+    }
     _getStorage.write("token", loginData.accessToken);
     _getStorage.write("role", loginData.role);
     print(_getStorage.read("token"));

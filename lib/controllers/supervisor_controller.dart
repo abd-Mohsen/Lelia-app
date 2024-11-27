@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:path/path.dart';
+import '../constants.dart';
 import '../models/report_model.dart';
 import '../models/user_model.dart';
 import '../services/remote_services.dart';
@@ -74,8 +75,10 @@ class SupervisorController extends GetxController {
 
   void getCurrentUser() async {
     toggleLoadingUser(true);
-    _currentUser = (await RemoteServices.fetchCurrentUser())!;
-    print(_currentUser);
+    _currentUser = await RemoteServices.fetchCurrentUser();
+    if (_currentUser != null && !_currentUser!.isActivated) {
+      Get.dialog(kActivateAccountDialog(), barrierDismissible: false);
+    }
     toggleLoadingUser(false);
   }
 

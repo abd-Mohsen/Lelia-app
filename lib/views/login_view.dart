@@ -101,7 +101,7 @@ class LoginView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 32),
                   GetBuilder<LoginController>(
                     builder: (con) => Center(
                       child: GestureDetector(
@@ -129,7 +129,7 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+                    padding: const EdgeInsets.only(top: 32),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

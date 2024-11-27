@@ -39,7 +39,7 @@ class Api {
       if (canRefresh && response.statusCode == 401) {
         _getStorage.remove("token");
         _getStorage.remove("role");
-        Get.dialog(kSessionExpiredDialog());
+        Get.dialog(kSessionExpiredDialog(), barrierDismissible: false);
         return null;
       }
       return response.statusCode == 200 ? response.body : null;
@@ -76,7 +76,7 @@ class Api {
       if (canRefresh && response.statusCode == 401) {
         _getStorage.remove("token");
         _getStorage.remove("role");
-        Get.dialog(kSessionExpiredDialog());
+        Get.dialog(kSessionExpiredDialog(), barrierDismissible: false);
         return null;
       }
       return (response.statusCode == 200 || response.statusCode == 201) ? response.body : null;
@@ -112,7 +112,7 @@ class Api {
       if (canRefresh && response.statusCode == 401) {
         _getStorage.remove("token");
         _getStorage.remove("role");
-        Get.dialog(kSessionExpiredDialog());
+        Get.dialog(kSessionExpiredDialog(), barrierDismissible: false);
         return null;
       }
       print(response.body);
@@ -143,7 +143,7 @@ class Api {
       if (canRefresh && response.statusCode == 401) {
         _getStorage.remove("token");
         _getStorage.remove("role");
-        Get.dialog(kSessionExpiredDialog());
+        Get.dialog(kSessionExpiredDialog(), barrierDismissible: false);
         return false;
       }
       print(response.body + "===========" + response.statusCode.toString());
@@ -177,7 +177,7 @@ class Api {
       if (canRefresh && response.statusCode == 401) {
         _getStorage.remove("token");
         _getStorage.remove("role");
-        Get.dialog(kSessionExpiredDialog());
+        Get.dialog(kSessionExpiredDialog(), barrierDismissible: false);
         return null;
       }
 

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/reset_password_controller.dart';
 import 'package:lelia/views/home_view.dart';
@@ -8,6 +7,7 @@ import 'package:timer_count_down/timer_controller.dart';
 import '../constants.dart';
 import '../services/remote_services.dart';
 import '../views/reset_password_view2.dart';
+import 'package:flutter/material.dart';
 
 class OTPController extends GetxController {
   ResetPassController? resetController;
@@ -55,17 +55,25 @@ class OTPController extends GetxController {
     toggleLoadingOtp(true);
 
     if (resetController == null) {
-      if (await RemoteServices.verifyRegisterOtp(_verifyUrl, pin).timeout(kTimeOutDuration)) {
+      if (await RemoteServices.verifyRegisterOtp(_verifyUrl, pin)) {
         Get.offAll(() => const HomeView());
-        Get.defaultDialog(middleText: "تم تأكيد بريدك الالكتروني بنجاح");
       } else {
-        Get.defaultDialog(middleText: "رمز التحقق خاطئ");
+        Get.defaultDialog(
+          titleStyle: const TextStyle(color: Colors.black),
+          middleTextStyle: const TextStyle(color: Colors.black),
+          backgroundColor: Colors.white,
+          middleText: "رمز التحقق خاطئ",
+        );
       }
     } else {
-      String? resetToken =
-          (await RemoteServices.verifyForgotPasswordOtp(resetController!.email.text, pin).timeout(kTimeOutDuration));
+      String? resetToken = await RemoteServices.verifyForgotPasswordOtp(resetController!.email.text, pin);
       if (resetToken == null) {
-        Get.defaultDialog(middleText: "رمز التحقق خاطئ");
+        Get.defaultDialog(
+          titleStyle: const TextStyle(color: Colors.black),
+          middleTextStyle: const TextStyle(color: Colors.black),
+          backgroundColor: Colors.white,
+          middleText: "رمز التحقق خاطئ",
+        );
         return;
       }
       resetController!.setResetToken(resetToken);

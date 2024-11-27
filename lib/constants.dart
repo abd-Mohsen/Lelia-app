@@ -50,39 +50,18 @@ AlertDialog kSessionExpiredDialog() => AlertDialog(
       ],
     );
 
-// AlertDialog kAboutAppDialog() => AlertDialog(
-//       actions: [
-//         TextButton(
-//           onPressed: () {
-//             Get.back();
-//           },
-//           child: Text(
-//             "ok",
-//             //style: tt.titleMedium?.copyWith(color: cs.primary),
-//           ),
-//         ),
-//       ],
-//       content: Column(
-//         children: [
-//           Scrollbar(
-//             thumbVisibility: true,
-//             child: SingleChildScrollView(
-//               child: Column(
-//                 children: [
-//                   Padding(
-//                     padding: const EdgeInsets.all(8.0),
-//                     child: Text(
-//                       "تم تطوير هذا البرنامج لصالح شركة ليتيا المغفلة الخاصة, جميع الحقوق محفوظة",
-//                       //style: tt.headlineSmall!.copyWith(color: cs.onSurface),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
+AlertDialog kActivateAccountDialog() => AlertDialog(
+      backgroundColor: Colors.white,
+      title: const Text("حسابك غير مفعل", style: TextStyle(color: Colors.black)),
+      content: const Text("يرجى التواصل مع شركة ليليا لتفعيل حسابك", style: TextStyle(color: Colors.black)),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Get.offAll(() => const LoginView());
+            },
+            child: const Text("تسجيل خروج", style: TextStyle(color: Colors.red))),
+      ],
+    );
 
 kTimeOutDialog() => Get.defaultDialog(
       titleStyle: const TextStyle(color: Colors.black),

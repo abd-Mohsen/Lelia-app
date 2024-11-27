@@ -60,8 +60,7 @@ class RemoteServices {
         middleTextStyle: const TextStyle(color: Colors.black),
         backgroundColor: Colors.white,
         title: "خطأ",
-        middleText: "يرجى التأكد من البيانات المدخلة و المحاولة مجدداً, قد يكون الاتصال ضعيف, أو الحساب غير مفعل من "
-            "الشركة",
+        middleText: "يرجى التأكد من البيانات المدخلة و المحاولة مجدداً, قد يكون الاتصال ضعيف",
       );
       return null;
     }
