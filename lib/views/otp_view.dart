@@ -16,7 +16,8 @@ class OTPView extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
-    ResetPassController rPC = Get.find();
+    late ResetPassController rPC;
+    if (source == "reset") rPC = Get.find();
     OTPController oC = Get.put(OTPController(source == "reset" ? rPC : null));
     return SafeArea(
       child: Scaffold(
@@ -68,6 +69,15 @@ class OTPView extends StatelessWidget {
                   ),
                 ),
               ),
+              if (source == "register")
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                  child: Text(
+                    'يجب تأكيد بريدك الالكتروني قبل استخدام التطبيق, اذا استخدمت بريد الكتروني خاطئ للتسجيل قم بانشاء'
+                    ' حساب جديد مع بريد الكتروني صحيح',
+                    style: tt.titleSmall!.copyWith(color: cs.onBackground),
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                 child: Text(
@@ -79,6 +89,9 @@ class OTPView extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 60, left: 12, right: 12),
                 child: GetBuilder<OTPController>(
                   builder: (con) => OTPTextField(
+                    //todo: in arabic the fields are reversed
+                    //todo: dont let user exit the page
+                    //todo: too many pop ups, trim them
                     controller: con.otpController,
                     otpFieldStyle: OtpFieldStyle(
                       focusBorderColor: cs.primary,

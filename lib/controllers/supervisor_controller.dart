@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:lelia/views/otp_view.dart';
 import 'package:path/path.dart';
 import '../constants.dart';
 import '../models/report_model.dart';
@@ -78,6 +79,8 @@ class SupervisorController extends GetxController {
     _currentUser = await RemoteServices.fetchCurrentUser();
     if (_currentUser != null && !_currentUser!.isActivated) {
       Get.dialog(kActivateAccountDialog(), barrierDismissible: false);
+    } else if (_currentUser != null && !_currentUser!.isVerified) {
+      Get.to(() => const OTPView(source: "register"));
     }
     toggleLoadingUser(false);
   }

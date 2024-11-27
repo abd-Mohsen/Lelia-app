@@ -15,6 +15,12 @@ class OTPController extends GetxController {
   final OtpFieldController otpController = OtpFieldController();
   final CountdownController timeController = CountdownController(autoStart: true);
 
+  @override
+  void onInit() async {
+    _verifyUrl = (await RemoteServices.sendRegisterOtp())!;
+    super.onInit();
+  }
+
   bool _isTimeUp = false;
   bool get isTimeUp => _isTimeUp;
   void toggleTimerState(bool val) {
@@ -36,9 +42,9 @@ class OTPController extends GetxController {
     toggleLoadingOtp(true);
 
     if (resetController == null) {
-      _verifyUrl = (await RemoteServices.sendRegisterOtp().timeout(kTimeOutDuration))!;
+      _verifyUrl = (await RemoteServices.sendRegisterOtp())!;
     } else {
-      await RemoteServices.sendForgotPasswordOtp(resetController!.email.text).timeout(kTimeOutDuration);
+      await RemoteServices.sendForgotPasswordOtp(resetController!.email.text);
     }
     timeController.restart();
     otpController.clear();
@@ -56,15 +62,16 @@ class OTPController extends GetxController {
 
     if (resetController == null) {
       if (await RemoteServices.verifyRegisterOtp(_verifyUrl, pin)) {
-        Get.offAll(() => const HomeView());
-      } else {
-        Get.defaultDialog(
-          titleStyle: const TextStyle(color: Colors.black),
-          middleTextStyle: const TextStyle(color: Colors.black),
-          backgroundColor: Colors.white,
-          middleText: "رمز التحقق خاطئ",
-        );
+        Get.back();
       }
+      //else {
+      //   Get.defaultDialog(
+      //     titleStyle: const TextStyle(color: Colors.black),
+      //     middleTextStyle: const TextStyle(color: Colors.black),
+      //     backgroundColor: Colors.white,
+      //     middleText: "رمز التحقق خاطئ",
+      //   );
+      // }
     } else {
       String? resetToken = await RemoteServices.verifyForgotPasswordOtp(resetController!.email.text, pin);
       if (resetToken == null) {

@@ -159,6 +159,7 @@ class Api {
 
   Future<String?> postRequestWithImage(String endPoint, List<String> images, Map<String, String> body,
       {bool auth = false, bool canRefresh = true, bool showTimeout = true}) async {
+    print(images);
     try {
       var request = http.MultipartRequest(
         "POST",

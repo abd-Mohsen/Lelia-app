@@ -17,6 +17,7 @@ import 'package:lelia/views/login_view.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import '../constants.dart';
+import '../views/otp_view.dart';
 
 class HomeController extends GetxController {
   @override
@@ -56,6 +57,8 @@ class HomeController extends GetxController {
     _currentUser = await RemoteServices.fetchCurrentUser();
     if (_currentUser != null && !_currentUser!.isActivated) {
       Get.dialog(kActivateAccountDialog(), barrierDismissible: false);
+    } else if (_currentUser != null && !_currentUser!.isVerified) {
+      Get.to(() => const OTPView(source: "register"));
     }
     toggleLoadingUser(false);
   }

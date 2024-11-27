@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:lelia/constants.dart';
 import 'package:lelia/models/login_model.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/models/user_model.dart';
@@ -85,13 +86,15 @@ class RemoteServices {
   }
 
   static Future<String?> sendRegisterOtp() async {
-    String? json = await api.getRequest("email/send-otp-code", auth: true);
+    String? json = await api.getRequest("send-register-otp", auth: true);
     if (json == null) return null;
     return jsonDecode(json)["url"];
   }
 
   static Future<bool> verifyRegisterOtp(String apiUrl, String otp) async {
-    Map<String, dynamic> body = {"otp_code": otp};
+    apiUrl = apiUrl.replaceFirst("$kHostIP/api/", "");
+    print(apiUrl);
+    Map<String, dynamic> body = {"otp": otp};
     String? json = await api.postRequest(apiUrl, body, auth: true);
     if (json == null) {
       Get.defaultDialog(
