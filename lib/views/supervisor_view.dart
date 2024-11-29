@@ -32,10 +32,13 @@ class SupervisorView extends StatelessWidget {
 
     return DefaultTabController(
       length: 3,
-      child: WillPopScope(
-        onWillPop: () async {
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (didPop) {
+            return;
+          }
           Get.dialog(kCloseAppDialog());
-          return false;
         },
         child: Scaffold(
           backgroundColor: cs.background,

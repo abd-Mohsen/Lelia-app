@@ -63,10 +63,13 @@ class HomeView extends StatelessWidget {
           backgroundColor: cs.surface,
         );
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
         Get.dialog(kCloseAppDialog());
-        return false;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -90,7 +93,6 @@ class HomeView extends StatelessWidget {
           //init: HomeController(),
           builder: (con) => Stack(
             children: [
-              //todo: put a warning here 'verify your email' (and dont let user do any request) verify or logout
               Form(
                 key: con.dataFormKey,
                 child: ListView(

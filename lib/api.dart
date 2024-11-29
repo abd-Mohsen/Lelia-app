@@ -34,7 +34,7 @@ class Api {
             Uri.parse("$_hostIP/$endPoint"),
             headers: !auth ? headers : {...headers, "Authorization": "Bearer $accessToken"},
           )
-          .timeout(kTimeOutDuration2);
+          .timeout(kTimeOutDuration);
       print(response.body + "===========" + response.statusCode.toString());
       if (canRefresh && response.statusCode == 401) {
         _getStorage.remove("token");
@@ -71,7 +71,7 @@ class Api {
                   },
             body: jsonEncode(body),
           )
-          .timeout(kTimeOutDuration2);
+          .timeout(kTimeOutDuration);
       print(response.body);
       if (canRefresh && response.statusCode == 401) {
         _getStorage.remove("token");

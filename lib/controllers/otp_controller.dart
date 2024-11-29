@@ -1,10 +1,7 @@
 import 'package:get/get.dart';
 import 'package:lelia/controllers/reset_password_controller.dart';
-import 'package:lelia/views/home_view.dart';
-import 'package:lelia/views/login_view.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:timer_count_down/timer_controller.dart';
-import '../constants.dart';
 import '../services/remote_services.dart';
 import '../views/reset_password_view2.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +14,8 @@ class OTPController extends GetxController {
 
   @override
   void onInit() async {
+    //todo(later): handle null, and the otp page might open while not receiving the code (timeout)
+    //todo: sometimes i get a timeout, but receive the code anyways
     _verifyUrl = (await RemoteServices.sendRegisterOtp())!;
     super.onInit();
   }
@@ -30,7 +29,7 @@ class OTPController extends GetxController {
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-  void toggleLoadingOtp(bool value) {
+  void toggleLoading(bool value) {
     _isLoading = value;
     update();
   }
@@ -38,11 +37,16 @@ class OTPController extends GetxController {
   late String _verifyUrl;
 
   void resendOtp() async {
-    if (!_isTimeUp) return;
-    toggleLoadingOtp(true);
+    if (!_isTimeUp || isLoading) return;
+    toggleLoading(true);
 
     if (resetController == null) {
-      _verifyUrl = (await RemoteServices.sendRegisterOtp())!;
+      String? res = await RemoteServices.sendRegisterOtp();
+      if (res == null) {
+        toggleLoading(false);
+        return;
+      }
+      _verifyUrl = res;
     } else {
       await RemoteServices.sendForgotPasswordOtp(resetController!.email.text);
     }
@@ -50,42 +54,40 @@ class OTPController extends GetxController {
     otpController.clear();
     _isTimeUp = false;
 
-    toggleLoadingOtp(false);
+    toggleLoading(false);
   }
 
   void verifyOtp(String pin) async {
     if (_isTimeUp) {
-      Get.defaultDialog(middleText: "انتهت صلاحية الرمز, اطلب رمزأً جديداً");
+      Get.showSnackbar(const GetSnackBar(
+        message: "انتهت صلاحية الرمز, اطلب رمزأً جديدا",
+        duration: Duration(milliseconds: 2500),
+        backgroundColor: Colors.red,
+      ));
       return;
     }
-    toggleLoadingOtp(true);
+    toggleLoading(true);
 
     if (resetController == null) {
       if (await RemoteServices.verifyRegisterOtp(_verifyUrl, pin)) {
         Get.back();
+        Get.showSnackbar(const GetSnackBar(
+          message: "تم التأكيد بنجاح",
+          duration: Duration(milliseconds: 2500),
+          backgroundColor: Colors.green,
+        ));
+      } else {
+        otpController.clear();
       }
-      //else {
-      //   Get.defaultDialog(
-      //     titleStyle: const TextStyle(color: Colors.black),
-      //     middleTextStyle: const TextStyle(color: Colors.black),
-      //     backgroundColor: Colors.white,
-      //     middleText: "رمز التحقق خاطئ",
-      //   );
-      // }
     } else {
       String? resetToken = await RemoteServices.verifyForgotPasswordOtp(resetController!.email.text, pin);
       if (resetToken == null) {
-        Get.defaultDialog(
-          titleStyle: const TextStyle(color: Colors.black),
-          middleTextStyle: const TextStyle(color: Colors.black),
-          backgroundColor: Colors.white,
-          middleText: "رمز التحقق خاطئ",
-        );
-        return;
+        otpController.clear();
+      } else {
+        resetController!.setResetToken(resetToken);
+        Get.off(() => const ResetPasswordView2());
       }
-      resetController!.setResetToken(resetToken);
-      Get.off(() => const ResetPasswordView2());
     }
-    toggleLoadingOtp(false);
+    toggleLoading(false);
   }
 }

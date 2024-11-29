@@ -18,10 +18,13 @@ class LoginView extends StatelessWidget {
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
     LoginController lC = Get.put(LoginController());
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          return;
+        }
         Get.dialog(kCloseAppDialog());
-        return false;
       },
       child: SafeArea(
         child: Scaffold(
