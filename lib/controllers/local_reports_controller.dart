@@ -153,7 +153,6 @@ class LocalReportsController extends GetxController {
   }
 
   Future<void> uploadReport(ReportModel report) async {
-    //todo: report is uploaded without pics
     if (_isLoading) return;
     print(report.toJson());
     toggleLoading(true);

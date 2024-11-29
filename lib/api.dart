@@ -159,7 +159,6 @@ class Api {
 
   Future<String?> postRequestWithImage(String endPoint, List<String> images, Map<String, String> body,
       {bool auth = false, bool canRefresh = true, bool showTimeout = true}) async {
-    print(images);
     try {
       var request = http.MultipartRequest(
         "POST",
@@ -173,15 +172,6 @@ class Api {
 
       request.fields.addAll(body);
 
-      var response = await request.send();
-      print(response.statusCode);
-      if (canRefresh && response.statusCode == 401) {
-        _getStorage.remove("token");
-        _getStorage.remove("role");
-        Get.dialog(kSessionExpiredDialog(), barrierDismissible: false);
-        return null;
-      }
-
       for (var imagePath in images) {
         File imageFile = File(imagePath);
         var stream = http.ByteStream(imageFile.openRead());
@@ -193,6 +183,14 @@ class Api {
           filename: basename(imageFile.path),
         );
         request.files.add(multipartFile);
+      }
+
+      var response = await request.send();
+      if (canRefresh && response.statusCode == 401) {
+        _getStorage.remove("token");
+        _getStorage.remove("role");
+        Get.dialog(kSessionExpiredDialog(), barrierDismissible: false);
+        return null;
       }
 
       String responseBody = await response.stream.bytesToString();
