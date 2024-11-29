@@ -75,15 +75,13 @@ class ResetPassController extends GetxController {
     if (!isValid) return;
     toggleLoading2(true);
 
-    if (await RemoteServices.resetPassword(email.text, newPassword.text, _resetToken!).timeout(kTimeOutDuration)) {
+    if (await RemoteServices.resetPassword(email.text, newPassword.text, _resetToken!)) {
       Get.offAll(() => const LoginView());
-      Get.defaultDialog(
-        titleStyle: const TextStyle(color: Colors.black),
-        middleTextStyle: const TextStyle(color: Colors.black),
-        backgroundColor: Colors.white,
-        title: "نجحت العملية",
-        middleText: "تم تغيير كلمة المرور بنجاح",
-      );
+      Get.showSnackbar(const GetSnackBar(
+        message: "تم بنجاح",
+        duration: Duration(milliseconds: 2500),
+        backgroundColor: Colors.green,
+      ));
     }
 
     toggleLoading2(false);

@@ -129,7 +129,7 @@ class RemoteServices {
       "password_confirmation": password,
       "token": resetToken,
     };
-    String? json = await api.postRequest("reset-password", body, auth: true);
+    String? json = await api.postRequest("reset-password", body, auth: false);
     return json != null;
   }
 
