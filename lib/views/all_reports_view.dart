@@ -25,7 +25,13 @@ class AllReportsView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              //todo: show a dialog "here you can see all the reports you submitted(local reports wont be shown here)"
+              Get.defaultDialog(
+                titleStyle: const TextStyle(color: Colors.black),
+                middleTextStyle: const TextStyle(color: Colors.black),
+                backgroundColor: Colors.white,
+                title: "ملاحظة",
+                middleText: "هنا يمكنك فقط رؤية التقارير التي تم رفعها",
+              );
             },
             icon: Icon(Icons.info_outline, color: cs.onPrimary),
           ),

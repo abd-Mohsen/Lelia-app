@@ -146,13 +146,14 @@ class HomeController extends GetxController {
       ));
     }
     try {
-      position = await Geolocator.getCurrentPosition();
+      position = await Geolocator.getCurrentPosition().timeout(kTimeOutDuration);
+    } on TimeoutException {
+      Get.showSnackbar(kTimeOutSnackBar());
+      toggleLoading(false);
     } catch (e) {
       print(e.toString());
-      //Get.defaultDialog(middleText: e.toString());
     }
     print('${position!.longitude} ${position!.latitude}');
-    //Get.defaultDialog(middleText: '${position!.longitude} ${position!.latitude}');
     toggleLoading(false);
   }
 
