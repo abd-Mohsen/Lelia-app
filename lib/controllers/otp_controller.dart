@@ -15,7 +15,7 @@ class OTPController extends GetxController {
   @override
   void onInit() async {
     //todo(later): handle null, and the otp page might open while not receiving the code (timeout)
-    //todo: sometimes i get a timeout, but receive the code anyways
+    //todo(later): sometimes i get a timeout, but receive the code anyways
     _verifyUrl = (await RemoteServices.sendRegisterOtp())!;
     super.onInit();
   }
