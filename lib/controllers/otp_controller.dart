@@ -1,16 +1,22 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lelia/controllers/reset_password_controller.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:timer_count_down/timer_controller.dart';
 import '../services/remote_services.dart';
+import '../views/login_view.dart';
 import '../views/reset_password_view2.dart';
 import 'package:flutter/material.dart';
+
+import 'login_controller.dart';
 
 class OTPController extends GetxController {
   ResetPassController? resetController;
   OTPController(this.resetController);
   final OtpFieldController otpController = OtpFieldController();
   final CountdownController timeController = CountdownController(autoStart: true);
+
+  final GetStorage _getStorage = GetStorage();
 
   @override
   void onInit() async {
@@ -89,5 +95,14 @@ class OTPController extends GetxController {
       }
     }
     toggleLoading(false);
+  }
+
+  void logout() async {
+    if (await RemoteServices.logout()) {
+      _getStorage.remove("token");
+      _getStorage.remove("role");
+      Get.put(LoginController());
+      Get.offAll(() => const LoginView());
+    }
   }
 }

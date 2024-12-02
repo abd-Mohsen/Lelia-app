@@ -121,36 +121,54 @@ class OTPView extends StatelessWidget {
                     ),
                   ),
                 ),
-                GetBuilder<OTPController>(
-                  builder: (con) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
-                    child: GestureDetector(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        decoration: BoxDecoration(
-                          color: !con.isTimeUp ? Colors.grey : cs.primary,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: con.isLoading
-                              ? SpinKitThreeBounce(
-                                  color: cs.onPrimary,
-                                  size: 28,
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(4),
-                                  child: Text(
-                                    "اعد ارسال الرمز",
-                                    style: tt.titleMedium!.copyWith(color: cs.onPrimary),
-                                  ),
-                                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                      child: GetBuilder<OTPController>(
+                        builder: (con) => GestureDetector(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: BoxDecoration(
+                              color: !con.isTimeUp ? Colors.grey : cs.primary,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: con.isLoading
+                                  ? SpinKitThreeBounce(
+                                      color: cs.onPrimary,
+                                      size: 28,
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                      child: Text(
+                                        "اعد ارسال الرمز",
+                                        style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                      ),
+                                    ),
+                            ),
+                          ),
+                          onTap: () {
+                            con.resendOtp();
+                          },
                         ),
                       ),
-                      onTap: () {
-                        con.resendOtp();
-                      },
                     ),
-                  ),
+                    Visibility(
+                      visible: source == "register",
+                      child: IconButton(
+                        onPressed: () {
+                          oC.logout();
+                        },
+                        icon: const Icon(
+                          Icons.logout,
+                          color: Colors.red,
+                          size: 28,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
