@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:lelia/controllers/register_controller.dart';
 import 'package:lelia/models/user_model.dart';
@@ -153,6 +154,7 @@ class RegisterView extends StatelessWidget {
                 }),
                 GetBuilder<RegisterController>(builder: (con) {
                   return Visibility(
+                    //todo: button to refresh
                     visible: con.roleINEnglish == "salesman",
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
@@ -187,6 +189,13 @@ class RegisterView extends StatelessWidget {
                             ),
                           ),
                         ),
+                        // dropdownBuilder: (context, user) {
+                        //   return ListView.builder(
+                        //       itemBuilder: (context, i){
+                        //         return ListTile()
+                        //       },
+                        //   );
+                        // },
                         items: (filter, infiniteScrollProps) => con.availableSupervisors,
                         itemAsString: (UserModel user) => user.userName,
                         onChanged: (UserModel? user) async {
@@ -210,7 +219,7 @@ class RegisterView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: con.isLoading
-                            ? CircularProgressIndicator(color: cs.onPrimary)
+                            ? SizedBox(width: 120, child: SpinKitThreeBounce(color: cs.onPrimary, size: 24))
                             : Padding(
                                 padding: const EdgeInsets.all(4),
                                 child: Text(

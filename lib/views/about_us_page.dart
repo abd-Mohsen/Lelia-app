@@ -65,7 +65,7 @@ class AboutUsPage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.email, color: cs.primary),
             title: Text(
-              "contact@Letia.com",
+              "contact@Letia.sy",
               style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.8)),
             ),
           ),
