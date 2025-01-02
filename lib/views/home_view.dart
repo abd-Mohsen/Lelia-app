@@ -136,6 +136,15 @@ class HomeView extends StatelessWidget {
                       },
                       selectedValue: con.size,
                     ),
+                    CustomDropdown(
+                      icon: Icons.location_city,
+                      title: "المحافظة",
+                      items: con.citiesCodes.keys.toList(),
+                      onSelect: (String? newVal) {
+                        con.setCity(newVal!);
+                      },
+                      selectedValue: con.city,
+                    ),
                     Row(
                       children: [
                         Expanded(

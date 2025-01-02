@@ -198,6 +198,9 @@ class Api {
       }
 
       var response = await request.send();
+      String responseBody = await response.stream.bytesToString();
+      print(responseBody);
+
       if (canRefresh && response.statusCode == 401) {
         _getStorage.remove("token");
         _getStorage.remove("role");
@@ -205,13 +208,12 @@ class Api {
         return null;
       }
 
-      String responseBody = await response.stream.bytesToString();
       if (response.statusCode == 200 || response.statusCode == 201) {
         return responseBody;
       }
-      response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-      });
+      // response.stream.transform(utf8.decoder).listen((value) {
+      //   print(value);
+      // });
       return null;
     } on TimeoutException {
       if (showTimeout) kTimeOutSnackBar();

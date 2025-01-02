@@ -69,6 +69,7 @@ class HomeController extends GetxController {
   TextEditingController name = TextEditingController();
   String type = "بقالية";
   String size = "صغير";
+  String city = "دمشق";
   TextEditingController neighborhood = TextEditingController();
   TextEditingController street = TextEditingController();
   TextEditingController phone = TextEditingController();
@@ -76,6 +77,30 @@ class HomeController extends GetxController {
   String state = "بطيئة";
   TextEditingController notes = TextEditingController();
   Position? position;
+
+  Map<String, String> citiesCodes = {
+    "دمشق": "011",
+    "النبك": "012",
+    "الزبداني": "013",
+    "القنيطرة": "014",
+    "درعا": "015",
+    "السويداء": "016",
+    "حلب": "021",
+    "الرقة": "022",
+    "ادلب": "023",
+    "حمص": "031",
+    "حماة": "033",
+    "اللاذقية": "041",
+    "طرطوس": "043",
+    "دير الزور": "051",
+    "الحسكة": "052",
+    "القامشلي": "053",
+  };
+
+  void setCity(String city) {
+    this.city = city;
+    update();
+  }
 
   bool _available = false; // hide status if no
   bool get available => _available;
@@ -262,7 +287,7 @@ class HomeController extends GetxController {
       neighborhood: neighborhood.text,
       street: street.text,
       mobile: mobilePhone.text,
-      landline: phone.text,
+      landline: "${citiesCodes[city]}-${phone.text}",
       availability: available,
       status: available ? state : null,
       notes: notes.text,
