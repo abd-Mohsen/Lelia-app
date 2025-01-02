@@ -23,6 +23,7 @@ class LocalReportsView extends StatelessWidget {
           title: Text(
             "التقارير المحفوظة",
             style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+            overflow: TextOverflow.ellipsis,
           ),
           actions: [
             IconButton(
@@ -102,7 +103,12 @@ class LocalReportsView extends StatelessWidget {
                   color: cs.onPrimary,
                   size: 25,
                 ),
-                child: Text("غير مرسل".tr, style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                child: Text(
+                  "غير مرسل".tr,
+                  style: tt.bodyLarge!.copyWith(color: cs.onPrimary),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Tab(
                 icon: Icon(
@@ -110,7 +116,12 @@ class LocalReportsView extends StatelessWidget {
                   color: cs.onPrimary,
                   size: 25,
                 ),
-                child: Text("مرسل".tr, style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                child: Text(
+                  "مرسل".tr,
+                  style: tt.bodyLarge!.copyWith(color: cs.onPrimary),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),

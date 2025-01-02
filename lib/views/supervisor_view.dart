@@ -65,7 +65,12 @@ class SupervisorView extends StatelessWidget {
                     color: cs.onPrimary,
                     size: 25,
                   ),
-                  child: Text("كل التقارير", style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                  child: Text(
+                    "كل التقارير",
+                    style: tt.bodyMedium!.copyWith(color: cs.onPrimary),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 Tab(
                   icon: Icon(
@@ -73,7 +78,12 @@ class SupervisorView extends StatelessWidget {
                     color: cs.onPrimary,
                     size: 25,
                   ),
-                  child: Text("المندوبين", style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                  child: Text(
+                    "المندوبين",
+                    style: tt.bodyMedium!.copyWith(color: cs.onPrimary),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 Tab(
                   icon: Icon(
@@ -81,7 +91,12 @@ class SupervisorView extends StatelessWidget {
                     color: cs.onPrimary,
                     size: 25,
                   ),
-                  child: Text("تصدير التقارير", style: tt.bodyLarge!.copyWith(color: cs.onPrimary)),
+                  child: Text(
+                    "تصدير التقارير",
+                    style: tt.bodyMedium!.copyWith(color: cs.onPrimary),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),

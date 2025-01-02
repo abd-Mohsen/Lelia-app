@@ -33,7 +33,9 @@ class AuthField extends StatelessWidget {
         keyboardType: keyboardType ?? TextInputType.text,
         obscureText: obscure ?? false,
         decoration: InputDecoration(
-          border: const OutlineInputBorder(),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(32)),
+          ),
           //hintText: "password".tr,
           label: Text(label),
           prefixIcon: prefixIcon,

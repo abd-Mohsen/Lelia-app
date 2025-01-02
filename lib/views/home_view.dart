@@ -202,11 +202,11 @@ class HomeView extends StatelessWidget {
                         activeColor: cs.primary,
                         title: Text(
                           "التواجد",
-                          style: tt.titleMedium!.copyWith(color: cs.onBackground.withOpacity(0.6)),
+                          style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5)),
                         ),
                         shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
-                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(width: 1, color: cs.onBackground),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                     ),
@@ -234,8 +234,8 @@ class HomeView extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             "احداثيات النقطة",
-                            style: tt.titleMedium!.copyWith(
-                              color: cs.onBackground.withOpacity(0.6),
+                            style: tt.titleSmall!.copyWith(
+                              color: cs.onSurface.withOpacity(0.6),
                             ),
                           ),
                         ),
@@ -257,7 +257,7 @@ class HomeView extends StatelessWidget {
                                 ),
                                 child: Text(
                                   'حفظ',
-                                  style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                  style: tt.titleSmall!.copyWith(color: cs.onPrimary),
                                 ),
                               ),
                               SizedBox(width: 12),
@@ -286,7 +286,7 @@ class HomeView extends StatelessWidget {
                         ),
                         shape: RoundedRectangleBorder(
                           side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                     ),
@@ -327,7 +327,7 @@ class HomeView extends StatelessWidget {
                                         const SizedBox(height: 8),
                                         Text(
                                           'اضف صورة',
-                                          style: tt.titleLarge!.copyWith(
+                                          style: tt.titleMedium!.copyWith(
                                             color: cs.onSurface.withOpacity(0.6),
                                           ),
                                           textAlign: TextAlign.center,
@@ -448,12 +448,12 @@ class HomeView extends StatelessWidget {
                                     children: [
                                       Text(
                                         'حفظ في الذاكرة',
-                                        style: tt.titleLarge!.copyWith(color: cs.onPrimary),
+                                        style: tt.titleMedium!.copyWith(color: cs.onPrimary),
                                       ),
                                       SizedBox(width: 12),
                                       Icon(
                                         Icons.save_alt,
-                                        size: 40,
+                                        size: 30,
                                         color: cs.onPrimary,
                                       ),
                                     ],

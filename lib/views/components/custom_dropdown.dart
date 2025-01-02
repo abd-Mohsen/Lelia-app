@@ -32,7 +32,7 @@ class CustomDropdown extends StatelessWidget {
             : null,
         title: Text(
           title,
-          style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6), overflow: TextOverflow.ellipsis),
+          style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5), overflow: TextOverflow.ellipsis),
         ),
         trailing: DropdownButton<String>(
           value: selectedValue,
@@ -51,8 +51,8 @@ class CustomDropdown extends StatelessWidget {
           style: tt.titleLarge!.copyWith(color: cs.onSurface),
         ),
         shape: RoundedRectangleBorder(
-          side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.5)),
-          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(width: 1, color: cs.onBackground),
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
     );
