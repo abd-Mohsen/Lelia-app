@@ -13,7 +13,7 @@ class AboutUsPage extends StatelessWidget {
         backgroundColor: cs.primary,
         title: Text(
           'حول التطبيق',
-          style: tt.headlineMedium!.copyWith(color: cs.onPrimary),
+          style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
         ),
         centerTitle: true,
       ),

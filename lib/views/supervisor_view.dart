@@ -236,6 +236,7 @@ class SupervisorView extends StatelessWidget {
                                 popupProps: PopupProps.menu(
                                   showSearchBox: true,
                                   searchFieldProps: TextFieldProps(
+                                    style: tt.titleSmall!.copyWith(color: cs.onSurface),
                                     decoration: InputDecoration(
                                       fillColor: Colors.white70,
                                       hintText: "اسم المندوب",
@@ -247,15 +248,17 @@ class SupervisorView extends StatelessWidget {
                                   ),
                                 ),
                                 decoratorProps: DropDownDecoratorProps(
+                                  baseStyle: tt.titleSmall!.copyWith(color: cs.onSurface),
                                   decoration: InputDecoration(
                                     labelText: "اسم المندوب",
-                                    labelStyle: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
+                                    labelStyle: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5)),
+                                    //hintStyle: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.5)),
                                     //hintText: "اختر اسم المندوب".tr,
                                     // icon: Icon(
                                     //   Icons.text,
                                     //   color: cs.onBackground,
                                     // ),
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
                                   ),
                                 ),
                                 items: (filter, infiniteScrollProps) => con.subordinates,

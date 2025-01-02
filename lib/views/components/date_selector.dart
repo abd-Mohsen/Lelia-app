@@ -34,13 +34,13 @@ class DateSelector extends StatelessWidget {
               },
               title: Text(
                 start ? "من تاريخ" : "الى تاريخ",
-                style: tt.titleMedium!.copyWith(color: cs.onSurface.withOpacity(0.6)),
+                style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.6)),
               ),
               //leading: Icon(Icons.date_range),
               trailing: (start ? con.fromDate : con.toDate) != null
                   ? Text(
                       Jiffy.parseFromDateTime(start ? con.fromDate! : con.toDate!).format(pattern: "d / M / y"),
-                      style: tt.titleSmall!.copyWith(color: cs.onSurface.withOpacity(0.6)),
+                      style: tt.titleSmall!.copyWith(color: cs.onSurface),
                     )
                   : Text(
                       "انقر للاختيار",
@@ -48,8 +48,8 @@ class DateSelector extends StatelessWidget {
                     ),
 
               shape: RoundedRectangleBorder(
-                side: BorderSide(width: 1, color: cs.onBackground.withOpacity(0.6)),
-                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(width: 0.7, color: cs.onSurface),
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
           ),
