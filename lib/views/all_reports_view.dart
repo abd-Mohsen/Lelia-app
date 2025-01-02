@@ -69,6 +69,7 @@ class AllReportsView extends StatelessWidget {
                         )
                       : ListView.builder(
                           controller: con.scrollController,
+                          physics: const AlwaysScrollableScrollPhysics(),
                           itemCount: allReports.length + 1,
                           itemBuilder: (context, i) {
                             if (i < allReports.length) {

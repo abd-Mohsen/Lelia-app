@@ -114,6 +114,7 @@ class SupervisorView extends StatelessWidget {
                               )
                             : ListView.builder(
                                 controller: con.scrollController,
+                                physics: const AlwaysScrollableScrollPhysics(),
                                 itemCount: allReports.length + 1,
                                 itemBuilder: (context, i) {
                                   if (i < allReports.length) {
@@ -253,43 +254,46 @@ class SupervisorView extends StatelessWidget {
                           ),
                           DateSelector(start: true), // do not put const, it wont be rebuilt
                           DateSelector(start: false),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: GestureDetector(
-                              onTap: () {
-                                Get.bottomSheet(
-                                  Container(
-                                    height: MediaQuery.of(context).size.height / 1.5,
-                                    color: cs.surface,
-                                    child: con.exportedReports.isEmpty
-                                        ? Center(
-                                            child: Text(
-                                              'ليس هناك تقارير',
-                                              style: tt.titleMedium!.copyWith(color: cs.onSurface),
-                                              textAlign: TextAlign.center,
+                          Visibility(
+                            visible: con.clickedExport,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.bottomSheet(
+                                    Container(
+                                      height: MediaQuery.of(context).size.height / 1.5,
+                                      color: cs.surface,
+                                      child: con.exportedReports.isEmpty
+                                          ? Center(
+                                              child: Text(
+                                                'ليس هناك تقارير',
+                                                style: tt.titleMedium!.copyWith(color: cs.onSurface),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            )
+                                          : ListView.builder(
+                                              itemCount: exportedReports.length,
+                                              itemBuilder: (context, i) => ReportCard(
+                                                report: exportedReports[i],
+                                                local: false,
+                                                supervisor: true,
+                                              ),
                                             ),
-                                          )
-                                        : ListView.builder(
-                                            itemCount: exportedReports.length,
-                                            itemBuilder: (context, i) => ReportCard(
-                                              report: exportedReports[i],
-                                              local: false,
-                                              supervisor: true,
-                                            ),
-                                          ),
-                                  ),
-                                );
-                              },
-                              child: IntrinsicWidth(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: cs.primary,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: const Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text("معاينة التقارير المصدرة"),
+                                    ),
+                                  );
+                                },
+                                child: IntrinsicWidth(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: cs.primary,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: const Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text("معاينة التقارير المصدرة"),
+                                      ),
                                     ),
                                   ),
                                 ),

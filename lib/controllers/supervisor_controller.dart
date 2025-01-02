@@ -126,6 +126,8 @@ class SupervisorController extends GetxController {
     getSubordinates();
   }
 
+  bool clickedExport = false;
+
   Future<bool> getExportReports() async {
     toggleLoadingExport(true);
     _exportedReports.clear();
@@ -134,6 +136,7 @@ class SupervisorController extends GetxController {
       toDate!.toIso8601String(),
       selectedSubordinate?.id,
     );
+    clickedExport = true;
     toggleLoadingExport(false);
     if (res == null) return false;
 

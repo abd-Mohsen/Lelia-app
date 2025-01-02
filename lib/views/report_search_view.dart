@@ -41,6 +41,7 @@ class ReportSearchView extends StatelessWidget {
                       ? SpinKitDualRing(color: cs.primary)
                       : ListView.builder(
                           controller: controller.scrollController,
+                          physics: const AlwaysScrollableScrollPhysics(),
                           itemCount: controller.searchResult.length + 1,
                           itemBuilder: (context, i) {
                             if (i < controller.searchResult.length) {
