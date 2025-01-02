@@ -46,6 +46,8 @@ class SupervisorView extends StatelessWidget {
             title: Text(
               "لوحة تحكم المشرف",
               style: tt.headlineSmall!.copyWith(color: cs.onPrimary),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             actions: [
               IconButton(

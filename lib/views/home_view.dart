@@ -277,7 +277,7 @@ class HomeView extends StatelessWidget {
                                   ),
                                   child: Text(
                                     'معاينة',
-                                    style: tt.titleMedium!.copyWith(color: cs.onPrimary),
+                                    style: tt.titleSmall!.copyWith(color: cs.onPrimary),
                                   ),
                                 ),
                               ),
