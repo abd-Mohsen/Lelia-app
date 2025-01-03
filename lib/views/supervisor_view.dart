@@ -15,7 +15,9 @@ import 'package:lelia/views/components/user_card.dart';
 import 'package:lelia/views/report_search_view.dart';
 
 import '../controllers/theme_controller.dart';
+import '../main.dart';
 import '../models/report_model.dart';
+import '../services/screen_service.dart';
 import 'about_us_page.dart';
 import 'components/custom_dropdown.dart';
 import 'components/report_card.dart';
@@ -25,6 +27,7 @@ class SupervisorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    screenService = ScreenService(context);
     ColorScheme cs = Theme.of(context).colorScheme;
     TextTheme tt = Theme.of(context).textTheme;
     ThemeController tC = Get.find();

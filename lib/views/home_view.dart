@@ -16,11 +16,15 @@ import 'package:lelia/views/map_page.dart';
 import 'package:lelia/views/local_reports_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../main.dart';
+import '../services/screen_service.dart';
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    screenService = ScreenService(context);
     ThemeController tC = Get.find();
     HomeController hC = Get.put(HomeController());
     ColorScheme cs = Theme.of(context).colorScheme;

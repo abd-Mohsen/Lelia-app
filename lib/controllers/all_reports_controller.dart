@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import '../main.dart';
 import '../models/report_model.dart';
 import '../services/remote_services.dart';
-import '../services/screen_service.dart';
 
 class AllReportsController extends GetxController {
   @override
   void onInit() {
     limit = (screenService.screenHeightCm).toInt();
+    print(limit);
     getReports();
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
@@ -18,8 +19,6 @@ class AllReportsController extends GetxController {
     });
     super.onInit();
   }
-
-  final screenService = Get.find<ScreenService>();
 
   ScrollController scrollController = ScrollController();
 

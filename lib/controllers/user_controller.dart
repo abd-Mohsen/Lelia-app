@@ -4,9 +4,8 @@ import 'package:get/get.dart';
 import 'package:lelia/models/report_model.dart';
 import 'package:lelia/models/user_model.dart';
 
-import '../constants.dart';
+import '../main.dart';
 import '../services/remote_services.dart';
-import '../services/screen_service.dart';
 
 class UserController extends GetxController {
   late UserModel user;
@@ -15,6 +14,7 @@ class UserController extends GetxController {
   @override
   void onInit() {
     limit = (screenService.screenHeightCm).toInt() - 4;
+    print(limit);
     if (user.role == "مندوب مبيعات") getReports();
     scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
@@ -23,8 +23,6 @@ class UserController extends GetxController {
     });
     super.onInit();
   }
-
-  final screenService = Get.find<ScreenService>();
 
   ScrollController scrollController = ScrollController();
 

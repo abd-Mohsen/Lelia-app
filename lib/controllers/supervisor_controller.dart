@@ -7,10 +7,10 @@ import 'package:jiffy/jiffy.dart';
 import 'package:lelia/views/otp_view.dart';
 import 'package:path/path.dart';
 import '../constants.dart';
+import '../main.dart';
 import '../models/report_model.dart';
 import '../models/user_model.dart';
 import '../services/remote_services.dart';
-import '../services/screen_service.dart';
 import '../views/login_view.dart';
 import 'login_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,6 +20,7 @@ class SupervisorController extends GetxController {
   @override
   void onInit() {
     limit = (screenService.screenHeightCm / 1.1).toInt();
+    print(limit);
     getCurrentUser();
     getReports();
     getSubordinates();
@@ -38,8 +39,6 @@ class SupervisorController extends GetxController {
   }
 
   final GetStorage _getStorage = GetStorage();
-
-  final screenService = Get.find<ScreenService>();
 
   ScrollController scrollController = ScrollController();
 

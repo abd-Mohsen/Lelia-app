@@ -10,11 +10,11 @@ import 'api.dart';
 import 'locale.dart';
 
 final Api api = Api();
+late ScreenService screenService;
 
 void main() async {
   await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
-  await Get.putAsync(() => ScreenService().init());
   runApp(const MyApp());
 }
 
